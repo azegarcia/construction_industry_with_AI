@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <title>AI Weather Forecast</title>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+  <link rel="stylesheet" type="text/css" href="css1/bootstrap.css" />
+  <link rel="stylesheet" type="text/css" href="css1/font-awesome.min.css" />
+  <link href="css1/style.css" rel="stylesheet" />
+  <link href="css1/responsive.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+  <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+</head>
+<body>
+  <div class="hero_area">
+    <header class="header_section" style="background-color: white;">
+      <div class="header_bottom">
+        <div class="container-fluid">
+          <nav class="navbar navbar-expand-lg custom_nav-container ">
+            <a class="navbar-brand" href="index.html">
+              <span>
+                HOOD-EPC
+              </span>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class=""> </span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav ">
+                <li class="nav-item active">
+                  <a class="nav-link" href="main.html">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="index.html">Log Out</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </header>
+    <section class="slider_section">
+      <div class="container" style="height: 300px;">
+        <div class="row" style="height: 300px;">
+          <div class="col-md-6" style="height: 300px;">
+            <div class="detail-box">
+              <br><br><br><br><br>
+              <h1 style="font-size: xxx-large; text-align: center;">
+                AI Weather Forecast
+              </h1>
+            </div>
+          </div>
+          <div class="col-md-6" style="height: 300px;">
+            <img src="images/greeny.jpg" alt="" style="height: 300px;"/>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slider_section" style="background-color: white;">
+        <div class="container" style="height: 30px;">
+        </div>
+    </section>
+    <section class="slider_section" style="background-color: white;">
+        <div style="display: block;margin-left: auto; margin-right: auto;">
+            <button type="submit" id="loginBtn" class="btn btn-danger rounded submit p-3 px-5" onclick="signIn()">Update Forecast</button>
+        </div>
+    </section>
+    <section class="slider_section" style="background-color: white;">
+        <div class="container" style="height: 30px;">
+        </div>
+    </section>
+    <section class="slider_section" style="background-color: white;">
+        <div class="container" style="height: 300px;">
+            <div class="row" style="height: 300px;">
+                <div class="col-md-6" style="height: 300px;">
+                    <center><img src="images/plot.png" alt= "" ></center>
+                </div>
+                <div class="col-md-6" style="height: 300px;">
+                    <center>
+                        <table style="width: 80%;">
+                          <thead>
+                            <tr>
+                              <th colspan="4" id="datenow" style="text-align: center;background-color: rgb(75, 174, 228);" height="50">
+                              </th>
+                            </tr>
+                          </thead>
+                          <thead>
+                            <tr>
+                              <th style="text-align: center;background-color: rgb(140, 215, 255);" height="30">
+                                Time
+                              </th>
+                              <th style="text-align: center;background-color: rgb(140, 215, 255);" height="30">
+                                Temperature
+                              </th>
+                              <th style="text-align: center;background-color: rgb(140, 215, 255);" height="30">
+                                Precipitation
+                              </th>
+                              <th style="text-align: center;background-color: rgb(140, 215, 255);" height="30">
+                                Weather
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          </tbody>
+                        </table>
+                    </center>
+                </div>
+            </div>
+        </div>
+    </section>
+  </div>
+  <script src="js/jquery-3.4.1.min.js"></script>
+  <script src="js/bootstrap.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
+  </script>
+  <script src="js/custom.js"></script>
+  <script>
+    const n = new Date();
+    let text = n.toDateString();
+    document.getElementById("datenow").innerHTML = text;
+    </script>
+</body>
+</html>
