@@ -36,7 +36,7 @@ class CPMRunner:
             df = pd.DataFrame([[last, st, 0, 0, 0]], columns=[
                 "ac", "pr", "b", "m", "a"])
         data = pd.concat([data, df])
-
+        print()
         for i in range(len(data)):
             graph.append([])
             atts.append({})
@@ -170,3 +170,9 @@ class CPMRunner:
         ax.axis('off')
         plt.savefig('./images/fig' + str(self.csv_name) + ".png")
         # plt.show()
+
+
+if __name__=="__main__": 
+    runner = CPMRunner('data9')
+    new_data = runner.run()
+    print(new_data)

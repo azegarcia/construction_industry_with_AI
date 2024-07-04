@@ -71,8 +71,10 @@ if __name__=="__main__":
     chunks = split_list(new_list)
     new_chunk = clean_list(chunks)
 
+    print(new_chunk)
+
     # list to dataframe
-    list_to_df = pd.DataFrame(new_chunk, columns=['month', 'year', 'y', 'ds'])
+    list_to_df = pd.DataFrame(new_chunk, columns=['month', 'year', 'y', 'humid', 'weather status', 'ds'])
     
     # instantiate the model
     model = Prophet()
@@ -83,11 +85,12 @@ if __name__=="__main__":
     pred=model.predict(forecast_pred)
     # plot_plotly(model,pred)
 
+    pred.to_csv('data/prediction.csv')
+    
     # Prophet's plot method creates a prediction graph
     fig = model.plot(pred)
 
     # display prediction graph
-    plt.title("AI Weather Forecast")
     plt.xlabel("Date")
     plt.ylabel("Temperature")
     # plt.show()
