@@ -4,18 +4,14 @@ from .cpmrunner import CPMRunner
 
 class CPM(Resource):
     parser = reqparse.RequestParser()
-    parser.add_argument('price',
-                        type=float,
+    parser.add_argument('cpm_data',
+                        type=dict,
                         required=True,
                         help="This field cannot be left blank!")
 
-    parser.add_argument('store_id',
-                        type=int,
-                        required=True,
-                        help="Every item needs a store id.")
-
-    def get(self, name):
-        cpmrunner = CPMRunner(name)
+    def post(self, name):
+        data = CPM.parser.parse_args()
+        data = data['cpm_data']
+        cpmrunner = CPMRunner(name, data)
         cpmrunner.run()
-        return {'message': 'success'}, 201
-
+        return {'message': 'success', 'data': data}, 201
