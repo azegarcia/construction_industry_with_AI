@@ -9,6 +9,10 @@ let firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 
+function showDiv() {
+    document.getElementById('sectionPart').style.display = "block";
+}
+
 function toDatabase() {
     var database = firebase.database();
     var projectNameList = [];
@@ -24,9 +28,8 @@ function toDatabase() {
                     content += `<tr>`;
                     content += '<td>' + val.pname + '</td>';
                     content += '<td>' + val.pname + '</td>';
-                    content += '<td>' + val.pname + '</td>';
                     content += `<td>
-                                    <button type="button" class="btn btn-success" onclick="window.location='ai_weather.html';">Select</button>
+                                    <button type="button" class="btn btn-success" onclick="showDiv(); return false;">Select</button>
                                 </td>`;
                     content += '</tr>';
                 }

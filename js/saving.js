@@ -34,7 +34,6 @@ $('#projectDrop').change(function () {
     console.log($(this).val());
     let params = new URLSearchParams();
     params.set('projectname', $(this).val());
-    console.log(window.location.pathname + params.toString());
     window.location.href = window.location.pathname + '?' + params.toString();
 })
 
@@ -142,10 +141,24 @@ const download = (data, projectName) => {
 
     // Set the URL and download attribute of the anchor tag
     a.href = url;
-    a.download = 'download_' + projectName + '.csv';
+    a.download = 'download_' + projectName + ' ' + dateToday() + '.csv';
 
     // Trigger the download by clicking the anchor tag
     a.click();
+}
+
+const dateToday = () => {
+    var today = new Date();
+
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hour = today.getHours();
+    var minute = today.getMinutes();
+    var secs = today.getSeconds();
+
+    today = mm + '-' + dd + '-' + yyyy + '_' + hour + minute + secs;
+    return today;
 }
 
 // Function to create a CSV string from an object
@@ -166,32 +179,61 @@ const csvmaker = (data) => {
     return [headers.join(','), rows.join('\n')].join('\n');
 }
 
-function get() {
+async function get() {
     var rows = [];
     for (var j = 0; j < $('#act-table tbody > tr').length; j++) {
         var itemChar = $(`#act-table tbody tr:nth-child(${j + 1}) > td`)[0].textContent;
-        var impre = '"' + $(`#act-table tbody tr:nth-child(${j + 1}) > td`)[3].textContent + '"';
+        var impre = $(`#act-table tbody tr:nth-child(${j + 1}) > td`)[3].textContent;
         var timeT = $(`#act-table tbody tr:nth-child(${j + 1}) > td`)[7].textContent;
 
         var projectName = $(`#act-table tbody tr:nth-child(${j + 1}) > td`)[1].textContent;
-
+        if (impre.toUpperCase() === 'START') {
+            impre = '-'
+        }
         rows.push([itemChar, impre, timeT]);
     }
 
     var csvData = {
-        headers: ['ac', 'impre', 'timeT'],
+        headers: ['ac', 'pr', 'du'],
         values: rows,
     }
     // Create the CSV string from the data
     const csvdata = csvmaker(csvData);
     console.log(csvData);
     // Download the CSV file
+
+
     download(csvdata, projectName);
+    var csvName = 'download_' + projectName + ' ' + dateToday();
+    await runPertCPM(csvName, csvData);
+
+    let params = new URLSearchParams();
+    params.set('file', csvName);
+
+
+    return "/pertcpm.html?" + params.toString();
 }
 
-function myPert() {
-    get()
-    location.replace("pertcpm.html")
+async function runPertCPM(name, data) {
+    console.log('runPertCPM', runPertCPM);
+
+    const json = JSON.stringify({ 'cpm_data': data });
+
+
+    const res = await axios.post('http://localhost:5000/cpm/' + name, json, {
+        headers: {
+            // Overwrite Axios's automatically set Content-Type
+            'Content-Type': 'application/json'
+        }
+    });
+
+    console.log(res.data);
+}
+
+async function myPert() {
+    var params = await get();
+
+    window.location.href = params;
 }
 
 function deleteRow(projectKey) {

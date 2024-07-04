@@ -290,7 +290,7 @@
             <br>
             <label for="startDay">Enter Start Date:</label>
             <input type="text" id="startDay" name="startDay" placeholder="mm/dd/YYYY" style="width: 30%;" required>
-            <button id="action" type="submit" class="btn btn-danger" style="float: right;padding-right: 10px;" onclick="myPert()">Apply PERT CPM</button>
+            <button id="action" type="button" class="btn btn-danger" style="float: right;padding-right: 10px;" onclick="return myPert()">Apply PERT CPM</button>
           </form>
         </div>
       </section>
@@ -310,6 +310,7 @@
   </script>
   <script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js"></script>
   <script src="js1/jquery-3.4.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
   <script src="js/saving.js"></script>
   <script src="js1/bootstrap.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>

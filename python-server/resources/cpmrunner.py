@@ -18,8 +18,10 @@ class CPMRunner:
         st = ""
 
         fields = self.csv_data['headers']
-        rows = self.csv_data['rows']
+        rows = self.csv_data['values']
         # writing to csv file
+
+        print(self.csv_name)
         with open('./data/' + self.csv_name + '.csv', 'w', newline='') as csvfile:
             # creating a csv dict writer object
             csvwriter = csv.writer(csvfile)
@@ -182,7 +184,7 @@ class CPMRunner:
                         bbox=dict(boxstyle="round", fc="lightgrey"),
                         arrowprops=dict(arrowstyle="wedge"))
         ax.axis('off')
-        plt.savefig('./images/fig' + str(self.csv_name) + ".png")
+        plt.savefig('./images/' + str(self.csv_name) + ".png")
         # plt.show()
 
 
