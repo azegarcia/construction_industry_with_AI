@@ -36,15 +36,6 @@
   tr:nth-child(even) {
     background-color: #dddddd;
   }
-  .footer {
-     left: 0;
-     bottom: 0;
-     height: 50px;
-     width: 100%;
-     background-color: #0106b7;
-     color: white;
-     text-align: center;
-  }
   .column {
     float: left;
     width: 50%;
@@ -107,15 +98,37 @@
     </div>
   </section>
   <section class="slider_section" style="background-color: white;">
-    <div class="container" style="height: 50px;">
+    <div class="container">
+      <input type="button" value="+ New" onclick="msg()" style="border: 1px solid gray;border-radius: 6px;position: relative;width: 200px;line-height: 6ex;text-align: center;">
+      <p><label for="image" style="cursor: pointer;border: 1px solid gray;border-radius: 6px;position: relative;width: 200px;line-height: 6ex;text-align: center;display: none;">Upload Image</label></p>
+      <input type="file"  accept="image/*" name="image" id="image" onchange="loadFile(event)" style="display: none;">
     </div>
   </section>
-  <div class="footer">
-    <p>Established 2024</p>
-  </div>
+  <section class="slider_section" style="background-color: white;">
+    <div class="container" style="height: 30px;">
+    </div>
+  </section>
+  <section class="slider_section" style="background-color: white;">
+    <div class="container">
+      <h1>Images</h1>
+      <img id="outputimages" width="200"/>	
+    </div>
+  </section>
+  <section class="slider_section" style="background-color: white;">
+    <div class="container" style="height: 30px;">
+    </div>
+  </section>
   <script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js"></script>
   <script src="js1/jquery-3.4.1.min.js"></script>
-  <script src="js/display.js"></script>
+  <script>
+    function msg() {
+      document.getElementById('image').style.display = "block";
+    }
+    var loadFile = function(event) {
+      var image = document.getElementById('outputimages');
+      image.src = URL.createObjectURL(event.target.files[0]);
+    };
+  </script>
   <script src="js1/bootstrap.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
   <script src="js1/custom.js"></script>

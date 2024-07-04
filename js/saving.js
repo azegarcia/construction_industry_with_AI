@@ -46,6 +46,7 @@ function submitForm(e) {
 
     // Get values
     let pname = getInputVal('pname');
+    let startDate = getInputVal('startDate');
     let itemL = getInputVal('itemL');
     let aname = getInputVal('aname');
     let impre = getInputVal('impre');
@@ -53,7 +54,7 @@ function submitForm(e) {
     let timeM = getInputVal('timeM');
     let timeB = getInputVal('timeB');
 
-    saveMessage(pname, itemL, aname, impre, timeA, timeM, timeB);
+    saveMessage(pname, startDate, itemL, aname, impre, timeA, timeM, timeB);
     document.getElementById('inputForm').reset();
     toDatabase();
 }
@@ -92,10 +93,11 @@ function getInputVal(id) {
 }
 
 // Save message to firebase
-function saveMessage(pname, itemL, aname, impre, timeA, timeM, timeB) {
+function saveMessage(pname, startDate, itemL, aname, impre, timeA, timeM, timeB) {
     let newMessageRef = messagesRef.push();
     newMessageRef.set({
         pname: pname,
+        startDate: startDate,
         itemL: itemL,
         aname: aname,
         impre: impre,
@@ -129,7 +131,7 @@ function saveMessage2(equipment, equipmentQuantity, equipmentDays, equipmentCost
 }
 
 // Function to download the CSV file
-const download = (data, projectName) => {
+const download = (data, projectName, getDate) => {
     // Create a Blob with the CSV data and type
     const blob = new Blob([data], { type: 'text/csv' });
 
@@ -141,7 +143,7 @@ const download = (data, projectName) => {
 
     // Set the URL and download attribute of the anchor tag
     a.href = url;
-    a.download = 'download_' + projectName + ' ' + dateToday() + '.csv';
+    a.download = 'download_' + projectName + '_' + getDate + '.csv';
 
     // Trigger the download by clicking the anchor tag
     a.click();
@@ -179,7 +181,7 @@ const csvmaker = (data) => {
     return [headers.join(','), rows.join('\n')].join('\n');
 }
 
-async function get() {
+async function get(getDate) {
     var rows = [];
     for (var j = 0; j < $('#act-table tbody > tr').length; j++) {
         var itemChar = $(`#act-table tbody tr:nth-child(${j + 1}) > td`)[0].textContent;
@@ -200,11 +202,10 @@ async function get() {
     // Create the CSV string from the data
     const csvdata = csvmaker(csvData);
     console.log(csvData);
+
     // Download the CSV file
-
-
-    download(csvdata, projectName);
-    var csvName = 'download_' + projectName + ' ' + dateToday();
+    download(csvdata, projectName, getDate);
+    var csvName = 'download_' + projectName + ' ' + getDate;
     await runPertCPM(csvName, csvData);
 
     let params = new URLSearchParams();
@@ -231,8 +232,16 @@ async function runPertCPM(name, data) {
 }
 
 async function myPert() {
-    var params = await get();
-
+    var today = new Date();
+    var hour = today.getHours();
+    var minute = today.getMinutes();
+    var secs = today.getSeconds();
+    var startDate = document.querySelector("#startDay").value;
+    const myDate = startDate.split("-");
+    var dd = String(myDate[1]).padStart(2, '0');
+    var mm = String(myDate[0]).padStart(2, '0'); //January is 0!
+    var getDate = mm + '-' + dd + '-' + parseInt(myDate[2]) + '_' + hour + minute + secs;
+    var params = await get(getDate);
     window.location.href = params;
 }
 

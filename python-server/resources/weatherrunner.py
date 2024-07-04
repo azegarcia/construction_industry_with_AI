@@ -23,12 +23,6 @@ class WeatherRunner:
                 if split_row[1] == pday:
                     today = row
                     new_csv.append(today)
-                # if split_row[1] == yday:
-                #     yesterday = row
-                #     new_csv.append(yesterday)
-                # if split_row[1] == tomday:
-                #     tomorrow = row
-                #     new_csv.append(tomorrow)
                 
         return new_csv
 

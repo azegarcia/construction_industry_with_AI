@@ -36,15 +36,6 @@
   tr:nth-child(even) {
     background-color: #dddddd;
   }
-  .footer {
-     left: 0;
-     bottom: 0;
-     height: 50px;
-     width: 100%;
-     background-color: #0106b7;
-     color: white;
-     text-align: center;
-  }
   .column {
     float: left;
     width: 50%;
@@ -112,6 +103,7 @@
         <thead>
           <tr>
               <th>Project</th>
+              <th>Start Date</th>
               <th>Status</th>
               <th></th>
           </tr>
@@ -128,16 +120,16 @@
   <section class="service_section layout_padding" id="sectionPart" style="display: none;">
     <div class="container">
       <div>
-        <h1>Project Check</h1>
+        <h1 id="projectlabel"></h1>
       </div>
       <div class="row">
         <div class="col-sm-4 mx-auto">
-          <div class="box" onclick="window.location='project.html';">
+          <div class="box" onclick="window.location='pertcpm.html';">
             <div class="img-box">
               <img src="images/schedule.png" alt="" />
             </div>
             <div class="detail-box">
-              <h5>
+              <h5 id="schedulelabel">
                 Schedule (Diagram)
               </h5>
             </div>
@@ -149,7 +141,7 @@
               <img src="images/assign.png" alt="" />
             </div>
             <div class="detail-box">
-              <h5>
+              <h5 id="manpowerlabel">
                 Man Power Assignment
               </h5>
             </div>
@@ -161,7 +153,7 @@
               <img src="images/document.png" alt="" />
             </div>
             <div class="detail-box">
-              <h5>
+              <h5 id="documentslabel">
                 Documents
               </h5>
             </div>
@@ -170,14 +162,10 @@
       </div>
     </div>
   </section>
-  <div class="footer">
-    <p>Established 2024</p>
-  </div>
   <script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js"></script>
   <script src="js1/jquery-3.4.1.min.js"></script>
   <script src="js/display.js"></script>
   <script src="js1/bootstrap.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-  <script src="js1/custom.js"></script>
 </body>
 </html>

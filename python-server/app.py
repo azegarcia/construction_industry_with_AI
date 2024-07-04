@@ -7,7 +7,6 @@ from flask_cors import CORS
 from resources.cpm import CPM
 from resources.weather import Weather
 
-
 app = Flask(__name__)
 api = Api(app)
 CORS(app)
