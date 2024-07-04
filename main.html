@@ -25,6 +25,10 @@
      color: white;
      text-align: center;
   }
+  body {
+    height: 100%; 
+    overflow: hidden;
+  }
 </style>
 <body>
   <div class="hero_area">
@@ -76,7 +80,7 @@
   <section class="service_section layout_padding">
     <div class="container">
       <div class="row">
-        <div class="col-sm-6 mx-auto">
+        <div class="col-sm-4 mx-auto">
           <div class="box" onclick="window.location='project.html';">
             <div class="img-box">
               <img src="images/newproject.png" alt="" />
@@ -88,33 +92,19 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-6 mx-auto">
-          <div class="box" onclick="window.location='ongoing.html';">
+        <div class="col-sm-4 mx-auto">
+          <div class="box" onclick="window.location='projectlist.html';">
             <div class="img-box">
-              <img src="images/ongoing.png" alt="" />
+              <img src="images/checklist.png" alt="" />
             </div>
             <div class="detail-box">
               <h5>
-                Ongoing Projects
+                Check Projects
               </h5>
             </div>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-6 mx-auto">
-          <div class="box" onclick="window.location='completed.html';">
-            <div class="img-box">
-              <img src="images/completed.png" alt="" />
-            </div>
-            <div class="detail-box">
-              <h5>
-                Completed Projects
-              </h5>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-6 mx-auto">
+        <div class="col-sm-4 mx-auto">
           <div class="box" onclick="window.location='ai_weather.html';">
             <div class="img-box">
               <img src="images/aiweather.jpg" alt="" />

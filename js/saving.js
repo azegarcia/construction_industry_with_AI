@@ -219,10 +219,8 @@ function toDatabase() {
             var projectList = '';
             var n = 0;
             snapshot.forEach(function (data) {
-
                 // console.log('data', data.key);  getting key of the row
                 var val = data.val();
-
                 if (projectName === "All" || projectName === '' || projectName.trim() === val.pname.trim()) {
                     content += `<tr id='${data.key}'>`;
                     content += '<td>' + val.itemL + '</td>';
@@ -243,7 +241,6 @@ function toDatabase() {
 
                     projectList += projectName == val.pname ? '<option selected>' + val.pname + '</option>' : '<option>' + val.pname + '</option>';
                 }
-
             });
             $('#act-table').append(content);
             $('#projectDrop').append(projectList);
