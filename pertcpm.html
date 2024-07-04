@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -8,7 +9,8 @@
   <meta name="description" content="" />
   <meta name="author" content="" />
   <title>PERT CPM Diagram</title>
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
   <link rel="stylesheet" type="text/css" href="css1/bootstrap.css" />
   <link rel="stylesheet" type="text/css" href="css1/font-awesome.min.css" />
   <link href="css1/style.css" rel="stylesheet" />
@@ -24,43 +26,49 @@
     border-collapse: collapse;
     width: 100%;
   }
+
   th {
     border: 1px solid #dddddd;
     text-align: center;
     padding: 8px;
     background-color: rgb(0, 63, 118);
   }
-  td{
+
+  td {
     border: 1px solid #dddddd;
     text-align: center;
     padding: 8px;
     color: black;
   }
+
   tr:nth-child(even) {
     background-color: #dddddd;
   }
+
   .footer {
-     left: 0;
-     bottom: 0;
-     height: 50px;
-     width: 100%;
-     background-color: #0106b7;
-     color: white;
-     text-align: center;
+    left: 0;
+    bottom: 0;
+    height: 50px;
+    width: 100%;
+    background-color: #0106b7;
+    color: white;
+    text-align: center;
   }
+
   .column {
     float: left;
     width: 50%;
     padding: 10px;
   }
 
-    /* Clear floats after the columns */
+  /* Clear floats after the columns */
   .row:after {
     content: "";
     display: table;
     clear: both;
   }
 </style>
+
 <body>
   <div class="hero_area">
     <header class="header_section" style="background-color: white;position: fixed;width: 100%;z-index: 1;">
@@ -72,7 +80,8 @@
                 <img src="images/header.png" style="height: 50px;">
               </span>
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class=""> </span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -103,7 +112,7 @@
           </div>
         </div>
         <div class="col-md-6" style="height: 300px;">
-          <img src="images/greeny.jpg" alt="" style="height: 300px;"/>
+          <img src="images/greeny.jpg" alt="" style="height: 300px;" />
         </div>
       </div>
     </div>
@@ -114,7 +123,7 @@
   </section>
   <section class="slider_section" style="background-color: white;">
     <div style="margin: auto;">
-        <img src="images/pertcpm.png">
+      <img id="cpmImg" src="python-server/images/pertcpm.png" width="700" height="900">
     </div>
   </section>
   <section class="slider_section" style="background-color: white;">
@@ -124,14 +133,27 @@
   <div class="footer">
     <p>Established 2024</p>
   </div>
-  <script>
-    function myPert() {
-      location.replace("pertcpm.html")
-    }
-  </script>
   <script src="js1/jquery-3.4.1.min.js"></script>
   <script src="js1/bootstrap.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
   <script src="js1/custom.js"></script>
+
+  <script>
+    function myPert() {
+      location.replace("pertcpm.html")
+    }
+    function getQueryParams() {
+      const params = Object.fromEntries(new URLSearchParams(location.search));
+      return params;
+    }
+    $(document).ready(function () {
+      var params = getQueryParams();
+      console.log(params);
+      var file = params.file;
+      $("img#cpmImg").attr("src", "python-server/images/" + file + ".png");
+    });
+
+  </script>
 </body>
+
 </html>

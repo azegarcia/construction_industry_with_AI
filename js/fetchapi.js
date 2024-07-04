@@ -1,4 +1,4 @@
-axios.get('http://localhost:5000/weather', { 'Accept': 'application/json', })
+axios.get('http://localhost:5000/weather')
     .then(function (response) {
         var res = response.data;
         var data = res.data;

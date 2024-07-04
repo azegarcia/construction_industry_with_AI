@@ -1,12 +1,13 @@
-import numpy as np
+import csv
 import pandas as pd
 import networkx as nx
 import matplotlib.pyplot as plt
 
 
 class CPMRunner:
-    def __init__(self, csv_name):
+    def __init__(self, csv_name, csv_data):
         self.csv_name = csv_name
+        self.csv_data = csv_data
 
     def run(self):
         start = []
@@ -15,6 +16,21 @@ class CPMRunner:
         path = []
         new = []
         st = ""
+
+        fields = self.csv_data['headers']
+        rows = self.csv_data['values']
+        # writing to csv file
+
+        print(self.csv_name)
+        with open('./data/' + self.csv_name + '.csv', 'w', newline='') as csvfile:
+            # creating a csv dict writer object
+            csvwriter = csv.writer(csvfile)
+
+            # writing the fields
+            csvwriter.writerow(fields)
+
+            # writing the data rows
+            csvwriter.writerows(rows)
 
         # data = pd.read_csv("../data/data"+str(q)+".csv")
         data = pd.read_csv(f"./data/{self.csv_name}.csv")
@@ -168,11 +184,11 @@ class CPMRunner:
                         bbox=dict(boxstyle="round", fc="lightgrey"),
                         arrowprops=dict(arrowstyle="wedge"))
         ax.axis('off')
-        plt.savefig('./images/fig' + str(self.csv_name) + ".png")
+        plt.savefig('./images/' + str(self.csv_name) + ".png")
         # plt.show()
 
 
-if __name__=="__main__": 
+if __name__ == "__main__":
     runner = CPMRunner('data9')
     new_data = runner.run()
     print(new_data)
