@@ -232,15 +232,7 @@ async function runPertCPM(name, data) {
 }
 
 async function myPert() {
-    var today = new Date();
-    var hour = today.getHours();
-    var minute = today.getMinutes();
-    var secs = today.getSeconds();
-    var startDate = document.querySelector("#startDay").value;
-    const myDate = startDate.split("-");
-    var dd = String(myDate[1]).padStart(2, '0');
-    var mm = String(myDate[0]).padStart(2, '0'); //January is 0!
-    var getDate = mm + '-' + dd + '-' + parseInt(myDate[2]) + '_' + hour + minute + secs;
+    var getDate = dateToday();
     var params = await get(getDate);
     window.location.href = params;
 }
