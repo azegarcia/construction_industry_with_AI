@@ -36,15 +36,6 @@
   tr:nth-child(even) {
     background-color: #dddddd;
   }
-  .footer {
-     left: 0;
-     bottom: 0;
-     height: 50px;
-     width: 100%;
-     background-color: #0106b7;
-     color: white;
-     text-align: center;
-  }
   .column {
     float: left;
     width: 50%;
@@ -112,6 +103,9 @@
         <div class="row" style="height: 50px;">
           <label for="pname">Enter Project Name:</label>&nbsp;
           <input type="text" id="pname" name="pname" style="width: 30%;">
+          &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;
+          <label for="startDate">Enter Starting Date:</label>&nbsp;
+          <input type="text" id="startDate" name="startDate" style="width: 30%;" placeholder="Sample: 7-14-2024">
         </div>
       </div>
     </section>
@@ -141,7 +135,7 @@
       <div class="container" style="height: 50px;">
         <div class="row" style="height: 50px;">
           <label for="impre">Immediate Predecessor:</label>&nbsp;
-          <input type="text" id="impre" name="impre" style="width: 27.6%;"><br><br>
+          <input type="text" id="impre" name="impre" style="width: 27.6%;" placeholder="Sample: AC"><br><br>
           &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;
           <label for="timeB">Time Estimates (B):</label>&nbsp;
           <input type="text" id="timeB" name="timeB" style="width: 23.5%;"><br><br>
@@ -288,8 +282,6 @@
               </select>
             </div>
             <br>
-            <label for="startDay">Enter Start Date:</label>
-            <input type="text" id="startDay" name="startDay" placeholder="mm/dd/YYYY" style="width: 30%;" required>
             <button id="action" type="button" class="btn btn-danger" style="float: right;padding-right: 10px;" onclick="return myPert()">Apply PERT CPM</button>
           </form>
         </div>
@@ -300,9 +292,6 @@
     <div class="container" style="height: 30px;">
     </div>
   </section>
-  <div class="footer">
-    <p>Established 2024</p>
-  </div>
   <script>
     function myEdit() {
       location.replace("edit.html")

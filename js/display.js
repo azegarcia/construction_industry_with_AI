@@ -9,7 +9,11 @@ let firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 
-function showDiv() {
+function showDiv(pname) {
+    document.getElementById('projectlabel').textContent = pname + ' Project Check';
+    document.getElementById('schedulelabel').textContent = pname + ' Schedule (Diagram)';
+    document.getElementById('manpowerlabel').textContent = pname + ' Man Power Assignment';
+    document.getElementById('documentslabel').textContent = pname + ' Documents';
     document.getElementById('sectionPart').style.display = "block";
 }
 
@@ -27,9 +31,9 @@ function toDatabase() {
                     projectNameList.push(val.pname);
                     content += `<tr>`;
                     content += '<td>' + val.pname + '</td>';
-                    content += '<td>' + val.pname + '</td>';
-                    content += `<td>
-                                    <button type="button" class="btn btn-success" onclick="showDiv(); return false;">Select</button>
+                    content += '<td>' + val.startDate + '</td>';
+                    content += '<td>Ongoing</td>';
+                    content += `<td><button type="button" class="btn btn-success" onclick="showDiv('` + val.pname + `'); return false;">Select</button>
                                 </td>`;
                     content += '</tr>';
                 }

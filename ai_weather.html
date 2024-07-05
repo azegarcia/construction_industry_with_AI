@@ -14,6 +14,7 @@
   <link href="css1/style.css" rel="stylesheet" />
   <link href="css1/responsive.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
 </head>
 <style>
@@ -37,15 +38,6 @@
   }
   tr:nth-child(even) {
     background-color: #dddddd;
-  }
-  .footer {
-     left: 0;
-     bottom: 0;
-     height: 50px;
-     width: 100%;
-     background-color: #0106b7;
-     color: white;
-     text-align: center;
   }
   .column {
     float: left;
@@ -120,29 +112,36 @@
               </div>
               <div class="col-md-6" style="height: 300px;">
                   <center>
-                      <table style="width: 80%;">
-                        <thead>
-                          <tr>
-                            <th colspan="3" id="datenow" style="text-align: center;background-color: rgb(75, 174, 228);" height="50">
-                            </th>
-                          </tr>
-                        </thead>
-                        <thead>
-                          <tr>
-                            <th style="text-align: center;background-color: rgb(140, 215, 255);" height="30">
-                              Time
-                            </th>
-                            <th style="text-align: center;background-color: rgb(140, 215, 255);" height="30">
-                              Temperature
-                            </th>
-                            <th style="text-align: center;background-color: rgb(140, 215, 255);" height="30">
-                              Weather
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody id="data" style="text-align: center;">
-                        </tbody>
-                      </table>
+                    <table style="width: 80%;">
+                      <thead>
+                        <tr>
+                          <th colspan="3" style="text-align: center;background-color: rgb(75, 174, 228);color: black;" height="50">
+                            <label>Choose Date:</label>
+                            <input type="date" id="chosenDate" name="chosenDate">
+                            <input type="submit">
+                          </th>
+                        </tr>
+                        <tr>
+                          <th colspan="3" id="currentDate" style="text-align: center;background-color: rgb(75, 174, 228);color: black;" height="50">
+                        </th>
+                        </tr>
+                      </thead>
+                      <thead>
+                        <tr>
+                          <th style="text-align: center;background-color: rgb(140, 215, 255);" height="30">
+                            Time
+                          </th>
+                          <th style="text-align: center;background-color: rgb(140, 215, 255);" height="30">
+                            Temperature
+                          </th>
+                          <th style="text-align: center;background-color: rgb(140, 215, 255);" height="30">
+                            Weather
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody id="data" style="text-align: center;">
+                      </tbody>
+                    </table>
                   </center>
               </div>
           </div>
@@ -154,10 +153,5 @@
   <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
   <script src="js/fetchapi.js"></script>
   <script src="js/custom.js"></script>
-  <script>
-    const n = new Date();
-    let text = 'Today: ' + n.toDateString();
-    document.getElementById("datenow").innerHTML = text;
-    </script>
 </body>
 </html>
