@@ -14,15 +14,19 @@ const validateItemLetter = (value) => {
     return [false, "Please enter only one letter for item letter."];
   }
 
-  const letters = $("#act-table tbody tr:last-child > td:first-child");
-  let lastLetter = "";
-  if (letters.length > 0) {
+  const itemLetter = $("#act-table tbody tr:last-child > td:first-child");
+  let lastLetter = "Project empty.";
+  if (itemLetter.length > 0) {
     lastLetter = $("#act-table tbody tr:last-child > td:first-child")[0]
       .textContent;
   }
 
+  if (lastLetter === "Project empty." && value.trim().toUpperCase() !== "A") {
+    return [false, `Please enter the initial letter for item letter.`];
+  }
   if (
     lastLetter &&
+    lastLetter !== "Project empty." &&
     value.trim().toUpperCase() !==
       String.fromCharCode(lastLetter.charCodeAt(0) + 1)
         .trim()
@@ -59,16 +63,27 @@ const validatePredecessor = (value) => {
       "Immediate predecessor must not be the same as item letter.",
     ];
   }
-  if (value && !getCurrentItemLetters().includes(value.toUpperCase())) {
-    return [
-      false,
-      "Immediate predecessor not found in the current item letters.",
-    ];
+
+  const [isPredecessorValid, errorMessage] = isInPredecessor(value);
+  if (value && !isPredecessorValid) {
+    return [false, errorMessage];
   }
 
   return [true, ""];
 };
 
+const isInPredecessor = (value) => {
+  const valueArray = value.toUpperCase().split("");
+  const itemLetters = getCurrentItemLetters();
+
+  for (let i = 0; i < valueArray.length; i++) {
+    if (!itemLetters.includes(valueArray[i].toUpperCase())) {
+      return [false, `Letter ${valueArray[i]} not found in item letters.`];
+    }
+  }
+
+  return [true, ""];
+};
 const getCurrentItemLetters = () => {
   const inputs = $("#act-table tbody tr > td:first-child")
     .toArray()
