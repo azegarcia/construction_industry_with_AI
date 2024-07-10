@@ -14,10 +14,24 @@ const validateItemLetter = (value) => {
     return [false, "Please enter only one letter for item letter."];
   }
 
-  const lastLetter = $("#act-table tbody tr:last-child > td:first-child")[0].textContent;
+  const letters = $("#act-table tbody tr:last-child > td:first-child");
+  let lastLetter = "";
+  if (letters.length > 0) {
+    lastLetter = $("#act-table tbody tr:last-child > td:first-child")[0]
+      .textContent;
+  }
 
-  if (value.trim().toUpperCase() !==String.fromCharCode(lastLetter.charCodeAt(0) + 1).trim().toUpperCase()){
-    return [false, `The last item letter is ${lastLetter}, please input the next letter.`];
+  if (
+    lastLetter &&
+    value.trim().toUpperCase() !==
+      String.fromCharCode(lastLetter.charCodeAt(0) + 1)
+        .trim()
+        .toUpperCase()
+  ) {
+    return [
+      false,
+      `The last item letter is ${lastLetter}, please input the next letter.`,
+    ];
   }
   return [true, ""];
 };
