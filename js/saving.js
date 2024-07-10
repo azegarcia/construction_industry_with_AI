@@ -307,12 +307,20 @@ function deleteToDatabase(table, key) {
   const dbRef = database.ref(`collected_data/${table}/` + key);
   dbRef.remove();
 }
+
+function setProjectName(projectName) {
+  if (projectName !== "Create a project") {
+    $("#pname").val(projectName);
+    $("#pname").prop("disabled", true);
+  }
+}
 function toDatabase() {
   $("#act-table tbody > tr").remove();
   $("#projectDrop option").remove();
 
   var params = getQueryParams();
   var projectName = params.projectname ? params.projectname : "";
+
   var database = firebase.database();
   var projectNameList = [];
   database
@@ -328,6 +336,7 @@ function toDatabase() {
         snapshot.forEach(function (data) {
           var val = data.val();
           if (projectName.trim() === val.pname.trim()) {
+            setProjectName(projectName.trim());
             content += `<tr id='${data.key}'>`;
             content += "<td>" + val.itemL + "</td>";
             content += "<td>" + val.pname + "</td>";
@@ -356,7 +365,7 @@ function toDatabase() {
         });
 
         projectList =
-          "<option selected>Select a project</option>" + projectList;
+          "<option selected>Create a project</option>" + projectList;
 
         content = content.trim();
 
