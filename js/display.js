@@ -20,6 +20,12 @@ const params = Object.fromEntries(new URLSearchParams(location.search));
 return params;
 }
 
+function nextPage(loc) {
+    var params = getQueryParams();
+    var projectName = params.projectname;
+    window.location = loc + "?projectname=" + projectName;
+}
+
 function toDatabase() {
     var database = firebase.database();
     var projectNameList = [];

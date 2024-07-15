@@ -1,5 +1,3 @@
-import { projectValidation } from "./project.js";
-
 let firebaseConfig = {
   apiKey: "AIzaSyAUps0u952FCNFslPPn0VOwtVQLXEg1JnM",
   authDomain: "construction-industry-wi-70272.firebaseapp.com",
@@ -25,22 +23,17 @@ document
   .getElementById("equipmentForm")
   .addEventListener("submit", submitForm2);
 
-// if button was selected, add params
-$("#projectDrop").change(function () {
-  let params = new URLSearchParams();
-  params.set("projectname", $(this).val());
-  window.location.href = window.location.pathname + "?" + params.toString();
-});
-
 function getQueryParams() {
   const params = Object.fromEntries(new URLSearchParams(location.search));
   return params;
 }
+
 function submitForm1(e) {
   e.preventDefault();
-
+  var params = getQueryParams();
+  var projectName = params.projectname;
   // Get values
-  let pname = getInputVal("pname")
+  let pname = projectName;
   let labor = getInputVal("labor");
   let laborQuantity = getInputVal("laborQuantity");
   let laborHours = getInputVal("laborHours");
@@ -54,9 +47,10 @@ function submitForm1(e) {
 
 function submitForm2(e) {
   e.preventDefault();
-
+  var params = getQueryParams();
+  var projectName = params.projectname;
   // Get values
-  let pname = getInputVal("pname")
+  let pname = projectName;
   let equipment = getInputVal("equipment");
   let equipmentQuantity = getInputVal("equipmentQuantity");
   let equipmentDays = getInputVal("equipmentDays");
