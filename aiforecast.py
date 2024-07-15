@@ -81,7 +81,7 @@ if __name__=="__main__":
     model.fit(list_to_df)
 
     # prediction using fitted model
-    forecast_pred=model.make_future_dataframe(periods=365)
+    forecast_pred=model.make_future_dataframe(periods=1825)
     pred=model.predict(forecast_pred)
     # plot_plotly(model,pred)
 

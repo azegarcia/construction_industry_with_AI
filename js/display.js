@@ -10,11 +10,14 @@ let firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 function showDiv(pname) {
-    document.getElementById('projectlabel').textContent = pname + ' Project Check';
-    document.getElementById('schedulelabel').textContent = pname + ' Schedule (Diagram)';
-    document.getElementById('manpowerlabel').textContent = pname + ' Man Power Assignment';
-    document.getElementById('documentslabel').textContent = pname + ' Documents';
-    document.getElementById('sectionPart').style.display = "block";
+    let params = new URLSearchParams();
+    params.set("projectname", pname);
+    window.location.href = window.location.pathname + "?" + params.toString();
+}
+  
+function getQueryParams() {
+const params = Object.fromEntries(new URLSearchParams(location.search));
+return params;
 }
 
 function toDatabase() {
@@ -41,6 +44,19 @@ function toDatabase() {
             $('#client_list').append(content);
         }
     });
+    var params = getQueryParams();
+    var projectName = params.projectname;
+    if (projectName) {
+        document.getElementById('projectlabel').textContent = projectName + ' Project Check';
+        document.getElementById('schedulelabel').textContent = projectName + ' Schedule (Diagram)';
+        document.getElementById('manpowerlabel').textContent = projectName + ' Man Power Assignment';
+        document.getElementById('documentslabel').textContent = projectName + ' Documents';
+        document.getElementById('sectionPart').style.display = "block";
+    }
+    else {
+        document.getElementById('projectlabel2').textContent = 'No Project Selected';
+        document.getElementById('noSectionPart').style.display = "block";
+    }
 }
 
 toDatabase();

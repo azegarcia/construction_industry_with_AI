@@ -87,12 +87,14 @@ function submitForm1(e) {
   e.preventDefault();
 
   // Get values
+  let pname = getInputVal("pname")
   let labor = getInputVal("labor");
   let laborQuantity = getInputVal("laborQuantity");
   let laborHours = getInputVal("laborHours");
   let laborSalary = getInputVal("laborSalary");
 
-  saveMessage1(labor, laborQuantity, laborHours, laborSalary);
+  saveMessage1(labor, laborQuantity, laborHours, laborSalary, pname);
+  console.log(pname)
   document.getElementById("workerForm").reset();
   reloadWorkerEquipment();
 }
@@ -101,12 +103,13 @@ function submitForm2(e) {
   e.preventDefault();
 
   // Get values
+  let pname = getInputVal("pname")
   let equipment = getInputVal("equipment");
   let equipmentQuantity = getInputVal("equipmentQuantity");
   let equipmentDays = getInputVal("equipmentDays");
   let equipmentCost = getInputVal("equipmentCost");
 
-  saveMessage2(equipment, equipmentQuantity, equipmentDays, equipmentCost);
+  saveMessage2(equipment, equipmentQuantity, equipmentDays, equipmentCost, pname);
   document.getElementById("equipmentForm").reset();
   reloadWorkerEquipment();
 }
@@ -141,9 +144,10 @@ function saveProject(projectDetail) {
   });
 }
 
-function saveMessage1(labor, laborQuantity, laborHours, laborSalary) {
+function saveMessage1(labor, laborQuantity, laborHours, laborSalary, pname) {
   let newMessageRef = messagesRef1.push();
   newMessageRef.set({
+    pname: pname,
     labor: labor,
     laborQuantity: laborQuantity,
     laborHours: laborHours,
@@ -157,10 +161,12 @@ function saveMessage2(
   equipment,
   equipmentQuantity,
   equipmentDays,
-  equipmentCost
+  equipmentCost,
+  pname
 ) {
   let newMessageRef = messagesRef2.push();
   newMessageRef.set({
+    pname: pname,
     equipment: equipment,
     equipmentQuantity: equipmentQuantity,
     equipmentDays: equipmentDays,
@@ -397,6 +403,8 @@ function disablePertCPMBtn() {
 function toDatabase1() {
   $("#worker-table tbody > tr:not(:first-child)").remove();
   var database = firebase.database();
+  var params = getQueryParams();
+  var projectName = params.projectname ? params.projectname : "";
   database
     .ref("collected_data")
     .child("workers")
@@ -407,26 +415,29 @@ function toDatabase1() {
         var activityKey = [];
         snapshot.forEach(function (data) {
           var val = data.val();
-          // console.log('data', data.key);  getting key of the row
-          content += `<tr id='workers_${data.key}'>`;
-          content += "<td>" + val.labor + "</td>";
-          content += "<td>" + val.laborQuantity + "</td>";
-          content += "<td>" + val.laborHours + "</td>";
-          content += "<td>" + val.laborSalary + "</td>";
-          content +=
-            '<td><button type="button" class="btn btn-danger">Remove</button></td>';
-          content += "</tr>";
+          if (projectName.trim() === val.pname.trim()) {
+            setProjectName(projectName.trim());
+            // console.log('data', data.key);  getting key of the row
+            content += `<tr id='workers_${data.key}'>`;
+            content += "<td>" + val.labor + "</td>";
+            content += "<td>" + val.laborQuantity + "</td>";
+            content += "<td>" + val.laborHours + "</td>";
+            content += "<td>" + val.laborSalary + "</td>";
+            content +=
+              '<td><button type="button" class="btn btn-danger">Remove</button></td>';
+            content += "</tr>";
 
-          totalContent += "<tr>";
-          totalContent +=
-            "<td style='display:flex; justify-content: space-between;'><div>" +
-            val.labor +
-            "</div><div>₱ " +
-            val.laborTotal +
-            "</div></td>";
-          totalContent += "<tr>";
+            totalContent += "<tr>";
+            totalContent +=
+              "<td style='display:flex; justify-content: space-between;'><div>" +
+              val.labor +
+              "</div><div>₱ " +
+              val.laborTotal +
+              "</div></td>";
+            totalContent += "<tr>";
 
-          activityKey.push(data.key);
+            activityKey.push(data.key);
+          }
         });
         $("#worker-table").append(content);
         $("#result-table").append(totalContent);
@@ -444,8 +455,9 @@ function toDatabase1() {
 
 function toDatabase2() {
   $("#equipment-table tbody > tr:not(:first-child)").remove();
-
   var database = firebase.database();
+  var params = getQueryParams();
+  var projectName = params.projectname ? params.projectname : "";
   database
     .ref("collected_data")
     .child("equipments")
@@ -456,26 +468,29 @@ function toDatabase2() {
         var activityKey = [];
         snapshot.forEach(function (data) {
           var val = data.val();
-          // console.log('data', data.key);  getting key of the row
-          content += `<tr id='equipments_${data.key}'>`;
-          content += "<td>" + val.equipment + "</td>";
-          content += "<td>" + val.equipmentQuantity + "</td>";
-          content += "<td>" + val.equipmentDays + "</td>";
-          content += "<td>" + val.equipmentCost + "</td>";
-          content +=
-            '<td><button type="button" class="btn btn-danger">Remove</button></td>';
-          content += "</tr>";
+          if (projectName.trim() === val.pname.trim()) {
+            setProjectName(projectName.trim());
+            // console.log('data', data.key);  getting key of the row
+            content += `<tr id='equipments_${data.key}'>`;
+            content += "<td>" + val.equipment + "</td>";
+            content += "<td>" + val.equipmentQuantity + "</td>";
+            content += "<td>" + val.equipmentDays + "</td>";
+            content += "<td>" + val.equipmentCost + "</td>";
+            content +=
+              '<td><button type="button" class="btn btn-danger">Remove</button></td>';
+            content += "</tr>";
 
-          totalContent += "<tr>";
-          totalContent +=
-            "<td style='display:flex; justify-content: space-between;'><div>" +
-            val.equipment +
-            "</div><div>₱ " +
-            val.equipmentTotal +
-            "</div></td>";
-          totalContent += "<tr>";
+            totalContent += "<tr>";
+            totalContent +=
+              "<td style='display:flex; justify-content: space-between;'><div>" +
+              val.equipment +
+              "</div><div>₱ " +
+              val.equipmentTotal +
+              "</div></td>";
+            totalContent += "<tr>";
 
-          activityKey.push(data.key);
+            activityKey.push(data.key);
+          }
         });
         $("#equipment-table").append(content);
         $("#result-table").append(totalContent);
