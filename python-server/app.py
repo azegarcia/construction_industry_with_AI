@@ -12,7 +12,7 @@ api = Api(app)
 CORS(app)
 
 api.add_resource(CPM, '/cpm/<string:name>')
-api.add_resource(Weather, '/weather')
+api.add_resource(Weather, '/weather/<string:current_date>')
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)  # important to mention debug=True

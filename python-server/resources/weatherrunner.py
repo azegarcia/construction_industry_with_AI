@@ -2,8 +2,15 @@ import re
 from datetime import datetime, timedelta
 
 class WeatherRunner:
-    def get_days(self):
-        presentday = datetime.now()
+    def __init__(self, current_date):
+        self.current_date = current_date
+        
+    def get_days(self): 
+        current_date = datetime.now()
+        current_date = current_date.strftime('%Y-%m-%d')
+        if self.current_date.upper() != 'TODAY':
+            current_date = self.current_date
+        presentday = datetime.strptime(current_date, '%Y-%m-%d').date()
         yesterday = presentday - timedelta(1)
         tomorrow = presentday + timedelta(1)
 
