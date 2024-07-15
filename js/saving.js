@@ -253,7 +253,7 @@ async function get(getDate) {
 
   // Download the CSV file
   download(csvdata, projectName, getDate);
-  var csvName = "download_" + projectName + " " + getDate;
+  var csvName = projectName;
   await runPertCPM(csvName, csvData);
 
   let params = new URLSearchParams();

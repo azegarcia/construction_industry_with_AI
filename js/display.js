@@ -23,7 +23,7 @@ return params;
 function nextPage(loc) {
     var params = getQueryParams();
     var projectName = params.projectname;
-    window.location = loc + "?projectname=" + projectName;
+    window.location = loc + "?file=" + projectName;
 }
 
 function toDatabase() {
