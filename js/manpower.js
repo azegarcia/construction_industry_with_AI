@@ -31,7 +31,7 @@ function getQueryParams() {
 function submitForm1(e) {
   e.preventDefault();
   var params = getQueryParams();
-  var projectName = params.projectname;
+  var projectName = params.file;
   // Get values
   let pname = projectName;
   let labor = getInputVal("labor");
@@ -48,7 +48,7 @@ function submitForm1(e) {
 function submitForm2(e) {
   e.preventDefault();
   var params = getQueryParams();
-  var projectName = params.projectname;
+  var projectName = params.file;
   // Get values
   let pname = projectName;
   let equipment = getInputVal("equipment");
@@ -130,7 +130,7 @@ function toDatabase1() {
   $("#worker-table tbody > tr:not(:first-child)").remove();
   var database = firebase.database();
   var params = getQueryParams();
-  var projectName = params.projectname ? params.projectname : "";
+  var projectName = params.file ? params.file : "";
   database
     .ref("collected_data")
     .child("workers")
@@ -142,7 +142,6 @@ function toDatabase1() {
         snapshot.forEach(function (data) {
           var val = data.val();
           if (projectName.trim() === val.pname.trim()) {
-            setProjectName(projectName.trim());
             // console.log('data', data.key);  getting key of the row
             content += `<tr id='workers_${data.key}'>`;
             content += "<td>" + val.labor + "</td>";
@@ -183,7 +182,7 @@ function toDatabase2() {
   $("#equipment-table tbody > tr:not(:first-child)").remove();
   var database = firebase.database();
   var params = getQueryParams();
-  var projectName = params.projectname ? params.projectname : "";
+  var projectName = params.file ? params.file : "";
   database
     .ref("collected_data")
     .child("equipments")
@@ -195,7 +194,6 @@ function toDatabase2() {
         snapshot.forEach(function (data) {
           var val = data.val();
           if (projectName.trim() === val.pname.trim()) {
-            setProjectName(projectName.trim());
             // console.log('data', data.key);  getting key of the row
             content += `<tr id='equipments_${data.key}'>`;
             content += "<td>" + val.equipment + "</td>";

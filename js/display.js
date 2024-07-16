@@ -41,7 +41,6 @@ function toDatabase() {
                     content += `<tr>`;
                     content += '<td>' + val.pname + '</td>';
                     content += '<td>' + val.startDate + '</td>';
-                    content += '<td>Ongoing</td>';
                     content += `<td><button type="button" class="btn btn-success" onclick="showDiv('` + val.pname + `'); return false;">Select</button>
                                 </td>`;
                     content += '</tr>';
