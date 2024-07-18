@@ -54,7 +54,7 @@ function toDatabase() {
     if (projectName) {
         document.getElementById('projectlabel').textContent = projectName + ' Project Check';
         document.getElementById('schedulelabel').textContent = projectName + ' Schedule (Diagram)';
-        document.getElementById('manpowerlabel').textContent = projectName + ' Man Power Assignment';
+        document.getElementById('manpowerlabel').textContent = projectName + ' Man Power and Equipment Assignment';
         document.getElementById('documentslabel').textContent = projectName + ' Documents';
         document.getElementById('sectionPart').style.display = "block";
     }

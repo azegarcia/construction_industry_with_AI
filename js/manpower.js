@@ -17,11 +17,20 @@ let messagesRef2 = firebase
   .ref("collected_data")
   .child("equipments");
 
+let messagesRef3 = firebase
+  .database()
+  .ref("collected_data")
+  .child("overtime");
+
 document.getElementById("workerForm").addEventListener("submit", submitForm1);
 
 document
   .getElementById("equipmentForm")
   .addEventListener("submit", submitForm2);
+
+document
+  .getElementById("OTForm")
+  .addEventListener("submit", submitForm3);
 
 function getQueryParams() {
   const params = Object.fromEntries(new URLSearchParams(location.search));
@@ -58,6 +67,23 @@ function submitForm2(e) {
 
   saveMessage2(equipment, equipmentQuantity, equipmentDays, equipmentCost, pname);
   document.getElementById("equipmentForm").reset();
+  reloadWorkerEquipment();
+}
+
+function submitForm3(e) {
+  e.preventDefault();
+  var params = getQueryParams();
+  var projectName = params.file;
+  // Get values
+  let pname = projectName;
+  let OTlabor = getInputVal("OTlabor");
+  let OTlaborQuantity = getInputVal("OTlaborQuantity");
+  let OTlaborHours = getInputVal("OTlaborHours");
+  let OTlaborSalary = getInputVal("OTlaborSalary");
+
+  saveMessage3(OTlabor, OTlaborQuantity, OTlaborHours, OTlaborSalary, pname);
+  console.log(pname)
+  document.getElementById("OTForm").reset();
   reloadWorkerEquipment();
 }
 
@@ -101,6 +127,19 @@ function saveMessage2(
   });
 }
 
+function saveMessage3(OTlabor, OTlaborQuantity, OTlaborHours, OTlaborSalary, pname) {
+  let newMessageRef = messagesRef3.push();
+  newMessageRef.set({
+    pname: pname,
+    OTlabor: OTlabor,
+    OTlaborQuantity: OTlaborQuantity,
+    OTlaborHours: OTlaborHours,
+    OTlaborSalary: OTlaborSalary,
+    OTlaborTotal:
+      parseInt(OTlaborQuantity) * parseInt(OTlaborHours) * parseInt(OTlaborSalary),
+  });
+}
+
 function deleteWorkerRow(projectKey) {
   deleteToDatabase("workers", projectKey);
   $("#workers_" + projectKey).remove();
@@ -113,10 +152,17 @@ function deleteEquipmentRow(projectKey) {
   reloadWorkerEquipment();
 }
 
+function deleteOvertimeRow(projectKey) {
+  deleteToDatabase("overtime", projectKey);
+  $("#overtime_" + projectKey).remove();
+  reloadWorkerEquipment();
+}
+
 function reloadWorkerEquipment() {
   $("#result-table tbody > tr").remove();
   toDatabase1();
   toDatabase2();
+  toDatabase3();
 }
 
 function deleteToDatabase(table, key) {
@@ -230,5 +276,58 @@ function toDatabase2() {
     });
 }
 
+function toDatabase3() {
+  $("#ot-table tbody > tr:not(:first-child)").remove();
+  var database = firebase.database();
+  var params = getQueryParams();
+  var projectName = params.file ? params.file : "";
+  database
+    .ref("collected_data")
+    .child("overtime")
+    .once("value", function (snapshot) {
+      if (snapshot.exists()) {
+        var content = "";
+        var totalContent = "";
+        var activityKey = [];
+        snapshot.forEach(function (data) {
+          var val = data.val();
+          if (projectName.trim() === val.pname.trim()) {
+            // console.log('data', data.key);  getting key of the row
+            content += `<tr id='overtime_${data.key}'>`;
+            content += "<td>" + val.OTlabor + "</td>";
+            content += "<td>" + val.OTlaborQuantity + "</td>";
+            content += "<td>" + val.OTlaborHours + "</td>";
+            content += "<td>" + val.OTlaborSalary + "</td>";
+            content +=
+              '<td><button type="button" class="btn btn-danger">Remove</button></td>';
+            content += "</tr>";
+
+            totalContent += "<tr>";
+            totalContent +=
+              "<td style='display:flex; justify-content: space-between;'><div>" +
+              val.OTlabor +
+              " (Overtime)</div><div>₱ " +
+              val.OTlaborTotal +
+              "</div></td>";
+            totalContent += "<tr>";
+
+            activityKey.push(data.key);
+          }
+        });
+        $("#ot-table").append(content);
+        $("#result-table").append(totalContent);
+
+        activityKey.forEach((key) => {
+          document
+            .querySelector("#overtime_" + key)
+            .addEventListener("click", () => {
+              deleteWorkerRow(key);
+            });
+        });
+      }
+    });
+}
+
 toDatabase1();
 toDatabase2();
+toDatabase3();
