@@ -126,6 +126,11 @@
     <section class="slider_section" style="background-color: white">
       <div class="container" style="height: 30px"></div>
     </section>
+    <center>
+      <div id="weatherOnline" style="height: 100%;">
+        <a class="weatherwidget-io" href="https://forecast7.com/en/13d76121d06/batangas/" data-label_1="BATANGAS" data-label_2="WEATHER" data-theme="original" >BATANGAS WEATHER</a>
+      </div>
+    </center>
     <section class="slider_section" style="background-color: white">
       <div class="container" style="height: 30px"></div>
     </section>
@@ -142,7 +147,7 @@
                   <tr>
                     <th
                       class="py-4"
-                      colspan="3"
+                      colspan="4"
                       style="
                         text-align: center;
                         background-color: rgb(75, 174, 228);
@@ -164,7 +169,7 @@
                   </tr>
                   <tr>
                     <td
-                      colspan="3"
+                      colspan="4"
                       id="currentDate"
                       style="
                         text-align: center;
@@ -202,6 +207,15 @@
                       "
                       height="30"
                     >
+                      Precipitation
+                    </th>
+                    <th
+                      style="
+                        text-align: center;
+                        background-color: rgb(140, 215, 255);
+                      "
+                      height="30"
+                    >
                       Weather
                     </th>
                   </tr>
@@ -218,6 +232,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
     <script type="module" src="js/weather.js"></script>
+    <script>
+      !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+    </script>
     <script src="js/custom.js"></script>
   </body>
 </html>

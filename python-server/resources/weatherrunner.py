@@ -33,19 +33,24 @@ class WeatherRunner:
                 
         return new_csv
 
-    def determine_weather(self, temp):
-        # sunny, cloudy, windy, rainy, stormy
-        if int(float(temp)) in range(32, 36):
-            weather = "Sunny"
-        elif int(float(temp)) in range(27, 31):
+    def determine_weather(self, temp, humid):
+        if int(float(temp)) >= 22 and int(float(temp)) <= 27 and humid == "0.0":
             weather = "Partly Cloudy"
-        elif int(float(temp)) in range(22, 26):
-            weather = "Light Rain Showers"
+        elif int(float(temp)) >= 23 and int(float(temp)) <= 26 and int(float(humid)) >= 0.0 and int(float(humid)) <= 0.3:
+            weather = "Patchy rain possible"
+        elif int(float(temp)) >= 23 and int(float(temp)) <= 26 and int(float(humid)) >= 0.4 and int(float(humid)) <= 0.7:
+            weather = "Moderate rain at times"
+        elif int(float(temp)) >= 23 and int(float(temp)) <= 26 and int(float(humid)) >= 0.8 and int(float(humid)) <= 3.0:
+            weather = "Clear"
+        elif int(float(temp)) >= 25 and int(float(temp)) <= 29 and int(float(humid)) >= 1.0 and int(float(humid)) <= 1.5:
+            weather = "Heavy rain at times"
+        elif int(float(temp)) >= 26 and int(float(temp)) <= 35 and int(float(humid)) >= 2.0 and int(float(humid)) <= 5.0:
+            weather = "Moderate or heavy rain shower"
         else:
             weather = "Cloudy"
         
         return weather
-    
+
     def process_weather_data(self):
         new_csv = self.process_csv()
         new_data = []
@@ -54,15 +59,20 @@ class WeatherRunner:
             data = {
                 "date": split_fields[1],
                 "six_am": split_fields[2],
-                "six_am_status": self.determine_weather(split_fields[2]),
+                "six_am_humid": split_fields[10].replace("-", "")[:3],
+                "six_am_status": self.determine_weather(split_fields[2], split_fields[10].replace("-", "")[:3]),
                 "nine_am": split_fields[3],
-                "nine_am_status": self.determine_weather(split_fields[3]),
+                "nine_am_humid": split_fields[11].replace("-", "")[:3],
+                "nine_am_status": self.determine_weather(split_fields[3], split_fields[11].replace("-", "")[:3]),
                 "twelve_pm": split_fields[4],
-                "twelve_pm_status": self.determine_weather(split_fields[4]),
+                "twelve_pm_humid": split_fields[12].replace("-", "")[:3],
+                "twelve_pm_status": self.determine_weather(split_fields[4], split_fields[12].replace("-", "")[:3]),
                 "three_pm": split_fields[5],
-                "three_pm_status": self.determine_weather(split_fields[5]),
+                "three_pm_humid": split_fields[13].replace("-", "")[:3],
+                "three_pm_status": self.determine_weather(split_fields[5], split_fields[13].replace("-", "")[:3]),
                 "six_pm": split_fields[6],
-                "six_pm_status": self.determine_weather(split_fields[6]),
+                "six_pm_humid": split_fields[14].replace("-", "")[:3],
+                "six_pm_status": self.determine_weather(split_fields[6], split_fields[14].replace("-", "")[:3]),
             }
             new_data.append(data)
         
