@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -8,7 +9,8 @@
   <meta name="description" content="" />
   <meta name="author" content="" />
   <title>Documents</title>
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
   <link rel="stylesheet" type="text/css" href="css1/bootstrap.css" />
   <link rel="stylesheet" type="text/css" href="css1/font-awesome.min.css" />
   <link href="css1/style.css" rel="stylesheet" />
@@ -21,31 +23,37 @@
     border-collapse: collapse;
     width: 100%;
   }
+
   th {
     border: 1px solid #dddddd;
     text-align: center;
     padding: 8px;
     background-color: rgb(0, 63, 118);
   }
-  td{
+
+  td {
     border: 1px solid #dddddd;
     text-align: center;
     padding: 8px;
     color: black;
   }
+
   tr:nth-child(even) {
     background-color: #dddddd;
   }
+
   .column {
     float: left;
     width: 50%;
   }
+
   .row:after {
     content: "";
     display: table;
     clear: both;
   }
 </style>
+
 <body>
   <div class="hero_area">
     <header class="header_section" style="background-color: white;position: fixed;width: 100%;z-index: 1;">
@@ -57,7 +65,8 @@
                 <img src="images/header.png" style="height: 50px;">
               </span>
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class=""> </span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -88,7 +97,7 @@
           </div>
         </div>
         <div class="col-md-6" style="height: 300px;">
-          <img src="images/greeny.jpg" alt="" style="height: 300px;"/>
+          <img src="images/greeny.jpg" alt="" style="height: 300px;" />
         </div>
       </div>
     </div>
@@ -97,40 +106,89 @@
     <div class="container" style="height: 30px;">
     </div>
   </section>
+  <center>
+    <div id="imageUploader">
+      <h1>Upload Image</h1>
+      <br>
+      <input type="file" id="fileInput" accept="image/*">
+      <button id="uploadImage">Upload Image</button>
+    </div>
+  </center>
   <section class="slider_section" style="background-color: white;">
-    <div class="container">
-      <input type="button" value="+ New" onclick="msg()" style="border: 1px solid gray;border-radius: 6px;position: relative;width: 200px;line-height: 6ex;text-align: center;">
-      <p><label for="image" style="cursor: pointer;border: 1px solid gray;border-radius: 6px;position: relative;width: 200px;line-height: 6ex;text-align: center;display: none;">Upload Image</label></p>
-      <input type="file"  accept="image/*" name="image" id="image" onchange="loadFile(event)" style="display: none;">
+    <div class="container" style="height: 30px;">
     </div>
   </section>
   <section class="slider_section" style="background-color: white;">
     <div class="container" style="height: 30px;">
     </div>
   </section>
-  <section class="slider_section" style="background-color: white;">
-    <div class="container">
-      <h1>Images</h1>
-      <img id="outputimages" width="200"/>	
-    </div>
-  </section>
+  <div style="margin-left: 10%;">
+    <h1>Images</h1>
+    <div class="uploaded-images"></div>
+  </div>
   <section class="slider_section" style="background-color: white;">
     <div class="container" style="height: 30px;">
     </div>
   </section>
-  <script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js"></script>
   <script src="js/jquery-3.4.1.min.js"></script>
-  <script>
-    function msg() {
-      document.getElementById('image').style.display = "block";
-    }
-    var loadFile = function(event) {
-      var image = document.getElementById('outputimages');
-      image.src = URL.createObjectURL(event.target.files[0]);
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL, listAll } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-storage.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAUps0u952FCNFslPPn0VOwtVQLXEg1JnM",
+      authDomain: "construction-industry-wi-70272.firebaseapp.com",
+      databaseURL:
+        "https://construction-industry-wi-70272-default-rtdb.firebaseio.com",
+      projectId: "construction-industry-wi-70272",
+      storageBucket: "construction-industry-wi-70272.appspot.com",
+      messagingSenderId: "494097993743",
+      appId: "1:494097993743:web:85219ddf87e2e9ae75d37a",
     };
+
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+
+    async function uploadImage() {
+      const fileInput = document.getElementById("fileInput");
+      const file = fileInput.files[0];
+
+      if (file) {
+        const storageRef = ref(storage, `uploaded_images/${file.name}`);
+        await uploadBytes(storageRef, file);
+      }
+
+      getImage();
+    }
+
+    async function getImage() {
+      const images = '';
+      const listRef = ref(storage, `uploaded_images`);
+
+      // Find all the prefixes and items.
+      listAll(listRef)
+        .then((res) => {
+          res.items.forEach((itemRef) => {
+            console.log(itemRef.toString().split('/'));
+            const imageName = itemRef.toString().split('/')[4];
+            getDownloadURL(ref(storage, 'uploaded_images/' + imageName))
+              .then((url) => {
+                $(".uploaded-images").append(`<img src="${url}" style="height: 50px;">`);
+              })
+              .catch((error) => {
+                // Handle any errors
+              });
+
+          });
+        }).catch((error) => {
+          // Uh-oh, an error occurred!
+        });
+    }
+
+    const uploadButton = document.getElementById("uploadImage");
+    uploadButton.addEventListener('click', uploadImage);
+    getImage();
   </script>
-  <script src="js/bootstrap.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-  <script src="js/custom.js"></script>
 </body>
+
 </html>
