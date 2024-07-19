@@ -52,6 +52,22 @@
     display: table;
     clear: both;
   }
+
+  .thumbnail {
+    top: -50px;
+    left: -35px;
+    display: block;
+    z-index: 999;
+    cursor: pointer;
+    -webkit-transition-property: all;
+    -webkit-transition-duration: 0.3s;
+    -webkit-transition-timing-function: ease;
+  }
+
+  /*change the number below to scale to the appropriate size*/
+  .thumbnail:hover {
+    transform: scale(3);
+  }
 </style>
 
 <body>
@@ -122,73 +138,17 @@
     <div class="container" style="height: 30px;">
     </div>
   </section>
-  <div style="margin-left: 10%;">
+  <div class="container">
     <h1>Uploaded Images</h1>
-    <div class="uploaded-images"></div>
+    <br>
+    <div class="uploaded-images container" style="display: flex; justify-content: space-around;"></div>
   </div>
   <section class="slider_section" style="background-color: white;">
     <div class="container" style="height: 30px;">
     </div>
   </section>
   <script src="js/jquery-3.4.1.min.js"></script>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL, listAll } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-storage.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyAUps0u952FCNFslPPn0VOwtVQLXEg1JnM",
-      authDomain: "construction-industry-wi-70272.firebaseapp.com",
-      databaseURL:
-        "https://construction-industry-wi-70272-default-rtdb.firebaseio.com",
-      projectId: "construction-industry-wi-70272",
-      storageBucket: "construction-industry-wi-70272.appspot.com",
-      messagingSenderId: "494097993743",
-      appId: "1:494097993743:web:85219ddf87e2e9ae75d37a",
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const storage = getStorage(app);
-
-    async function uploadImage() {
-      const fileInput = document.getElementById("fileInput");
-      const file = fileInput.files[0];
-
-      if (file) {
-        const storageRef = ref(storage, `uploaded_images/${file.name}`);
-        await uploadBytes(storageRef, file);
-      }
-
-      getImage();
-    }
-
-    async function getImage() {
-      const images = '';
-      const listRef = ref(storage, `uploaded_images`);
-
-      // Find all the prefixes and items.
-      listAll(listRef)
-        .then((res) => {
-          res.items.forEach((itemRef) => {
-            console.log(itemRef.toString().split('/'));
-            const imageName = itemRef.toString().split('/')[4];
-            getDownloadURL(ref(storage, 'uploaded_images/' + imageName))
-              .then((url) => {
-                $(".uploaded-images").append(`<img src="${url}" style="height: 50px;">`);
-              })
-              .catch((error) => {
-                // Handle any errors
-              });
-
-          });
-        }).catch((error) => {
-          // Uh-oh, an error occurred!
-        });
-    }
-
-    const uploadButton = document.getElementById("uploadImage");
-    uploadButton.addEventListener('click', uploadImage);
-    getImage();
-  </script>
+  <script type="module" src="js/document.js"></script>
 </body>
 
 </html>
