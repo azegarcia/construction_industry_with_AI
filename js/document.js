@@ -47,7 +47,7 @@ async function getImage() {
         const imageName = itemRef.toString().split('/')[4];
         getDownloadURL(ref(storage, projectName + '/' + imageName))
             .then((url) => {
-            $(".uploaded-images").append(`<img class='thumbnail' id="img1" src="${url}" style="height: 120px;">`);
+            $(".uploaded-images").append(`<a href="${url}">${imageName}</a>`);
             })
             .catch((error) => {
             // Handle any errors
