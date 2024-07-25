@@ -321,7 +321,7 @@ function toDatabase3() {
           document
             .querySelector("#overtime_" + key)
             .addEventListener("click", () => {
-              deleteWorkerRow(key);
+              deleteOvertimeRow(key);
             });
         });
       }
