@@ -47,7 +47,15 @@ async function getImage() {
         const imageName = itemRef.toString().split('/')[4];
         getDownloadURL(ref(storage, projectName + '/' + imageName))
             .then((url) => {
-            $(".uploaded-images").append(`<a href="${url}">${imageName}</a>`);
+                if (imageName.includes(".docx")) {
+                    $(".uploaded-images").append(`<a href="${url}"><img src="images/mword.png" style="width:42px;height:42px;">${imageName}</a>`);
+                } else if (imageName.includes(".xlsx")) {
+                    $(".uploaded-images").append(`<a href="${url}"><img src="images/mexcel.png" style="width:42px;height:42px;">${imageName}</a>`);
+                } else if (imageName.includes(".ppt")) {
+                    $(".uploaded-images").append(`<a href="${url}"><img src="images/mpoint.png" style="width:42px;height:42px;">${imageName}</a>`);
+                } else {
+                    $(".uploaded-images").append(`<a href="${url}"><img src="images/imglogo.png" style="width:42px;height:42px;">${imageName}</a>`);
+                }
             })
             .catch((error) => {
             // Handle any errors

@@ -203,7 +203,7 @@ function toDatabase1() {
               "<td style='display:flex; justify-content: space-between;'><div>" +
               val.labor +
               "</div><div>₱ " +
-              val.laborTotal +
+              (val.laborTotal).toLocaleString(); +
               "</div></td>";
             totalContent += "<tr>";
 
@@ -255,7 +255,7 @@ function toDatabase2() {
               "<td style='display:flex; justify-content: space-between;'><div>" +
               val.equipment +
               "</div><div>₱ " +
-              val.equipmentTotal +
+              (val.equipmentTotal).toLocaleString(); +
               "</div></td>";
             totalContent += "<tr>";
 
@@ -307,7 +307,7 @@ function toDatabase3() {
               "<td style='display:flex; justify-content: space-between;'><div>" +
               val.OTlabor +
               " (Overtime)</div><div>₱ " +
-              val.OTlaborTotal +
+              (val.OTlaborTotal).toLocaleString(); +
               "</div></td>";
             totalContent += "<tr>";
 

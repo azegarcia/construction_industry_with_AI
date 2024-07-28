@@ -47,56 +47,58 @@
   }
 </style>
 <body>
-  <div class="hero_area">
-    <header class="header_section" style="background-color: white;position: fixed;width: 100%;z-index: 1;">
-      <div class="header_bottom">
-        <div class="container-fluid">
-          <nav class="navbar navbar-expand-lg custom_nav-container">
-            <a class="navbar-brand" href="main.html">
-              <span>
-                <img src="images/header.png" style="height: 50px;">
-              </span>
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class=""> </span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav ">
-                <li class="nav-item active">
-                  <a class="nav-link" href="main.html">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="index.html">Log Out</a>
-                </li>
-              </ul>
-            </div>
-          </nav>
-        </div>
-      </div>
-    </header>
-  </div>
-  <br><br><br>
-  <section class="slider_section" style="border:5px solid gray;">
-    <div class="container" style="height: 300px;">
-      <div class="row" style="height: 300px;">
-        <div class="col-md-6" style="height: 300px;">
-          <div class="detail-box">
-            <br><br><br><br>
-            <h1 style="color: #0106b7;font-size: 280%;">
-              Man Power and Equipment Assignment
-            </h1>
+  <div id="main-part" style="display: block;">
+    <div class="hero_area">
+      <header class="header_section" style="background-color: white;position: fixed;width: 100%;z-index: 1;">
+        <div class="header_bottom">
+          <div class="container-fluid">
+            <nav class="navbar navbar-expand-lg custom_nav-container">
+              <a class="navbar-brand" href="main.html">
+                <span>
+                  <img src="images/header.png" style="height: 50px;">
+                </span>
+              </a>
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class=""> </span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ">
+                  <li class="nav-item active">
+                    <a class="nav-link" href="main.html">Home <span class="sr-only">(current)</span></a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="index.html">Log Out</a>
+                  </li>
+                </ul>
+              </div>
+            </nav>
           </div>
         </div>
-        <div class="col-md-6" style="height: 300px;">
-          <img src="images/greeny.jpg" alt="" style="height: 300px;"/>
+      </header>
+    </div>
+    <br><br><br>
+    <section class="slider_section" style="border:5px solid gray;">
+      <div class="container" style="height: 300px;">
+        <div class="row" style="height: 300px;">
+          <div class="col-md-6" style="height: 300px;">
+            <div class="detail-box">
+              <br><br><br><br>
+              <h1 style="color: #0106b7;font-size: 280%;">
+                Man Power and Equipment Assignment
+              </h1>
+            </div>
+          </div>
+          <div class="col-md-6" style="height: 300px;">
+            <img src="images/greeny.jpg" alt="" style="height: 300px;"/>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-  <section class="slider_section" style="background-color: white;">
-    <div class="container" style="height: 30px;">
-    </div>
-  </section>
+    </section>
+    <section class="slider_section" style="background-color: white;">
+      <div class="container" style="height: 30px;">
+      </div>
+    </section>
+  </div>
   <div class="row" style="background-color: white; padding-left: 10.7%;">
     <div class="column">
       <form id="workerForm">
@@ -214,6 +216,16 @@
         <div class="container" style="height: 30px;">
         </div>
       </section>
+      <section class="slider_section" style="background-color: white;">
+        <div id="printbtn" class="container" style="height: 30px;">
+          &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+          <input type="button" value="Print Calculations" onclick="printDiv()">
+        </div>
+      </section>
+      <section class="slider_section" style="background-color: white;">
+        <div class="container" style="height: 30px;">
+        </div>
+      </section>
       <div class="row" style="background-color: white; padding-left: 10.7%;">
         <table style="width: 75%;" id="result-table">
             <thead>
@@ -242,5 +254,12 @@
   <script src="js/bootstrap.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
   <script src="js/custom.js"></script>
+  <script>
+    function printDiv () {
+      document.getElementById('main-part').style.display = "none";
+      document.getElementById('printbtn').style.display = "none";
+      window.print()
+    }
+  </script>
 </body>
 </html>
