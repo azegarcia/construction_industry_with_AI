@@ -105,27 +105,10 @@ const isDecimal = (value, name) => {
   return [true, ""];
 };
 
-const validateDate = (value) => {
-  const pattern = /\d{1,2}\-\d{1,2}\-\d{4}/;
-  if (!value) {
-    return [false, "Please enter starting date."];
-  }
-
-  if (!pattern.test(value)) {
-    return [false, "Incorrect starting date format."];
-  }
-
-  return [true, ""];
-};
-
 export const projectValidation = (inputId, inputValue) => {
   inputValue = inputValue.trim();
   if (inputId === "pname") {
     return validateProjectName(inputValue);
-  }
-
-  if (inputId === "startDate") {
-    return validateDate(inputValue);
   }
 
   if (inputId === "itemL") {

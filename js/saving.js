@@ -21,6 +21,23 @@ let messagesRef2 = firebase
   .ref("collected_data")
   .child("equipments");
 
+function getParams() {
+  const queryString = window.location.search;
+  const params = new URLSearchParams(queryString);
+  return params;
+}
+
+let params = getParams()
+let client = params.get('clientname');
+let project = params.get('projectname');
+let sdate = params.get('startdate');
+
+document.getElementById('header').textContent = "Setting Immediate Predecessors & Time Estimates for " + client + " " + project;
+
+document.getElementById('pname').value = project;
+
+document.getElementById('startDate').value = sdate;
+
 document.getElementById("inputForm").addEventListener("submit", submitProject);
 
 document.getElementById("workerForm").addEventListener("submit", submitForm1);
