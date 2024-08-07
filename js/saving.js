@@ -362,7 +362,6 @@ function toDatabase() {
             setProjectName(projectName.trim());
             content += `<tr id='${data.key}'>`;
             content += "<td>" + val.itemL + "</td>";
-            content += "<td>" + val.pname + "</td>";
             content += "<td>" + val.aname + "</td>";
             content += "<td>" + val.impre + "</td>";
             content += "<td>" + val.timeA + "</td>";

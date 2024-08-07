@@ -64,26 +64,27 @@ const validatePredecessor = (value) => {
     ];
   }
 
-  const [isPredecessorValid, errorMessage] = isInPredecessor(value);
-  if (value && !isPredecessorValid) {
-    return [false, errorMessage];
-  }
+  // const [isPredecessorValid, errorMessage] = isInPredecessor(value);
+  // if (value && !isPredecessorValid) {
+  //   return [false, errorMessage];
+  // }
 
   return [true, ""];
 };
 
-const isInPredecessor = (value) => {
-  const valueArray = value.toUpperCase().split("");
-  const itemLetters = getCurrentItemLetters();
+// const isInPredecessor = (value) => {
+//   const valueArray = value.toUpperCase().split("");
+//   const itemLetters = getCurrentItemLetters();
 
-  for (let i = 0; i < valueArray.length; i++) {
-    if (!itemLetters.includes(valueArray[i].toUpperCase())) {
-      return [false, `Letter ${valueArray[i]} not found in item letters.`];
-    }
-  }
+//   for (let i = 0; i < valueArray.length; i++) {
+//     if (!itemLetters.includes(valueArray[i].toUpperCase())) {
+//       return [false, `Letter ${valueArray[i]} not found in item letters.`];
+//     }
+//   }
 
-  return [true, ""];
-};
+//   return [true, ""];
+// };
+
 const getCurrentItemLetters = () => {
   const inputs = $("#act-table tbody tr > td:first-child")
     .toArray()
@@ -105,10 +106,27 @@ const isDecimal = (value, name) => {
   return [true, ""];
 };
 
+const validateDate = (value) => {
+  const pattern = /\d{1,2}\/\d{1,2}\/\d{4}/;
+  if (!value) {
+    return [false, "Please enter starting date."];
+  }
+
+  if (!pattern.test(value)) {
+    return [false, "Incorrect starting date format."];
+  }
+
+  return [true, ""];
+};
+
 export const projectValidation = (inputId, inputValue) => {
   inputValue = inputValue.trim();
   if (inputId === "pname") {
     return validateProjectName(inputValue);
+  }
+
+  if (inputId === "startDate") {
+    return validateDate(inputValue);
   }
 
   if (inputId === "itemL") {
