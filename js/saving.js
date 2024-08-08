@@ -34,10 +34,6 @@ let sdate = params.get('startdate');
 
 document.getElementById('header').textContent = "Setting Immediate Predecessors & Time Estimates for " + client + " " + project;
 
-document.getElementById('pname').value = project;
-
-document.getElementById('startDate').value = sdate;
-
 document.getElementById("inputForm").addEventListener("submit", submitProject);
 
 document.getElementById("workerForm").addEventListener("submit", submitForm1);
@@ -62,8 +58,6 @@ function submitProject(e) {
   e.preventDefault();
 
   var formValues = [
-    "pname",
-    "startDate",
     "itemL",
     "aname",
     "impre",
@@ -104,14 +98,13 @@ function submitForm1(e) {
   e.preventDefault();
 
   // Get values
-  let pname = getInputVal("pname")
   let labor = getInputVal("labor");
   let laborQuantity = getInputVal("laborQuantity");
   let laborHours = getInputVal("laborHours");
   let laborSalary = getInputVal("laborSalary");
 
-  saveMessage1(labor, laborQuantity, laborHours, laborSalary, pname);
-  console.log(pname)
+  saveMessage1(labor, laborQuantity, laborHours, laborSalary, project);
+  console.log(project)
   document.getElementById("workerForm").reset();
   reloadWorkerEquipment();
 }
@@ -120,13 +113,12 @@ function submitForm2(e) {
   e.preventDefault();
 
   // Get values
-  let pname = getInputVal("pname")
   let equipment = getInputVal("equipment");
   let equipmentQuantity = getInputVal("equipmentQuantity");
   let equipmentDays = getInputVal("equipmentDays");
   let equipmentCost = getInputVal("equipmentCost");
 
-  saveMessage2(equipment, equipmentQuantity, equipmentDays, equipmentCost, pname);
+  saveMessage2(equipment, equipmentQuantity, equipmentDays, equipmentCost, project);
   document.getElementById("equipmentForm").reset();
   reloadWorkerEquipment();
 }
@@ -151,6 +143,9 @@ function saveProject(projectDetail) {
   let newMessageRef = messagesRef.push();
   newMessageRef.set({
     ...projectDetail,
+    client: client,
+    pname: project,
+    sdate: sdate,
     itemL: projectDetail.itemL.toUpperCase(),
     impre: impre,
     timeT:
@@ -161,10 +156,12 @@ function saveProject(projectDetail) {
   });
 }
 
-function saveMessage1(labor, laborQuantity, laborHours, laborSalary, pname) {
+function saveMessage1(labor, laborQuantity, laborHours, laborSalary, project) {
   let newMessageRef = messagesRef1.push();
   newMessageRef.set({
-    pname: pname,
+    client: client,
+    pname: project,
+    sdate: sdate,
     labor: labor,
     laborQuantity: laborQuantity,
     laborHours: laborHours,
@@ -179,11 +176,13 @@ function saveMessage2(
   equipmentQuantity,
   equipmentDays,
   equipmentCost,
-  pname
+  project
 ) {
   let newMessageRef = messagesRef2.push();
   newMessageRef.set({
-    pname: pname,
+    client: client,
+    pname: project,
+    sdate: sdate,
     equipment: equipment,
     equipmentQuantity: equipmentQuantity,
     equipmentDays: equipmentDays,
@@ -331,21 +330,9 @@ function deleteToDatabase(table, key) {
   dbRef.remove();
 }
 
-function setProjectName(projectName) {
-  if (projectName !== "Create a project") {
-    $("#pname").val(projectName);
-    $("#pname").prop("disabled", true);
-  }
-}
 function toDatabase() {
   $("#act-table tbody > tr").remove();
-  $("#projectDrop option").remove();
-
-  var params = getQueryParams();
-  var projectName = params.projectname ? params.projectname : "";
-
   var database = firebase.database();
-  var projectNameList = [];
   database
     .ref("collected_data")
     .child("activity")
@@ -353,42 +340,24 @@ function toDatabase() {
     .once("value", function (snapshot) {
       if (snapshot.exists()) {
         var content = "";
-        var projectList = "";
         var activityKey = [];
-        var n = 0;
         snapshot.forEach(function (data) {
           var val = data.val();
-          if (projectName.trim() === val.pname.trim()) {
-            setProjectName(projectName.trim());
-            content += `<tr id='${data.key}'>`;
-            content += "<td>" + val.itemL + "</td>";
-            content += "<td>" + val.aname + "</td>";
-            content += "<td>" + val.impre + "</td>";
-            content += "<td>" + val.timeA + "</td>";
-            content += "<td>" + val.timeM + "</td>";
-            content += "<td>" + val.timeB + "</td>";
-            content += "<td>" + val.timeT + "</td>";
-            content += `<td>
-                                    <button type="button" class="btn btn-danger" id="btn_${data.key}"">Remove</button>
-                                </td>`;
-            content += "</tr>";
+          content += `<tr id='${data.key}'>`;
+          content += "<td>" + val.itemL + "</td>";
+          content += "<td>" + val.aname + "</td>";
+          content += "<td>" + val.impre + "</td>";
+          content += "<td>" + val.timeA + "</td>";
+          content += "<td>" + val.timeM + "</td>";
+          content += "<td>" + val.timeB + "</td>";
+          content += "<td>" + val.timeT + "</td>";
+          content += `<td>
+                                  <button type="button" class="btn btn-danger" id="btn_${data.key}"">Remove</button>
+                              </td>`;
+          content += "</tr>";
 
-            activityKey.push(data.key);
-          }
-          if (!projectNameList.includes(val.pname)) {
-            console.log("->" + val.pname + "<-");
-            projectNameList.push(val.pname);
-
-            projectList +=
-              projectName == val.pname
-                ? "<option selected>" + val.pname + "</option>"
-                : "<option>" + val.pname + "</option>";
-          }
+          activityKey.push(data.key);
         });
-
-        projectList =
-          "<option selected>Create a project</option>" + projectList;
-
         content = content.trim();
 
         if (!content) {
@@ -397,7 +366,6 @@ function toDatabase() {
           disablePertCPMBtn();
         }
         $("#act-table").append(content);
-        $("#projectDrop").append(projectList);
 
         activityKey.forEach((key) => {
           document
@@ -406,7 +374,7 @@ function toDatabase() {
               deleteProjectRow(key);
             });
         });
-      }
+      }; 
     });
 }
 
@@ -419,8 +387,6 @@ function disablePertCPMBtn() {
 function toDatabase1() {
   $("#worker-table tbody > tr:not(:first-child)").remove();
   var database = firebase.database();
-  var params = getQueryParams();
-  var projectName = params.projectname ? params.projectname : "";
   database
     .ref("collected_data")
     .child("workers")
@@ -431,29 +397,25 @@ function toDatabase1() {
         var activityKey = [];
         snapshot.forEach(function (data) {
           var val = data.val();
-          if (projectName.trim() === val.pname.trim()) {
-            setProjectName(projectName.trim());
-            // console.log('data', data.key);  getting key of the row
-            content += `<tr id='workers_${data.key}'>`;
-            content += "<td>" + val.labor + "</td>";
-            content += "<td>" + val.laborQuantity + "</td>";
-            content += "<td>" + val.laborHours + "</td>";
-            content += "<td>" + val.laborSalary + "</td>";
-            content +=
-              '<td><button type="button" class="btn btn-danger">Remove</button></td>';
-            content += "</tr>";
+          content += `<tr id='workers_${data.key}'>`;
+          content += "<td>" + val.labor + "</td>";
+          content += "<td>" + val.laborQuantity + "</td>";
+          content += "<td>" + val.laborHours + "</td>";
+          content += "<td>" + val.laborSalary + "</td>";
+          content +=
+            '<td><button type="button" class="btn btn-danger">Remove</button></td>';
+          content += "</tr>";
 
-            totalContent += "<tr>";
-            totalContent +=
-              "<td style='display:flex; justify-content: space-between;'><div>" +
-              val.labor +
-              "</div><div>₱ " +
-              val.laborTotal +
-              "</div></td>";
-            totalContent += "<tr>";
+          totalContent += "<tr>";
+          totalContent +=
+            "<td style='display:flex; justify-content: space-between;'><div>" +
+            val.labor +
+            "</div><div>₱ " +
+            val.laborTotal +
+            "</div></td>";
+          totalContent += "<tr>";
 
-            activityKey.push(data.key);
-          }
+          activityKey.push(data.key);
         });
         $("#worker-table").append(content);
         $("#result-table").append(totalContent);
@@ -472,8 +434,6 @@ function toDatabase1() {
 function toDatabase2() {
   $("#equipment-table tbody > tr:not(:first-child)").remove();
   var database = firebase.database();
-  var params = getQueryParams();
-  var projectName = params.projectname ? params.projectname : "";
   database
     .ref("collected_data")
     .child("equipments")
@@ -484,29 +444,25 @@ function toDatabase2() {
         var activityKey = [];
         snapshot.forEach(function (data) {
           var val = data.val();
-          if (projectName.trim() === val.pname.trim()) {
-            setProjectName(projectName.trim());
-            // console.log('data', data.key);  getting key of the row
-            content += `<tr id='equipments_${data.key}'>`;
-            content += "<td>" + val.equipment + "</td>";
-            content += "<td>" + val.equipmentQuantity + "</td>";
-            content += "<td>" + val.equipmentDays + "</td>";
-            content += "<td>" + val.equipmentCost + "</td>";
-            content +=
-              '<td><button type="button" class="btn btn-danger">Remove</button></td>';
-            content += "</tr>";
+          content += `<tr id='equipments_${data.key}'>`;
+          content += "<td>" + val.equipment + "</td>";
+          content += "<td>" + val.equipmentQuantity + "</td>";
+          content += "<td>" + val.equipmentDays + "</td>";
+          content += "<td>" + val.equipmentCost + "</td>";
+          content +=
+            '<td><button type="button" class="btn btn-danger">Remove</button></td>';
+          content += "</tr>";
 
-            totalContent += "<tr>";
-            totalContent +=
-              "<td style='display:flex; justify-content: space-between;'><div>" +
-              val.equipment +
-              "</div><div>₱ " +
-              val.equipmentTotal +
-              "</div></td>";
-            totalContent += "<tr>";
+          totalContent += "<tr>";
+          totalContent +=
+            "<td style='display:flex; justify-content: space-between;'><div>" +
+            val.equipment +
+            "</div><div>₱ " +
+            val.equipmentTotal +
+            "</div></td>";
+          totalContent += "<tr>";
 
-            activityKey.push(data.key);
-          }
+          activityKey.push(data.key);
         });
         $("#equipment-table").append(content);
         $("#result-table").append(totalContent);

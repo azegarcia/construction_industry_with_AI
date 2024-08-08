@@ -32,15 +32,15 @@ function toDatabase() {
     database.ref('collected_data').child('activity').once('value', function (snapshot) {
         if (snapshot.exists()) {
             var content = '';
-            var n = 0;
             snapshot.forEach(function (data) {
                 // console.log('data', data.key);  getting key of the row
                 var val = data.val();
                 if (!projectNameList.includes(val.pname)) {
                     projectNameList.push(val.pname);
                     content += `<tr>`;
+                    content += '<td>' + val.client + '</td>';
                     content += '<td>' + val.pname + '</td>';
-                    content += '<td>' + val.startDate + '</td>';
+                    content += '<td>' + val.sdate + '</td>';
                     content += `<td><button type="button" class="btn btn-success" onclick="showDiv('` + val.pname + `'); return false;">Select</button>
                                 </td>`;
                     content += '</tr>';
