@@ -35,34 +35,31 @@
     <div class="page-wrapper p-t-100 p-b-100 font-robo" style="background-image: url(images/bg.png);background-size: cover;filter: blur(8px);-webkit-filter: blur(8px);background-repeat: no-repeat;"></div>
     <div class="wrapper wrapper--w680">
         <div class="card card-1">
-            <div class="card-body">
-                <h2 class="title">Project Information</h2>
-                <div class="bg-text">
-                    <h3>Enter Client Information</h3>
+            <div class="bg-text">
+                <h3>Enter Client Information</h3>
+                <br><br>
+                <h8 style="font-style: italic;color: rgb(3, 221, 255);">If Client not on list, choose "Others".</h8>
+                <br><br>
+                <div>
+                    <select id="projectDrop">
+                        <option value="Choose the client" selected></option>
+                        <!-- <option value="Others">Others</option> -->
+                    </select>
                     <br><br>
-                    <h8 style="font-style: italic;color: rgb(3, 221, 255);">If Client not on list, choose "Others".</h8>
-                    <br><br>
-                    <div>
-                        <select id="projectDrop">
-                            <option value="Choose the client" selected></option>
-                            <option value="Others">Others</option>
-                        </select>
-                        <br><br>
-                        <input class="input--style-1" type="text" style="display: none;" placeholder="Client Name" name="clientname" id="clientname">
-                    </div>
-                    <br><br>
+                    <input class="input--style-1" type="text" style="display: none;" placeholder="Client Name" name="clientname" id="clientname">
+                </div>
+                <br><br>
+                <div class="input-group">
+                    <input class="input--style-1" type="text" placeholder="Project Name" name="projectname" id="projectname">
+                </div>
+                <div class="col-2">
                     <div class="input-group">
-                        <input class="input--style-1" type="text" placeholder="Project Name" name="projectname" id="projectname">
+                        <input class="input--style-1 js-datepicker" type="text" placeholder="Starting Date" name="sdate" id="sdate">
+                        <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
                     </div>
-                    <div class="col-2">
-                        <div class="input-group">
-                            <input class="input--style-1 js-datepicker" type="text" placeholder="Starting Date" name="sdate" id="sdate">
-                            <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
-                        </div>
-                    </div>
-                    <div class="p-t-20">
-                        <button class="btn btn--radius btn--green" type="submit" onclick="createClient()">Submit</button>
-                    </div>
+                </div>
+                <div class="p-t-20">
+                    <button class="btn btn--radius btn--green" type="submit" onclick="createClient()">Submit</button>
                 </div>
             </div>
         </div>

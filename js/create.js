@@ -44,25 +44,27 @@ function getInputVal(id) {
     return inputValue.trim();
 }
 
-function toDatabase() {  
+function toDatabase() {
     var database = firebase.database();
-    var projectList = "";
-    database
-      .ref("collected_data")
-      .child("activity")
-      .orderByChild("itemL")
-      .once("value", function (snapshot) {
+    var projectNameList = [];
+    database.ref('collected_data').child('activity').once('value', function (snapshot) {
         if (snapshot.exists()) {
-          snapshot.forEach(function (data) {
-            var val = data.val();
-            projectList += "<option selected>" + val.pname + "</option>";
-          });
+            var content = '';
+            snapshot.forEach(function (data) {
+                // console.log('data', data.key);  getting key of the row
+                var val = data.val();
+                if (!projectNameList.includes(val.client)) {
+                    projectNameList.push(val.client);
+                    content += '<option>' + val.client + '</option>';
+                }
+            });
+            $('#projectDrop').append(content);
         }
-        });  
-          $("#projectDrop").append(projectList);
-        }
-    
-
+        var addedcontent = '';
+        addedcontent += '<option>Others</option>';
+        $('#projectDrop').append(addedcontent);
+    });
+}   
 
 (function ($) {
     'use strict';
