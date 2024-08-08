@@ -29,8 +29,47 @@ function getParams() {
 
 let params = getParams()
 let client = params.get('clientname');
-let project = params.get('projectname');
+let project = params.get('projectname').toUpperCase();
 let sdate = params.get('startdate');
+
+var items;
+if (project.includes("ROAD")) {
+  items = ["", "Site Preparation", "Earthworks and Grading", "Drainage and Utilities", "Subbase and Base Course Construction", "Paving", "Curbs, Gutters, and Sidewalks", "Guardrails and Barriers", "Traffic Control Devices", "Quality Control and Testing", "Final Touches", "Others"]
+} else if (project.includes("REPLACE")) {
+  items = ["", "Preparation", "Removing Damaged Tiles", "Preparing the Surface", "Applying Adhesive", "Placing the New Tile", "Grouting", "Cleaning and Finishing", "Sealing", "Final Inspection", "Others"]
+} else if (project.includes("BUILDING")) {
+  items = ["", "Site Preparation", "Foundation Work", "Structural Framework", "Roof Construction", "Wall Construction", "Windows and Doors", "Mechanical, Electrical, and Plumbing (MEP) Work", "Interior Finishes", "Exterior Finishes", "Final Inspections and Handover", "Others"]
+} else if (project.includes("FENCE")) {
+  items = ["", "Site Preparation", "Foundation Work", "Post Installation", "Installing Fence Panels/Materials", "Gates Installation", "Finishing Touches", "Inspection and Testing", "Cleanup", "Others"]
+} else if (project.includes("PIPING")) {
+  items = ["", "Site Preparation", "Demolition and Removal", "Excavation and Trenching", "Piping Installation", "Valve and Fitting Installation", "Pressure Testing", "Insulation and Coating", "Instrumentation and Control Installation", "System Integration", "Commissioning", "Site Cleanup", "Others"]
+} else if (project.includes("BRIDGE")) {
+  items = ["", "Site Preparation", "Excavation and Earthworks", "Foundation Work", "Substructure Construction", "Superstructure Construction", "Deck Construction", "Bridge Parapets and Barriers", "Utilities and Drainage", "Roadway and Approach Work", "Quality Control and Testing", "Final Touches", "Others"]
+} else if (project.includes("ELECTRICAL")) {
+  items = ["", "Site Preparation", "Foundation Work", "Installation of Substations", "Cable Laying and Trenching", "Overhead Line Installation", "Installation of Switchgear and Transformers", "Installation of Protective Relays and Control Systems", "Installation of Backup Power Systems", "Lighting and Earthing Systems", "Auxiliary Systems Installation", "System Integration and Testing", "Final Inspections and Approvals", "Others"]
+} else if (project.includes("GUTTER")) {
+  items = ["", "Preparation and Safety Measures", "Removal of Old Gutters", "Cleaning and Inspection", "Measuring and Cutting New Gutters", "Installing the Gutters", "Sealing and Securing", "Installing Downspouts", "Final Inspection and Testing", "Cleanup", "Others"]
+} else if (project.includes("CLASSROOM")) {
+  items = ["", "Site Preparation and Demolition", "Structural Work", "Plumbing and Electrical Work", "HVAC Installation", "Framing and Drywall", "Flooring Installation", "Painting and Finishing", "Install Fixtures and Fittings", "Final Inspection and Touch-Ups", "Clean-Up and Final Preparation", "Others"]
+} else if (project.includes("FACILITY")) {
+  items = ["", "Assessment and Planning", "Site Preparation", "Structural Work", "Plumbing and Electrical Work", "HVAC Installation", "Isolation and Safety Features", "Interior Finishes", "Install Fixtures and Equipment", "Final Inspection and Testing", "Clean-Up and Preparation for Use", "Others"]
+} else {
+  items = ["", "Site Preparation", "Excavation and Foundation", "Substructure Work", "Framing", "Roofing", "Exterior Work", "Interior Work", "Mechanical, Electrical, and Plumbing (MEP) Work", "Interior Finishes", "Kitchen and Bathroom Installation", "Exterior Landscaping", "Quality Control and Inspections", "Final Touches", "Others"]
+}
+var str = ""
+for (var item of items) {
+  str += "<option>" + item + "</option>"
+}
+document.getElementById("aname").innerHTML = str;
+
+$("#aname").change(function () {
+  if (this.value.includes('Others')){
+      document.getElementById('anameInput').style.display = "block";
+  }
+  else {
+      document.getElementById('anameInput').style.display = "none";
+  }
+});
 
 document.getElementById('header').textContent = "Setting Immediate Predecessors & Time Estimates for " + client + " " + project;
 
@@ -89,7 +128,14 @@ function submitProject(e) {
     projectDetail[field] = getInputVal(field);
   });
 
-  saveProject(projectDetail);
+  var anamevalue = document.getElementById('aname').value;
+  if (anamevalue.includes("Others")) {
+    aname = document.getElementById('anameInput').value;
+  } else {
+    aname = document.getElementById('aname').value;
+  }
+
+  saveProject(projectDetail, aname);
   document.getElementById("inputForm").reset();
   toDatabase();
 }
@@ -136,7 +182,7 @@ function isFieldValid(inputId, inputValue) {
 }
 
 // Save message to firebase
-function saveProject(projectDetail) {
+function saveProject(projectDetail, aname) {
   var impre = projectDetail.impre.toUpperCase()
     ? projectDetail.impre.toUpperCase()
     : "START";
@@ -146,6 +192,7 @@ function saveProject(projectDetail) {
     client: client,
     pname: project,
     sdate: sdate,
+    aname: aname,
     itemL: projectDetail.itemL.toUpperCase(),
     impre: impre,
     timeT:
@@ -333,6 +380,8 @@ function deleteToDatabase(table, key) {
 function toDatabase() {
   $("#act-table tbody > tr").remove();
   var database = firebase.database();
+  var params = getQueryParams();
+  var projectName = params.projectname ? params.projectname : "";
   database
     .ref("collected_data")
     .child("activity")
@@ -343,30 +392,34 @@ function toDatabase() {
         var activityKey = [];
         snapshot.forEach(function (data) {
           var val = data.val();
-          content += `<tr id='${data.key}'>`;
-          content += "<td>" + val.itemL + "</td>";
-          content += "<td>" + val.aname + "</td>";
-          content += "<td>" + val.impre + "</td>";
-          content += "<td>" + val.timeA + "</td>";
-          content += "<td>" + val.timeM + "</td>";
-          content += "<td>" + val.timeB + "</td>";
-          content += "<td>" + val.timeT + "</td>";
-          content += `<td>
-                                  <button type="button" class="btn btn-danger" id="btn_${data.key}"">Remove</button>
-                              </td>`;
-          content += "</tr>";
+          if (projectName.toUpperCase().trim() === val.pname.trim()) {
+            content += `<tr id='${data.key}'>`;
+            content += "<td>" + val.itemL + "</td>";
+            content += "<td>" + val.aname + "</td>";
+            content += "<td>" + val.impre + "</td>";
+            content += "<td>" + val.timeA + "</td>";
+            content += "<td>" + val.timeM + "</td>";
+            content += "<td>" + val.timeB + "</td>";
+            content += "<td>" + val.timeT + "</td>";
+            content += `<td>
+                          <button type="button" class="btn btn-danger" id="btn_${data.key}"">Remove</button>
+                        </td>`;
+            content += "</tr>";
 
-          activityKey.push(data.key);
+            activityKey.push(data.key);
+          }
         });
         content = content.trim();
+        console.log(content)
 
         if (!content) {
           content = "<tr><td colspan='9'>Project empty.</td></tr>";
           $("#action").prop("disabled", true);
           disablePertCPMBtn();
         }
-        $("#act-table").append(content);
 
+        $("#act-table").append(content);
+        
         activityKey.forEach((key) => {
           document
             .querySelector("#btn_" + key)
@@ -387,6 +440,8 @@ function disablePertCPMBtn() {
 function toDatabase1() {
   $("#worker-table tbody > tr:not(:first-child)").remove();
   var database = firebase.database();
+  var params = getQueryParams();
+  var projectName = params.projectname ? params.projectname : "";
   database
     .ref("collected_data")
     .child("workers")
@@ -397,23 +452,25 @@ function toDatabase1() {
         var activityKey = [];
         snapshot.forEach(function (data) {
           var val = data.val();
-          content += `<tr id='workers_${data.key}'>`;
-          content += "<td>" + val.labor + "</td>";
-          content += "<td>" + val.laborQuantity + "</td>";
-          content += "<td>" + val.laborHours + "</td>";
-          content += "<td>" + val.laborSalary + "</td>";
-          content +=
-            '<td><button type="button" class="btn btn-danger">Remove</button></td>';
-          content += "</tr>";
+          if (projectName.trim() === val.pname.trim()) {
+            content += `<tr id='workers_${data.key}'>`;
+            content += "<td>" + val.labor + "</td>";
+            content += "<td>" + val.laborQuantity + "</td>";
+            content += "<td>" + val.laborHours + "</td>";
+            content += "<td>" + val.laborSalary + "</td>";
+            content +=
+              '<td><button type="button" class="btn btn-danger">Remove</button></td>';
+            content += "</tr>";
 
-          totalContent += "<tr>";
-          totalContent +=
-            "<td style='display:flex; justify-content: space-between;'><div>" +
-            val.labor +
-            "</div><div>₱ " +
-            val.laborTotal +
-            "</div></td>";
-          totalContent += "<tr>";
+            totalContent += "<tr>";
+            totalContent +=
+              "<td style='display:flex; justify-content: space-between;'><div>" +
+              val.labor +
+              "</div><div>₱ " +
+              val.laborTotal +
+              "</div></td>";
+            totalContent += "<tr>";
+          }
 
           activityKey.push(data.key);
         });
@@ -434,6 +491,8 @@ function toDatabase1() {
 function toDatabase2() {
   $("#equipment-table tbody > tr:not(:first-child)").remove();
   var database = firebase.database();
+  var params = getQueryParams();
+  var projectName = params.projectname ? params.projectname : "";
   database
     .ref("collected_data")
     .child("equipments")
@@ -444,23 +503,25 @@ function toDatabase2() {
         var activityKey = [];
         snapshot.forEach(function (data) {
           var val = data.val();
-          content += `<tr id='equipments_${data.key}'>`;
-          content += "<td>" + val.equipment + "</td>";
-          content += "<td>" + val.equipmentQuantity + "</td>";
-          content += "<td>" + val.equipmentDays + "</td>";
-          content += "<td>" + val.equipmentCost + "</td>";
-          content +=
-            '<td><button type="button" class="btn btn-danger">Remove</button></td>';
-          content += "</tr>";
+          if (projectName.trim() === val.pname.trim()) {
+            content += `<tr id='equipments_${data.key}'>`;
+            content += "<td>" + val.equipment + "</td>";
+            content += "<td>" + val.equipmentQuantity + "</td>";
+            content += "<td>" + val.equipmentDays + "</td>";
+            content += "<td>" + val.equipmentCost + "</td>";
+            content +=
+              '<td><button type="button" class="btn btn-danger">Remove</button></td>';
+            content += "</tr>";
 
-          totalContent += "<tr>";
-          totalContent +=
-            "<td style='display:flex; justify-content: space-between;'><div>" +
-            val.equipment +
-            "</div><div>₱ " +
-            val.equipmentTotal +
-            "</div></td>";
-          totalContent += "<tr>";
+            totalContent += "<tr>";
+            totalContent +=
+              "<td style='display:flex; justify-content: space-between;'><div>" +
+              val.equipment +
+              "</div><div>₱ " +
+              val.equipmentTotal +
+              "</div></td>";
+            totalContent += "<tr>";
+          }
 
           activityKey.push(data.key);
         });
