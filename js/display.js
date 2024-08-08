@@ -9,10 +9,8 @@ let firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 
-function showDiv(pname) {
-    let params = new URLSearchParams();
-    params.set("projectname", pname);
-    window.location.href = window.location.pathname + "?" + params.toString();
+function showDiv(client, pname, sdate) {
+    window.location.href = window.location.pathname + "?clientname=" + client + "&projectname=" + pname + "&startdate=" + sdate;
 }
   
 function getQueryParams() {
@@ -24,6 +22,14 @@ function nextPage(loc) {
     var params = getQueryParams();
     var projectName = params.projectname;
     window.location = loc + "?file=" + projectName;
+}
+
+function editPage(loc) {
+    var params = getQueryParams();
+    var clientName = params.clientname;
+    var projectName = params.projectname;
+    var startDate = params.startdate;
+    window.location = loc + "?clientname=" + clientName + "&projectname=" + projectName + "&startdate=" + startDate;
 }
 
 function toDatabase() {
@@ -41,7 +47,7 @@ function toDatabase() {
                     content += '<td>' + val.client + '</td>';
                     content += '<td>' + val.pname + '</td>';
                     content += '<td>' + val.sdate + '</td>';
-                    content += `<td><button type="button" class="btn btn-success" onclick="showDiv('` + val.pname + `'); return false;">Select</button>
+                    content += `<td><button type="button" class="btn btn-success" onclick="showDiv('` + val.client + `','` + val.pname + `','` + val.sdate + `'); return false;">Select</button>
                                 </td>`;
                     content += '</tr>';
                 }
@@ -52,9 +58,10 @@ function toDatabase() {
     var params = getQueryParams();
     var projectName = params.projectname;
     if (projectName) {
+        document.getElementById('editproject').textContent = "Edit " + projectName + ' Project';
         document.getElementById('projectlabel').textContent = projectName + ' Project Check';
         document.getElementById('schedulelabel').textContent = projectName + ' Schedule (Diagram)';
-        document.getElementById('manpowerlabel').textContent = projectName + ' Man Power and Equipment Assignment';
+        document.getElementById('manpowerlabel').textContent = projectName + ' Man Power, Equipment Assignment and Overtime Calculations';
         document.getElementById('documentslabel').textContent = projectName + ' Documents';
         document.getElementById('sectionPart').style.display = "block";
     }

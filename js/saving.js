@@ -346,6 +346,12 @@ async function myPert() {
   window.location.href = params;
 }
 
+function editProjectRow(projectKey) {
+  deleteToDatabase("activity", projectKey);
+  $("#" + projectKey).remove();
+  disablePertCPMBtn();
+}
+
 function deleteProjectRow(projectKey) {
   deleteToDatabase("activity", projectKey);
   $("#" + projectKey).remove();
@@ -401,6 +407,9 @@ function toDatabase() {
             content += "<td>" + val.timeM + "</td>";
             content += "<td>" + val.timeB + "</td>";
             content += "<td>" + val.timeT + "</td>";
+            content += `<td>
+                          <button type="button" class="btn btn-success" id="btn_${data.key}"">Edit</button>
+                        </td>`;
             content += `<td>
                           <button type="button" class="btn btn-danger" id="btn_${data.key}"">Remove</button>
                         </td>`;

@@ -7,7 +7,7 @@
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Create/ Edit Project</title>
+    <title id="title"></title>
     <link
       rel="stylesheet"
       type="text/css"
@@ -104,9 +104,9 @@
         <div class="row" style="height: 300px">
           <div class="col-md-6" style="height: 300px">
             <div class="detail-box">
-              <br /><br /><br />
-              <h1 style="color: #0106b7">
-                Create/ Edit Project (Setting Immediate Predecessors & Time Estimates)
+              <br />
+              <h1 style="color: #0106b7" id="header">
+                Setting Immediate Predecessors & Time Estimates
               </h1>
             </div>
           </div>
@@ -124,33 +124,12 @@
         <div class="container">
           <div class="row">
             <div class="col-md-6 mb-3">
-              <label for="pname">Project Name</label>
-              <input class="form-control" type="text" id="pname" name="pname" />
-            </div>
-            <div class="col-md-6 mb-3">
-              <label for="startDate">Starting Date</label>
-              <input
-                class="form-control"
-                type="text"
-                id="startDate"
-                name="startDate"
-                placeholder="Sample: 7-14-2024"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-      <section class="slider_section" style="background-color: white">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-6 mb-3">
               <label for="itemL">Item Letter</label>
               <input
                 class="form-control"
                 type="text"
                 id="itemL"
                 name="itemL"
-                placeholder="Sample: A"
               />
             </div>
             <div class="col-md-6 mb-3">
@@ -165,7 +144,9 @@
           <div class="row">
             <div class="col-md-6 mb-3">
               <label for="aname">Activity Name</label>
-              <input class="form-control" type="text" id="aname" name="aname" />
+              <br>
+              <select id="aname" style="width: 100%;"></select>
+              <input class="form-control" type="text" id="anameInput" name="aname" style="display: none;"/>
             </div>
             <div class="col-md-6 mb-3">
               <label for="timeM">Time Estimates (M) - Most Likely</label>
@@ -200,31 +181,25 @@
       <div class="container" style="height: 30px"></div>
     </section>
     <div class="container container-table" style="background-color: white">
-      <div>
-        <label for="projectDrop">Choose the project:</label>
-        <select id="projectDrop">
-          <option selected>All</option>
-        </select>
-      </div>
       <table id="act-table">
         <thead>
           <tr>
             <th colspan="3"></th>
-            <th colspan="3">Time Estimates</th>
-            <th colspan="3"></th>
+            <th colspan="4">Time Estimates</th>
+            <th colspan="2"></th>
           </tr>
         </thead>
         <thead>
           <tr>
             <th>Item</th>
-            <th>Project Name</th>
             <th>Activity Name</th>
             <th>Immediate Predecessor</th>
             <th>A</th>
             <th>M</th>
             <th>B</th>
             <th>Expected Time (T)</th>
-            <th colspan="2">Options</th>
+            <th>Edit</th>
+            <th>Remove</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -382,11 +357,6 @@
     <section class="slider_section" style="background-color: white">
       <div class="container" style="height: 30px"></div>
     </section>
-    <script>
-      function myEdit() {
-        location.replace("edit.html");
-      }
-    </script>
     <script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js"></script>
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
