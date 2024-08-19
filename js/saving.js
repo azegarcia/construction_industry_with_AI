@@ -58,16 +58,16 @@ if (project.includes("ROAD")) {
 }
 var str = ""
 for (var item of items) {
-  str += "<option>" + item + "</option>"
+  str += `<option value='${item}'>` + item + "</option>"
 }
 document.getElementById("aname").innerHTML = str;
 
 $("#aname").change(function () {
-  if (this.value.includes('Others')){
-      document.getElementById('anameInput').style.display = "block";
+  if (this.value.includes('Others')) {
+    document.getElementById('anameInput').style.display = "block";
   }
   else {
-      document.getElementById('anameInput').style.display = "none";
+    document.getElementById('anameInput').style.display = "none";
   }
 });
 
@@ -129,15 +129,20 @@ function submitProject(e) {
   });
 
   var anamevalue = document.getElementById('aname').value;
+  var aname;
   if (anamevalue.includes("Others")) {
     aname = document.getElementById('anameInput').value;
-  } else {
+  } else if (anamevalue !== ""){
+    document.getElementById('anameInput').style.display = "none";
     aname = document.getElementById('aname').value;
+  } else {
+    aname = anamevalue;
   }
 
   saveProject(projectDetail, aname);
   document.getElementById("inputForm").reset();
   toDatabase();
+  document.getElementById('anameInput').style.display = "none";
 }
 
 function submitForm1(e) {
@@ -150,7 +155,7 @@ function submitForm1(e) {
   let laborSalary = getInputVal("laborSalary");
 
   saveMessage1(labor, laborQuantity, laborHours, laborSalary, project);
-  console.log(project)
+
   document.getElementById("workerForm").reset();
   reloadWorkerEquipment();
 }
@@ -337,7 +342,7 @@ async function runPertCPM(name, data) {
     },
   });
 
-  console.log(res.data);
+  
 }
 
 async function myPert() {
@@ -347,9 +352,7 @@ async function myPert() {
 }
 
 function editProjectRow(projectKey) {
-  deleteToDatabase("activity", projectKey);
-  $("#" + projectKey).remove();
-  disablePertCPMBtn();
+  window.location.href = window.location.href + "&edit=" + projectKey;
 }
 
 function deleteProjectRow(projectKey) {
@@ -388,6 +391,7 @@ function toDatabase() {
   var database = firebase.database();
   var params = getQueryParams();
   var projectName = params.projectname ? params.projectname : "";
+  var projectEdit = params.edit;
   database
     .ref("collected_data")
     .child("activity")
@@ -398,8 +402,12 @@ function toDatabase() {
         var activityKey = [];
         snapshot.forEach(function (data) {
           var val = data.val();
-          if (projectName.toUpperCase().trim() === val.pname.trim()) {
-            content += `<tr id='${data.key}'>`;
+          if (projectName.toUpperCase().trim() === val.pname.toUpperCase().trim()) {
+            var bgColor = '';
+            if (data.key === projectEdit) {
+              bgColor = 'style="background: yellow;"';
+            }
+            content += `<tr id='${data.key}' ${bgColor}>`;
             content += "<td>" + val.itemL + "</td>";
             content += "<td>" + val.aname + "</td>";
             content += "<td>" + val.impre + "</td>";
@@ -407,19 +415,37 @@ function toDatabase() {
             content += "<td>" + val.timeM + "</td>";
             content += "<td>" + val.timeB + "</td>";
             content += "<td>" + val.timeT + "</td>";
-            content += `<td>
-                          <button type="button" class="btn btn-success" id="btn_${data.key}"">Edit</button>
-                        </td>`;
-            content += `<td>
-                          <button type="button" class="btn btn-danger" id="btn_${data.key}"">Remove</button>
-                        </td>`;
+
+            if (data.key !== projectEdit) {
+              content += `<td>
+              <button type="button" class="btn btn-success" id="edit_${data.key}">Edit</button>
+              </td>`;
+              content += `<td>
+              <button type="button" class="btn btn-danger" id="del_${data.key}">Remove</button>
+              </td>`;
+            }
+            else {
+              document.getElementById('anameInput').style.display = "block";
+              document.querySelector("#itemL").value = val.itemL;
+              document.querySelector("#anameInput").value = val.aname;
+              document.querySelector("#impre").value = val.impre;
+              document.querySelector("#timeA").value = val.timeA;
+              document.querySelector("#timeM").value = val.timeM;
+              document.querySelector("#timeB").value = val.timeB;
+              console.log(data.key)
+              deleteProjectRow(data.key);
+
+              content += `<td>
+          </td>`;
+              content += `<td>
+          </td>`;
+            }
             content += "</tr>";
 
             activityKey.push(data.key);
           }
         });
         content = content.trim();
-        console.log(content)
 
         if (!content) {
           content = "<tr><td colspan='9'>Project empty.</td></tr>";
@@ -428,15 +454,25 @@ function toDatabase() {
         }
 
         $("#act-table").append(content);
-        
+
+        // FOR EDIT
         activityKey.forEach((key) => {
           document
-            .querySelector("#btn_" + key)
+            .querySelector("#edit_" + key)
+            .addEventListener("click", () => {
+              editProjectRow(key);
+            });
+        });
+
+        // FOR DELETE
+        activityKey.forEach((key) => {
+          document
+            .querySelector("#del_" + key)
             .addEventListener("click", () => {
               deleteProjectRow(key);
             });
         });
-      }; 
+      };
     });
 }
 
@@ -461,7 +497,7 @@ function toDatabase1() {
         var activityKey = [];
         snapshot.forEach(function (data) {
           var val = data.val();
-          if (projectName.trim() === val.pname.trim()) {
+          if (projectName.toUpperCase().trim() === val.pname.toUpperCase().trim()) {
             content += `<tr id='workers_${data.key}'>`;
             content += "<td>" + val.labor + "</td>";
             content += "<td>" + val.laborQuantity + "</td>";
@@ -512,7 +548,7 @@ function toDatabase2() {
         var activityKey = [];
         snapshot.forEach(function (data) {
           var val = data.val();
-          if (projectName.trim() === val.pname.trim()) {
+          if (projectName.toUpperCase().trim() === val.pname.toUpperCase().trim()) {
             content += `<tr id='equipments_${data.key}'>`;
             content += "<td>" + val.equipment + "</td>";
             content += "<td>" + val.equipmentQuantity + "</td>";

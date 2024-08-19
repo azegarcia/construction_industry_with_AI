@@ -31,12 +31,13 @@ const validateItemLetter = (value) => {
       String.fromCharCode(lastLetter.charCodeAt(0) + 1)
         .trim()
         .toUpperCase()
-  ) {
-    return [
-      false,
-      `The last item letter is ${lastLetter}, please input the next letter.`,
-    ];
-  }
+  ) 
+  // {
+  //   return [
+  //     false,
+  //     `The last item letter is ${lastLetter}, please input the next letter.`,
+  //   ];
+  // }
   return [true, ""];
 };
 
