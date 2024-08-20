@@ -19,31 +19,15 @@
   <script src="js/pertcpm.js"></script>
 </head>
 <style>
-  table {
-    font-family: arial, sans-serif;
-    color: white;
-    border-collapse: collapse;
-    width: 100%;
+  * {
+    box-sizing: border-box;
   }
-  th {
-    border: 1px solid #dddddd;
-    text-align: center;
-    padding: 8px;
-    background-color: rgb(0, 63, 118);
-  }
-  td {
-    border: 1px solid #dddddd;
-    text-align: center;
-    padding: 8px;
-    color: black;
-  }
-  tr:nth-child(even) {
-    background-color: #dddddd;
-  }
+  /* Create two equal columns that floats next to each other */
   .column {
     float: left;
     width: 50%;
     padding: 10px;
+    height: 300px; /* Should be removed. Only for demonstration */
   }
   /* Clear floats after the columns */
   .row:after {
@@ -51,7 +35,7 @@
     display: table;
     clear: both;
   }
-</style>
+  </style>
 <body>
   <div id="main-part" style="display: block;">
     <div class="hero_area">
@@ -105,17 +89,18 @@
       <div class="container" style="height: 30px;">
       </div>
     </section>
-    <section class="slider_section" style="background-color: white;">
-      <div class="container" style="height: 30px;">
-        <center><input type="button" value="Print CPM" onclick="printDiv()"></center>
-      </div>
-    </section>
   </div>
-  <section class="slider_section" style="background-color: white;">
-    <div style="margin: auto;" id="cpm">
-      <img id="cpmImg" src="python-server/images/pertcpm.png" width="700" height="900">
+  <div class="row">
+    <div class="column">
+      <img id="cpmImg" src="python-server/images/pertcpm.png" width="700" height="900" style="margin-left: 300px;">
     </div>
-  </section>
+    <div class="column">
+      <br><br><br><br><br><br><br><br>
+      <center><input id="cpmbtn" type="button" value="Print CPM" onclick="printDiv()"></center>
+      <br><br>
+      <center><img id="legend" src="images/legends.png" style="height: 250px;"></center>
+    </div>
+  </div>
   <section class="slider_section" style="background-color: white;">
     <div class="container" style="height: 30px;">
     </div>
@@ -139,6 +124,8 @@
     });
     function printDiv () {
       document.getElementById('main-part').style.display = "none";
+      document.getElementById('cpmbtn').style.display = "none";
+      document.getElementById('legend').style.display = "none";
       window.print()
     }
   </script>
