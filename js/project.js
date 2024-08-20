@@ -1,10 +1,3 @@
-const validateProjectName = (value) => {
-  if (!value) {
-    return [false, "Please enter project name."];
-  }
-  return [true, ""];
-};
-
 const validateItemLetter = (value) => {
   if (!value) {
     return [false, "Please enter item letter."];
@@ -24,20 +17,7 @@ const validateItemLetter = (value) => {
   if (lastLetter === "Project empty." && value.trim().toUpperCase() !== "A") {
     return [false, `Please enter the initial letter for item letter.`];
   }
-  if (
-    lastLetter &&
-    lastLetter !== "Project empty." &&
-    value.trim().toUpperCase() !==
-      String.fromCharCode(lastLetter.charCodeAt(0) + 1)
-        .trim()
-        .toUpperCase()
-  ) 
-  // {
-  //   return [
-  //     false,
-  //     `The last item letter is ${lastLetter}, please input the next letter.`,
-  //   ];
-  // }
+
   return [true, ""];
 };
 
@@ -65,33 +45,7 @@ const validatePredecessor = (value) => {
     ];
   }
 
-  // const [isPredecessorValid, errorMessage] = isInPredecessor(value);
-  // if (value && !isPredecessorValid) {
-  //   return [false, errorMessage];
-  // }
-
   return [true, ""];
-};
-
-// const isInPredecessor = (value) => {
-//   const valueArray = value.toUpperCase().split("");
-//   const itemLetters = getCurrentItemLetters();
-
-//   for (let i = 0; i < valueArray.length; i++) {
-//     if (!itemLetters.includes(valueArray[i].toUpperCase())) {
-//       return [false, `Letter ${valueArray[i]} not found in item letters.`];
-//     }
-//   }
-
-//   return [true, ""];
-// };
-
-const getCurrentItemLetters = () => {
-  const inputs = $("#act-table tbody tr > td:first-child")
-    .toArray()
-    .map((el) => el.textContent.toUpperCase());
-
-  return inputs;
 };
 
 const isDecimal = (value, name) => {
@@ -107,28 +61,8 @@ const isDecimal = (value, name) => {
   return [true, ""];
 };
 
-const validateDate = (value) => {
-  const pattern = /\d{1,2}\/\d{1,2}\/\d{4}/;
-  if (!value) {
-    return [false, "Please enter starting date."];
-  }
-
-  if (!pattern.test(value)) {
-    return [false, "Incorrect starting date format."];
-  }
-
-  return [true, ""];
-};
-
 export const projectValidation = (inputId, inputValue) => {
   inputValue = inputValue.trim();
-  if (inputId === "pname") {
-    return validateProjectName(inputValue);
-  }
-
-  if (inputId === "startDate") {
-    return validateDate(inputValue);
-  }
 
   if (inputId === "itemL") {
     return validateItemLetter(inputValue);
