@@ -298,9 +298,9 @@ async function get(getDate) {
   for (var j = 0; j < $("#act-table tbody > tr").length; j++) {
     var itemChar = $(`#act-table tbody tr:nth-child(${j + 1}) > td`)[0]
       .textContent;
-    var impre = $(`#act-table tbody tr:nth-child(${j + 1}) > td`)[3]
+    var impre = $(`#act-table tbody tr:nth-child(${j + 1}) > td`)[2]
       .textContent;
-    var timeT = $(`#act-table tbody tr:nth-child(${j + 1}) > td`)[7]
+    var timeT = $(`#act-table tbody tr:nth-child(${j + 1}) > td`)[6]
       .textContent;
 
     var projectName = $(`#act-table tbody tr:nth-child(${j + 1}) > td`)[1]
