@@ -98,7 +98,6 @@ function submitProject(e) {
 
   var formValues = [
     "itemL",
-    "aname",
     "impre",
     "timeA",
     "timeM",

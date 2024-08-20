@@ -68,10 +68,6 @@ export const projectValidation = (inputId, inputValue) => {
     return validateItemLetter(inputValue);
   }
 
-  if (inputId === "aname") {
-    return validateActivity(inputValue);
-  }
-
   if (inputId === "impre") {
     return validatePredecessor(inputValue);
   }
