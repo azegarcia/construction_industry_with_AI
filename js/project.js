@@ -21,13 +21,6 @@ const validateItemLetter = (value) => {
   return [true, ""];
 };
 
-const validateActivity = (value) => {
-  if (!value) {
-    return [false, "Please enter activity name."];
-  }
-  return [true, ""];
-};
-
 const validatePredecessor = (value) => {
   if (value && !value.match(/[a-z]/i)) {
     return [

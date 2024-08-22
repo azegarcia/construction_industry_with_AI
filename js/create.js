@@ -14,6 +14,8 @@ firebase.initializeApp(firebaseConfig);
 $("#projectDrop").change(function () {
     if (this.value.includes('Others')){
         document.getElementById('clientname').style.display = "block";
+    } else {
+        document.getElementById('clientname').style.display = "none";
     }
 });
 

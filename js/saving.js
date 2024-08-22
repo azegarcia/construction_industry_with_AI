@@ -93,6 +93,7 @@ function getQueryParams() {
   const params = Object.fromEntries(new URLSearchParams(location.search));
   return params;
 }
+
 function submitProject(e) {
   e.preventDefault();
 
