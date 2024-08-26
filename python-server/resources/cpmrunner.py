@@ -2,6 +2,7 @@ import csv
 import pandas as pd
 import networkx as nx
 import matplotlib.pyplot as plt
+import os
 
 class CPMRunner:
     def __init__(self, csv_name, csv_data):
@@ -21,7 +22,7 @@ class CPMRunner:
         # writing to csv file
 
         print(self.csv_name)
-        with open('./data/' + self.csv_name + '.csv', 'w', newline='') as csvfile:
+        with open(os.getcwd() + '/data/' + self.csv_name + '.csv', 'w', newline='') as csvfile:
             # creating a csv dict writer object
             csvwriter = csv.writer(csvfile)
 
@@ -32,7 +33,7 @@ class CPMRunner:
             csvwriter.writerows(rows)
 
         # data = pd.read_csv("../data/data"+str(q)+".csv")
-        data = pd.read_csv(f"./data/{self.csv_name}.csv")
+        data = pd.read_csv(os.getcwd() + f"/data/{self.csv_name}.csv")
         last = data.iloc[-1, 0]
         last = chr(ord(last) + 1)
         # -------------------------------------------
@@ -183,7 +184,7 @@ class CPMRunner:
                         bbox=dict(boxstyle="round", fc="lightgrey"),
                         arrowprops=dict(arrowstyle="wedge"))
         ax.axis('off')
-        plt.savefig('python-server/images/' + str(self.csv_name) + ".png")
+        plt.savefig(os.getcwd() + '/images/' + str(self.csv_name) + ".png")
 
 
 if __name__ == "__main__":

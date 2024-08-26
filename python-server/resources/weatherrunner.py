@@ -1,5 +1,6 @@
 import re
 from datetime import datetime, timedelta
+import os
 
 class WeatherRunner:
     def __init__(self, current_date):
@@ -21,7 +22,7 @@ class WeatherRunner:
         return pday, yday, tomday
 
     def process_csv(self):
-        input_data = open('python-server/data/prediction.csv', 'r')
+        input_data = open(os.getcwd() + '/data/prediction.csv', 'r')
         pday, yday, tomday = self.get_days()
         new_csv = []
         for row in input_data:
