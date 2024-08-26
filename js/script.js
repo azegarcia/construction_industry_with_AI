@@ -17,7 +17,7 @@ const signIn = () => {
     // firebase code
     firebase.auth().signInWithEmailAndPassword(email, password)
         .then((result) => {
-            window.location.href="main.html";
+            window.location.href="main.html?verify=true";
         })
         .catch((error) => {
             console.log(error.code);

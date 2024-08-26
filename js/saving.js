@@ -303,9 +303,6 @@ async function get(getDate) {
       .textContent;
     var timeT = $(`#act-table tbody tr:nth-child(${j + 1}) > td`)[6]
       .textContent;
-
-    var projectName = $(`#act-table tbody tr:nth-child(${j + 1}) > td`)[1]
-      .textContent;
     if (impre.toUpperCase() === "START") {
       impre = "-";
     }
@@ -320,8 +317,8 @@ async function get(getDate) {
   const csvdata = csvmaker(csvData);
 
   // Download the CSV file
-  download(csvdata, projectName, getDate);
-  var csvName = projectName;
+  download(csvdata, project, getDate);
+  var csvName = project;
   await runPertCPM(csvName, csvData);
 
   let params = new URLSearchParams();
@@ -341,8 +338,6 @@ async function runPertCPM(name, data) {
       "Content-Type": "application/json",
     },
   });
-
-  
 }
 
 async function myPert() {

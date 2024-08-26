@@ -3,7 +3,6 @@ import pandas as pd
 import networkx as nx
 import matplotlib.pyplot as plt
 
-
 class CPMRunner:
     def __init__(self, csv_name, csv_data):
         self.csv_name = csv_name
@@ -184,8 +183,7 @@ class CPMRunner:
                         bbox=dict(boxstyle="round", fc="lightgrey"),
                         arrowprops=dict(arrowstyle="wedge"))
         ax.axis('off')
-        plt.savefig('./images/' + str(self.csv_name) + ".png")
-        # plt.show()
+        plt.savefig('python-server/images/' + str(self.csv_name) + ".png")
 
 
 if __name__ == "__main__":
