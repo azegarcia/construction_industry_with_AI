@@ -58,11 +58,12 @@ function toDatabase() {
     var params = getQueryParams();
     var projectName = params.projectname;
     if (projectName) {
-        document.getElementById('editproject').textContent = "Edit " + projectName + ' Project';
+        document.getElementById('editproject').textContent = 'Edit Project';
         document.getElementById('projectlabel').textContent = projectName + ' Project Check';
-        document.getElementById('schedulelabel').textContent = projectName + ' Schedule (Diagram)';
-        document.getElementById('manpowerlabel').textContent = projectName + ' Man Power, Equipment Assignment and Overtime Calculations';
-        document.getElementById('documentslabel').textContent = projectName + ' Documents';
+        document.getElementById('schedulelabel').textContent = 'Schedule (Diagram)';
+        document.getElementById('manpowerlabel').textContent = 'Man Power, Equipment Assignment and Overtime Calculations';
+        document.getElementById('projectaccomlabel').textContent = 'Progress Accomplishment';
+        document.getElementById('documentslabel').textContent = 'Documents';
         document.getElementById('sectionPart').style.display = "block";
     }
     else {
