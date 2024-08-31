@@ -184,6 +184,7 @@ function toDatabase1() {
       if (snapshot.exists()) {
         var content = "";
         var totalContent = "";
+        var sumContent = "";
         var activityKey = [];
         snapshot.forEach(function (data) {
           var val = data.val();
@@ -316,7 +317,7 @@ function toDatabase3() {
         });
         $("#ot-table").append(content);
         $("#result-table").append(totalContent);
-
+        totalofAll();
         activityKey.forEach((key) => {
           document
             .querySelector("#overtime_" + key)
@@ -326,6 +327,33 @@ function toDatabase3() {
         });
       }
     });
+}
+
+function totalofAll() {
+  var total_list = [];
+  for (var j = 0; j < $("#result-table > tbody > tr").length; j++) {
+    if ((j + 1) % 2 == 1) {
+      var indiv = document.querySelector(`#result-table > tbody > tr:nth-child(${j + 1}) > td > div:nth-child(2)`).textContent;
+      cleaned_indiv = indiv.replace("₱ ", "").replace(",", "")
+      total_list.push(parseInt(cleaned_indiv));
+    } else {
+      continue
+    }
+  }
+  let sum = 0;
+  for (let i = 0; i < total_list.length; i++) {
+    sum += total_list[i];
+  }
+  var showTotal = "";
+
+  showTotal += "<tr>";
+  showTotal +=
+  "<td style='display:flex; justify-content: space-between;background-color:green;'><div><b>TOTAL</b></div><div>₱ " +
+  sum.toLocaleString(); +
+  "</div></td>";
+  showTotal += "<tr>";
+
+  $("#total-table").append(showTotal);
 }
 
 toDatabase1();
