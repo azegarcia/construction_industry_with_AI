@@ -32,6 +32,13 @@ function editPage(loc) {
     window.location = loc + "?clientname=" + clientName + "&projectname=" + projectName + "&startdate=" + startDate;
 }
 
+function progressPage(loc) {
+    var params = getQueryParams();
+    var projectName = params.projectname;
+    var startDate = params.startdate;
+    window.location = loc + "?file=" + projectName + "&startdate=" + startDate;
+}
+
 function toDatabase() {
     var database = firebase.database();
     var projectNameList = [];
