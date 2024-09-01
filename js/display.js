@@ -38,8 +38,8 @@ function toDatabase() {
     database.ref('collected_data').child('activity').once('value', function (snapshot) {
         if (snapshot.exists()) {
             var content = '';
+            var def_link = "pertcpm.html?file=" + projectName;
             snapshot.forEach(function (data) {
-                // console.log('data', data.key);  getting key of the row
                 var val = data.val();
                 if (!projectNameList.includes(val.pname)) {
                     projectNameList.push(val.pname);
@@ -51,8 +51,15 @@ function toDatabase() {
                                 </td>`;
                     content += '</tr>';
                 }
+                if (projectName == val.pname) {
+                    def_link += "&" + val.itemL + "=" + val.aname
+                }
             });
             $('#client_list').append(content);
+            document.getElementById("pertBtn").addEventListener("click", () => {
+                window.location = def_link;
+                
+            });
         }
     });
     var params = getQueryParams();
