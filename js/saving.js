@@ -246,106 +246,6 @@ function saveMessage2(
   });
 }
 
-// Function to download the CSV file
-const download = (data, projectName, getDate) => {
-  // Create a Blob with the CSV data and type
-  const blob = new Blob([data], { type: "text/csv" });
-
-  // Create a URL for the Blob
-  const url = URL.createObjectURL(blob);
-
-  // Create an anchor tag for downloading
-  const a = document.createElement("a");
-
-  // Set the URL and download attribute of the anchor tag
-  a.href = url;
-  a.download = "download_" + projectName + "_" + getDate + ".csv";
-
-  // Trigger the download by clicking the anchor tag
-  a.click();
-};
-
-const dateToday = () => {
-  var today = new Date();
-
-  var dd = String(today.getDate()).padStart(2, "0");
-  var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-  var yyyy = today.getFullYear();
-  var hour = today.getHours();
-  var minute = today.getMinutes();
-  var secs = today.getSeconds();
-
-  today = mm + "-" + dd + "-" + yyyy + "_" + hour + minute + secs;
-  return today;
-};
-
-// Function to create a CSV string from an object
-const csvmaker = (data) => {
-  // Get the keys (headers) of the object
-  var headers = data.headers;
-
-  // Get the values of the object
-  var values = data.values;
-  var rows = [];
-  for (var i = 0; i < values.length; i++) {
-    rows.push(values[i].join(","));
-  }
-
-  return [headers.join(","), rows.join("\n")].join("\n");
-};
-
-async function get(getDate) {
-  var rows = [];
-  for (var j = 0; j < $("#act-table tbody > tr").length; j++) {
-    var itemChar = $(`#act-table tbody tr:nth-child(${j + 1}) > td`)[0]
-      .textContent;
-    var impre = $(`#act-table tbody tr:nth-child(${j + 1}) > td`)[2]
-      .textContent;
-    var timeT = $(`#act-table tbody tr:nth-child(${j + 1}) > td`)[6]
-      .textContent;
-    if (impre.toUpperCase() === "START") {
-      impre = "-";
-    }
-    rows.push([itemChar, impre, timeT]);
-  }
-
-  var csvData = {
-    headers: ["ac", "pr", "du"],
-    values: rows,
-  };
-  // Create the CSV string from the data
-  const csvdata = csvmaker(csvData);
-
-  // Download the CSV file
-  download(csvdata, project, getDate);
-  var csvName = project;
-  await runPertCPM(csvName, csvData);
-
-  let params = new URLSearchParams();
-  params.set("file", csvName);
-
-  return "/pertcpm.html?" + params.toString();
-}
-
-async function runPertCPM(name, data) {
-  console.log("runPertCPM", runPertCPM);
-
-  const json = JSON.stringify({ cpm_data: data });
-
-  const res = await axios.post("http://localhost:5000/cpm/" + name, json, {
-    headers: {
-      // Overwrite Axios's automatically set Content-Type
-      "Content-Type": "application/json",
-    },
-  });
-}
-
-async function myPert() {
-  var getDate = dateToday();
-  var params = await get(getDate);
-  window.location.href = params;
-}
-
 function editProjectRow(projectKey) {
   window.location.href = window.location.href + "&edit=" + projectKey;
 }
@@ -567,7 +467,9 @@ function toDatabase2() {
         });
         $("#equipment-table").append(content);
         $("#result-table").append(totalContent);
+
         totalofAll();
+
         activityKey.forEach((key) => {
           document
             .querySelector("#equipments_" + key)
@@ -581,7 +483,6 @@ function toDatabase2() {
 
 function totalofAll() {
   var total_list = [];
-  console.log(("#result-table > tbody > tr").length)
   for (var j = 0; j < $("#result-table > tbody > tr").length; j++) {
     if ((j + 1) % 2 == 1) {
       var indiv = document.querySelector(`#result-table > tbody > tr:nth-child(${j + 1}) > td > div:nth-child(2)`).textContent;
@@ -605,6 +506,120 @@ function totalofAll() {
   showTotal += "<tr>";
 
   $("#total-table").append(showTotal);
+}
+
+function getTableContents() {
+  var row_contents = [];
+  for (var j = 0; j < $("#act-table > tbody > tr").length; j++) {
+    var item = document.querySelector(`#act-table > tbody > tr:nth-child(${j + 1}) > td:nth-child(1)`).textContent;
+    var act_name = document.querySelector(`#act-table > tbody > tr:nth-child(${j + 1}) > td:nth-child(2)`).textContent;
+    row_contents.push([item, act_name]);
+  }
+  return row_contents;
+}
+
+// PERT CPM PART --------------------------------------------------------------------------------------
+// Function to download the CSV file
+const download = (data, projectName, getDate) => {
+  // Create a Blob with the CSV data and type
+  const blob = new Blob([data], { type: "text/csv" });
+
+  // Create a URL for the Blob
+  const url = URL.createObjectURL(blob);
+
+  // Create an anchor tag for downloading
+  const a = document.createElement("a");
+
+  // Set the URL and download attribute of the anchor tag
+  a.href = url;
+  a.download = "download_" + projectName + "_" + getDate + ".csv";
+
+  // Trigger the download by clicking the anchor tag
+  a.click();
+};
+
+const dateToday = () => {
+  var today = new Date();
+
+  var dd = String(today.getDate()).padStart(2, "0");
+  var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+  var yyyy = today.getFullYear();
+  var hour = today.getHours();
+  var minute = today.getMinutes();
+  var secs = today.getSeconds();
+
+  today = mm + "-" + dd + "-" + yyyy + "_" + hour + minute + secs;
+  return today;
+};
+
+// Function to create a CSV string from an object
+const csvmaker = (data) => {
+  // Get the keys (headers) of the object
+  var headers = data.headers;
+
+  // Get the values of the object
+  var values = data.values;
+  var rows = [];
+  for (var i = 0; i < values.length; i++) {
+    rows.push(values[i].join(","));
+  }
+
+  return [headers.join(","), rows.join("\n")].join("\n");
+};
+
+async function get(getDate) {
+  var rows = [];
+  for (var j = 0; j < $("#act-table tbody > tr").length; j++) {
+    var itemChar = $(`#act-table tbody tr:nth-child(${j + 1}) > td`)[0]
+      .textContent;
+    var impre = $(`#act-table tbody tr:nth-child(${j + 1}) > td`)[2]
+      .textContent;
+    var timeT = $(`#act-table tbody tr:nth-child(${j + 1}) > td`)[6]
+      .textContent;
+    if (impre.toUpperCase() === "START") {
+      impre = "-";
+    }
+    rows.push([itemChar, impre, timeT]);
+  }
+
+  var csvData = {
+    headers: ["ac", "pr", "du"],
+    values: rows,
+  };
+  // Create the CSV string from the data
+  const csvdata = csvmaker(csvData);
+
+  // Download the CSV file
+  download(csvdata, project, getDate);
+  var csvName = project;
+  await runPertCPM(csvName, csvData);
+
+  var def_link = "/pertcpm.html?file=" + csvName;
+  let table_contents = getTableContents();
+  for (let x of table_contents) {
+    def_link += "&" + x[0] + "=" + x[1]
+  }
+
+  return def_link;
+}
+
+async function runPertCPM(name, data) {
+  console.log("runPertCPM", runPertCPM);
+
+  const json = JSON.stringify({ cpm_data: data });
+
+  const res = await axios.post("http://localhost:5000/cpm/" + name, json, {
+    headers: {
+      // Overwrite Axios's automatically set Content-Type
+      "Content-Type": "application/json",
+    },
+  });
+}
+
+async function myPert() {
+  var getDate = dateToday();
+  var params = await get(getDate);
+  window.location.href = params;
 }
 
 toDatabase();

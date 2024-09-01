@@ -154,7 +154,7 @@ class CPMRunner:
         fig, ax = plt.subplots(figsize=(15, 15))
         pos = nx.nx_agraph.graphviz_layout(G2, prog='dot')
         nx.draw(G2, pos=pos, ax=ax, with_labels=True, font_weight='bold')
-        nx.draw_networkx_edges(G2, pos, edge_color='olive',
+        nx.draw_networkx_edges(G2, pos, edge_color='black',
                                width=1, arrowstyle='simple', arrowsize=20, min_source_margin=25, min_target_margin=25)
         crt = []
         notcrt = []
@@ -163,12 +163,12 @@ class CPMRunner:
                 crt.append(j)
             else:
                 notcrt.append(j)
-        nx.draw_networkx_nodes(G2, pos, node_size=2000,
-                               node_color='seagreen', ax=ax, nodelist=crt)
+        nx.draw_networkx_nodes(G2, pos, node_size=3000,
+                               node_color='red', ax=ax, nodelist=crt)
         nx.draw_networkx_nodes(G2, pos, node_size=1000,
-                               node_color='wheat', ax=ax, nodelist=notcrt)
+                               node_color='blue', ax=ax, nodelist=notcrt)
         nx.draw_networkx_labels(G2, pos, ax=ax, font_weight="bold",
-                                font_color="black", font_size=16)
+                                font_color="white", font_size=16)
 
         def without(d, keys={"Name"}):
             return {x: d[x] for x in d if x not in keys}

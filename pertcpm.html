@@ -35,6 +35,22 @@
     display: table;
     clear: both;
   }
+  table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 50%;
+  }
+
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: center;
+    padding: 3px;
+    font-size: small;
+  }
+
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
 </style>
 <body>
   <div id="main-part" style="display: block;">
@@ -92,13 +108,24 @@
   </div>
   <div class="row">
     <div class="column">
-      <img id="cpmImg" src="python-server/images/pertcpm.png" width="700" height="900" style="margin-left: 300px;">
+      <img id="cpmImg" src="python-server/images/pertcpm.png" width="700" height="900" style="margin-left: 300px;position:relative;">
     </div>
     <div class="column">
-      <br><br><br><br><br><br><br><br>
       <center><input id="cpmbtn" type="button" value="Print CPM" onclick="printDiv()"></center>
       <br><br>
-      <center><img id="legend" src="images/legends1.png" style="height: 250px;"></center>
+      <center><img id="legend" src="images/legends2.png" style="height: 250px;"></center>
+      <br><br>
+      <center>
+      <table id="act_list">
+        <thead style="background-color: #1a1e9b;color:white;">
+          <tr>
+            <th>Item</th>
+            <th>Activity Name</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      </center>
     </div>
   </div>
   <section class="slider_section" style="background-color: white;">
@@ -120,7 +147,19 @@
       var params = getQueryParams();
       console.log(params);
       var file = params.file;
+      var activities = "";
       $("img#cpmImg").attr("src", "python-server/images/" + file + ".png");
+      for (const [key, value] of Object.entries(params)) {
+        if (key == "file") {
+          continue
+        }
+        activities += "<tr>";
+        activities += "<td>" + key; + "</td>";
+        activities += "<td>" + value; + "</td>";
+        activities += "<tr>";
+      }
+
+      $("#act_list").append(activities);
     });
     function printDiv () {
       document.getElementById('main-part').style.display = "none";
