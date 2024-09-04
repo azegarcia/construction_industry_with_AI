@@ -32,68 +32,42 @@ function getInputVal(id) {
 
 document.getElementById("add_input").addEventListener("submit", submitProject);
 
-document.getElementById("addprogress").addEventListener("click", () => {
-    document.getElementById('add_row').style.display = "block";
-    document.getElementById('addprogress').style.display = "none";
-});
-
 function submitProject(e) {
     e.preventDefault();
-
-    var formValues = [
-        "givendate",
-        "previous",
-        "thisperiod",
-        "cummulative"
-    ];
-
-    // Get values
-    var projectDetail = {};
   
-    formValues.forEach((field) => {
-      projectDetail[field] = getInputVal(field);
-    });
-  
-    
-    var anameInput = document.getElementById('activityInput').value;
-    var itemLetter = "";
-    var anamevalue = "";
+    var anamevalue = document.getElementById('activityname').textContent;
+    var itemLetter = document.getElementById('itemLetter').textContent;
+    var givenDate = document.getElementById('givendate').value;
+    var previous = document.getElementById('previous').value;
+    var thisPeriod = document.getElementById('thisperiod').value;
 
-    if (anameInput == "") {
-        itemLetter = document.getElementById('activityname').value;
-        anamevalue = document.querySelector('#activityname option:checked').textContent;
-    } else {
-        itemLetter = document.getElementById('itemLetter').value;
-        anamevalue = document.getElementById('activityInput').value;
-    }
-
-    saveProject(projectDetail, itemLetter, anamevalue);
+    saveProject(itemLetter, anamevalue, givenDate, previous, thisPeriod);
     document.getElementById("add_input").reset();
     toDatabase();
     document.getElementById('add_row').style.display = "none";
-    document.getElementById('addprogress').style.display = "block";
 }
   
 // Save message to firebase
-function saveProject(projectDetail, itemL, aname) {
+function saveProject(itemL, aname, givendate, previous, thisperiod) {
     let newMessageRef = messagesRef.push();
     newMessageRef.set({
-        ...projectDetail,
         itemL: itemL,
         aname: aname,
-        pname: projectName
+        pname: projectName,
+        givendate: givendate,
+        thisperiod: thisperiod,
+        previous: previous,
+        cummulative: (parseInt(previous) + parseInt(thisperiod))
     });
 }
 
 function deleteToDatabase(table, key) {
     var database = firebase.database();
-    // create DatabaseReference
     const dbRef = database.ref(`collected_data/${table}/` + key);
     dbRef.remove();
 }
 
 function editProjectRow(projectKey) {
-
     window.location.href = window.location.href + "&edit=" + projectKey;
 }
 
@@ -116,7 +90,7 @@ function toDatabase() {
         if (snapshot.exists()) {
           var content = "";
           var activityKey = [];
-          var str = "";
+          var progressKey = [];
           snapshot.forEach(function (data) {
             var val = data.val();
             if (projectName.toUpperCase().trim() === val.pname.toUpperCase().trim()) {
@@ -129,76 +103,95 @@ function toDatabase() {
                     content += "<td></td>";
                     content += "<td></td>";
                     content += "<td></td>";
-                    content += `<td></td>`;
-                    content += `<td></td>`;    
+                    content += `<td>
+                    <button type="button" class="btn btn-primary" id="add_${data.key}">Add</button>
+                    </td>`;
+                    content += `<td>
+                    <button type="button" class="btn btn-secondary" id="edit_${data.key}" disabled>Edit</button>
+                    </td>`;
+                    content += `<td>
+                    <button type="button" class="btn btn-danger" id="del_${data.key}" disabled>Remove</button>
+                    </td>`;
+
+                    activityKey.push(data.key);
                 } else {
                     content += `<tr id='${data.key}' ${bgColor}>`;
                     content += "<td>" + val.itemL + "</td>";
                     content += "<td>" + val.aname + "</td>";
                     content += "<td>" + val.givendate + "</td>";
-                    content += "<td>" + val.previous + "</td>";
-                    content += "<td>" + val.thisperiod + "</td>";
-                    content += "<td>" + val.cummulative + "</td>";
+                    content += "<td>" + val.previous + "%</td>";
+                    content += "<td>" + val.thisperiod + "%</td>";
+                    content += "<td>" + val.cummulative + "%</td>";
 
                     if (data.key === projectEdit) {
                         content += `<td>
-                        <button type="button" class="btn btn-primary" id="edit_${data.key}" disabled>Edit</button>
+                        <button type="button" class="btn btn-primary" id="add_${data.key}" disabled>Add</button>
+                        </td>`;
+                        content += `<td>
+                        <button type="button" class="btn btn-secondary" id="edit_${data.key}" disabled>Edit</button>
                         </td>`;
                         content += `<td>
                         <button type="button" class="btn btn-danger" id="del_${data.key}" disabled>Remove</button>
                         </td>`;
 
                         // whole process for edit
-                        document.getElementById('addprogress').style.display = "none";
                         document.getElementById('add_row').style.display = "block";
-                        document.getElementById('activityname').style.display = "none";
-                        document.getElementById('itemLetter').style.display = "block";
-                        document.getElementById('itemLetter').value = val.itemL;
-                        document.getElementById('activityInput').style.display = "block";
-                        document.getElementById('activityInput').value = val.aname;
+                        document.getElementById('itemLetter').textContent = val.itemL;
+                        document.getElementById('activityname').textContent = val.aname;
                         document.getElementById('givendate').value = val.givendate;
                         document.getElementById('previous').value = val.previous;
                         document.getElementById('thisperiod').value = val.thisperiod;
-                        document.getElementById('cummulative').value = val.cummulative;
+                        // set previous input textbox as read only when edit
+                        document.getElementById('previous').readOnly = true;
+                        document.getElementById('thisperiod').readOnly = true;
                         document.getElementById("add_input").addEventListener("submit", () => {
                             submitProject;
                             deleteProjectRow(projectEdit);
                             document.getElementById('add_row').style.display = "none";
-                            document.getElementById('addprogress').style.display = "block";
                             window.location.href = "progress.html?file=" + projectName + "&startdate=" + startDate;
                         });
 
                     } else {
                         content += `<td>
-                        <button type="button" class="btn btn-primary" id="edit_${data.key}">Edit</button>
+                        <button type="button" class="btn btn-primary" id="add_${data.key}" disabled>Add</button>
+                        </td>`;
+                        content += `<td>
+                        <button type="button" class="btn btn-secondary" id="edit_${data.key}">Edit</button>
                         </td>`;
                         content += `<td>
                         <button type="button" class="btn btn-danger" id="del_${data.key}">Remove</button>
                         </td>`;
                     }
 
-                    activityKey.push(data.key);
+                    progressKey.push(data.key);
                 }
-            
                 content += "</tr>";
-
-                str += `<option value='${val.itemL}'>` + val.aname + "</option>"
-                document.getElementById("activityname").innerHTML = str;
             }
         });
   
         $("#act-table").append(content);
-        console.log(activityKey)
+        
+
+        // FOR ADD
+        activityKey.forEach((key) => {
+            document.querySelector("#add_" + key).addEventListener("click", () => {
+                document.getElementById('add_row').style.display = "block";
+                var itemL = document.querySelector('#' + key + '> td:nth-child(1)').textContent;
+                var aname = document.querySelector('#' + key + '> td:nth-child(2)').textContent;
+                document.getElementById('itemLetter').textContent = itemL;
+                document.getElementById('activityname').textContent = aname;
+            });
+        });
 
         // FOR EDIT
-        activityKey.forEach((key) => {
+        progressKey.forEach((key) => {
             document.querySelector("#edit_" + key).addEventListener("click", () => {
                 editProjectRow(key);
             });
         });
   
         // FOR DELETE
-        activityKey.forEach((key) => {
+        progressKey.forEach((key) => {
             document.querySelector("#del_" + key).addEventListener("click", () => {
                 deleteProjectRow(key);
             });

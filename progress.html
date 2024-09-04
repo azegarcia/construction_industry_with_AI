@@ -128,18 +128,16 @@
                 <br>
                 <b><label>STARTING DATE: </label></b>
                 <label id="startingdate"></label>
+                <br>
+                <button type="submit" class="btn btn-primary">Print</button>
             </div>
-            <div class="col-md-6 mb-3">
-                <button id="addprogress" type="submit" class="btn btn-success" style="display: block;float: right;">Add Progress</button>
-            </div>
-            <div id="add_row" style="border-radius: 5px;background-color: #f2f2f2;padding: 20px;width: 50%;display: none;">
+            <div id="add_row" style="border-radius: 5px;background-color: rgb(242, 242, 242);padding: 20px;width: 50%;display: none;">
                 <form id="add_input" style="border: black;">
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <input type="text" id="itemLetter" name="itemLetter" style="display: none;width: 10%;color: blue;" readonly/>
-                            <b><label for="activityname">Activity Name: </label></b>
-                            <select id="activityname" name="activityname" style="width: 100%;display: block;"></select>
-                            <input type="text" id="activityInput" name="activityname" style="display: none;width: 200%;color: red;" readonly/>
+                            <label id="itemLetter" name="itemLetter" style="color: red;"></label>
+                            <label>:</label>
+                            <label id="activityname" name="activityname" style="color: red;"></label>
                         </div>
                     </div>
                     <div class="row">
@@ -147,14 +145,11 @@
                             <b><label for="givendate">Date: </label></b>
                             <input type="text" id="givendate" name="givendate"/>
                             <br>
-                            <b><label for="previous">Previous (%): </label></b>
-                            <input type="number" id="previous" name="previous"/>
+                            <b><label for="thisperiod">Previous (%): </label></b>
+                            <input type="number" id="previous" name="previous" style="width: 50%;"/>
                             <br>
                             <b><label for="thisperiod">This period (%): </label></b>
-                            <input type="number" id="thisperiod" name="thisperiod"/>
-                            <br>
-                            <b><label for="cummulative">Cummulative (%): </label></b>
-                            <input type="number" id="cummulative" name="cummulative"/>
+                            <input type="number" id="thisperiod" name="thisperiod" style="width: 43%;"/>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
@@ -173,7 +168,7 @@
             <th>Item</th>
             <th>Activity Name</th>
             <th colspan="4">Progress Accomplishment</th>
-            <th colspan="2">Options</th>
+            <th colspan="3">Options</th>
           </tr>
         </thead>
         <thead>
@@ -184,6 +179,7 @@
               <th>PREVIOUS %</th>
               <th>THIS PERIOD %</th>
               <th>CUMMULATIVE %</th>
+              <th>Add</th>
               <th>Edit</th>
               <th>Remove</th>
             </tr>
