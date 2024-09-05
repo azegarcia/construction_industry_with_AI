@@ -34,9 +34,10 @@ function editPage(loc) {
 
 function progressPage(loc) {
     var params = getQueryParams();
+    var clientName = params.clientname;
     var projectName = params.projectname;
     var startDate = params.startdate;
-    window.location = loc + "?file=" + projectName + "&startdate=" + startDate;
+    window.location = loc + "?client=" + clientName + "&file=" + projectName + "&startdate=" + startDate;
 }
 
 function toDatabase() {

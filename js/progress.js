@@ -17,9 +17,11 @@ return params;
 }
 
 var params = getQueryParams();
+let clientName = params.client;
 let projectName = params.file;
 let startDate = params.startdate;
 if (projectName) {
+    document.getElementById('clientname').textContent = clientName;
     document.getElementById('projectname').textContent = projectName;
     document.getElementById('startingdate').textContent = startDate;
 }

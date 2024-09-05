@@ -52,7 +52,7 @@
     }
   </style>
   <body>
-    <div class="hero_area">
+    <div class="hero_area" id="tab" style="display: block;">
       <header
         class="header_section"
         style="
@@ -99,8 +99,8 @@
       </header>
     </div>
     <br /><br /><br />
-    <section class="slider_section" style="border: 5px solid gray">
-      <div class="container" style="height: 300px">
+    <section id="headersection" class="slider_section" style="border: 5px solid gray ;display: block;">
+      <div class="container" style="height: 300px;">
         <div class="row" style="height: 300px">
           <div class="col-md-6" style="height: 300px">
             <div class="detail-box">
@@ -122,14 +122,17 @@
     <section class="slider_section" style="background-color: white">
     <div class="container">
         <div class="row">
-            <div class="col-md-6 mb-3">
+            <div class="col-md-6 mb-3" id="progressDetails">
+                <b><label>CLIENT: </label></b>
+                <label id="clientname"></label>
+                <br>
                 <b><label>PROJECT: </label></b>
                 <label id="projectname"></label>
                 <br>
                 <b><label>STARTING DATE: </label></b>
                 <label id="startingdate"></label>
                 <br>
-                <button type="submit" class="btn btn-primary">Print</button>
+                <input id="progressbtn" type="button" value="Print" onclick="printDiv()">
             </div>
             <div id="add_row" style="border-radius: 5px;background-color: rgb(242, 242, 242);padding: 20px;width: 50%;display: none;">
                 <form id="add_input" style="border: black;">
@@ -196,5 +199,13 @@
     <script type="module" src="js/progress.js"></script>
     <script src="js/bootstrap.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script>
+      function printDiv () {
+        document.getElementById('tab').style.display = "none";
+        document.getElementById('headersection').style.display = "none";
+        document.getElementById('progressbtn').style.display = "none";
+        window.print()
+      }
+    </script>
   </body>
 </html>
