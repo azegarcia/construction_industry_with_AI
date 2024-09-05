@@ -150,7 +150,7 @@ function toDatabase() {
                             submitProject;
                             deleteProjectRow(projectEdit);
                             document.getElementById('add_row').style.display = "none";
-                            window.location.href = "progress.html?file=" + projectName + "&startdate=" + startDate;
+                            window.location.href = "progress.html?client=" + clientName + "&file=" + projectName + "&startdate=" + startDate;
                         });
 
                     } else {
