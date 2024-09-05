@@ -297,7 +297,7 @@ function toDatabase() {
         var activityKey = [];
         snapshot.forEach(function (data) {
           var val = data.val();
-          if (projectName.toUpperCase().trim() === val.pname.toUpperCase().trim()) {
+          if ((projectName.toUpperCase().trim() === val.pname.toUpperCase().trim()) && (!val.givendate)){
             var bgColor = '';
             if (data.key === projectEdit) {
               bgColor = 'style="background: yellow;"';
