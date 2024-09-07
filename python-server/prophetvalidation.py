@@ -5,6 +5,7 @@ from prophet import Prophet
 
 import pandas as pd
 import numpy as np
+import csv
 from datetime import datetime
 
 def transform_csv():
@@ -78,9 +79,42 @@ if __name__=="__main__":
     model.fit(list_to_df)
     
     # cross validate to check efficiency
-    df_cv = cross_validation(model, initial='1825 days', period='180 days', horizon='365 days', parallel='processes')
-    # df_cv.head()
-    # print(df_cv)
+    # horizon - how frequent you want to predict (5 years == 1826 days)
+    # period - making predictions every year (period == 365 days)
+    # initial - should be twice or equal to the value of horizon
+    df_cv = cross_validation(model, initial='1826 days', period='365 days', horizon='1825 days')
     df_p = performance_metrics(df_cv)
-    # df_p.head()
-    print(df_p) 
+
+    # save to csv the trained data
+    filename = "prophetvalidation.csv"
+    df_p.to_csv(filename)
+    
+    # read csv
+    df = pd.read_csv(filename, usecols=['horizon', 'smape'])
+    df = df.rename(columns={'horizon': 'Day', 'smape' : 'Percentage'})
+
+    days_list = df['Day'].tolist()
+    percentage_list = df['Percentage'].tolist()
+
+    for d, p in zip(days_list, percentage_list):
+        if "365" in d:
+            day = d.replace("days", "").strip()
+            per = 100 - (float(p) * 100)
+            print("Day: {} --> {}%".format(day, per))
+        if "730" in d:
+            day = d.replace("days", "").strip()
+            per = 100 - (float(p) * 100)
+            print("Day: {} --> {}%".format(day, per))
+        if "1095" in d:
+            day = d.replace("days", "").strip()
+            per = 100 - (float(p) * 100)
+            print("Day: {} --> {}%".format(day, per))
+        if "1460" in d:
+            day = d.replace("days", "").strip()
+            per =  100 - (float(p) * 100)
+            print("Day: {} --> {}%".format(day, per))
+        if "1825" in d:
+            day = d.replace("days", "").strip()
+            per = 100 - (float(p) * 100)
+            print("Day: {} --> {}%".format(day, per))
+
