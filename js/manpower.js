@@ -196,7 +196,7 @@ function toDatabase1() {
             content += "<td>" + val.laborHours + "</td>";
             content += "<td>" + val.laborSalary + "</td>";
             content +=
-              '<td><button type="button" class="btn btn-danger">Remove</button></td>';
+              '<td><button id="removebtn" type="button" class="btn btn-danger">Remove</button></td>';
             content += "</tr>";
 
             totalContent += "<tr>";
@@ -248,7 +248,7 @@ function toDatabase2() {
             content += "<td>" + val.equipmentDays + "</td>";
             content += "<td>" + val.equipmentCost + "</td>";
             content +=
-              '<td><button type="button" class="btn btn-danger">Remove</button></td>';
+              '<td><button id="removebtn" type="button" class="btn btn-danger">Remove</button></td>';
             content += "</tr>";
 
             totalContent += "<tr>";
@@ -300,7 +300,7 @@ function toDatabase3() {
             content += "<td>" + val.OTlaborHours + "</td>";
             content += "<td>" + val.OTlaborSalary + "</td>";
             content +=
-              '<td><button type="button" class="btn btn-danger">Remove</button></td>';
+              '<td><button id="removebtn" type="button" class="btn btn-danger">Remove</button></td>';
             content += "</tr>";
 
             totalContent += "<tr>";

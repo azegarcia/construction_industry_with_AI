@@ -165,7 +165,7 @@
       document.getElementById('main-part').style.display = "none";
       document.getElementById('cpmbtn').style.display = "none";
       document.getElementById('legend').style.display = "none";
-      var css = '@page { size: legal landscape; margin-top: 5px; }',
+      var css = '@page { size: legal landscape; margin-top: 2px; }',
       head = document.head || document.getElementsByTagName('head')[0],
       style = document.createElement('style');
 
@@ -181,6 +181,7 @@
       head.appendChild(style);
 
       window.print();
+      history.back();
       }
   </script>
 </body>

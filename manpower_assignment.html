@@ -109,7 +109,7 @@
                 <th>Quantity</th>
                 <th>Hours</th>
                 <th>Salary per hour</th>
-                <th colspan="2"></th>
+                <th id="option"></th>
                 </tr>
             </thead>
             <tbody>
@@ -127,7 +127,7 @@
                   <input type="text" id="laborSalary" name="laborSalary" style="width: 30%;" required> /hour
                 </td>
                 <td>
-                  <button type="submit" class="btn btn-success">Add</button>
+                  <button id="addbtn" type="submit" class="btn btn-success">Add</button>
                 </td>
                 </tr>
             </tbody>
@@ -150,7 +150,7 @@
               <th>Quantity</th>
               <th>Hours</th>
               <th>OT per hour</th>
-              <th colspan="2"></th>
+              <th id="option"></th>
               </tr>
           </thead>
           <tbody>
@@ -168,7 +168,7 @@
               <input type="text" id="OTlaborSalary" name="OTlaborSalary" style="width: 30%;" required> /hour
             </td>
             <td>
-              <button type="submit" class="btn btn-success">Add</button>
+              <button id="addbtn" type="submit" class="btn btn-success">Add</button>
             </td>
             </tr>
           </tbody>
@@ -186,7 +186,7 @@
                 <th>Quantity</th>
                 <th>Days</th>
                 <th>Cost per day</th>
-                <th colspan="2"></th>
+                <th id="option"></th>
             </tr>
           </thead>
           <tbody>
@@ -204,7 +204,7 @@
                 <input type="text" id="equipmentCost" name="equipmentCost" style="width: 30%;" required> /day
               </td>
               <td>
-                <button type="submit" class="btn btn-success">Add</button>
+                <button id="addbtn" type="submit" class="btn btn-success">Add</button>
               </td>
             </tr>
           </tbody>
@@ -261,7 +261,20 @@
     function printDiv () {
       document.getElementById('main-part').style.display = "none";
       document.getElementById('printbtn').style.display = "none";
-      window.print()
+      var opt = document.querySelectorAll('#option');
+      for (var a = 0; a < opt.length; a++) {
+        opt[a].style.display = 'none';
+      }
+      var add = document.querySelectorAll('#addbtn');
+      for (var b = 0; b < add.length; b++) {
+        add[b].style.display = 'none';
+      }
+      var remove = document.querySelectorAll('#removebtn');
+      for (var c = 0; c < remove.length; c++) {
+        remove[c].style.display = 'none';
+      }
+      window.print();
+      history.back();
     }
   </script>
 </body>
