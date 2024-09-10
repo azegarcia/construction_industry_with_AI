@@ -20,8 +20,8 @@ $("#projectDrop").change(function () {
 });
 
 function createClient() {
-    let cname = getInputVal("projectDrop")
-    let cnameOthers = getInputVal("clientname")
+    let cname = getInputVal("projectDrop");
+    let cnameOthers = getInputVal("clientname");
     let pname = getInputVal("projectname");
     let sdate = getInputVal("sdate");
     let params = new URLSearchParams();
