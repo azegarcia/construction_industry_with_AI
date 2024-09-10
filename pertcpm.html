@@ -108,7 +108,7 @@
   </div>
   <div class="row">
     <div class="column">
-      <img id="cpmImg" src="python-server/images/pertcpm.png" width="700" height="900" style="margin-left: 300px;position:relative;">
+      <img id="cpmImg" src="python-server/images/pertcpm.png" width="700" height="900" style="margin-left: 100px;position:relative;">
     </div>
     <div class="column">
       <center><input id="cpmbtn" type="button" value="Print CPM" onclick="printDiv()"></center>
@@ -165,8 +165,23 @@
       document.getElementById('main-part').style.display = "none";
       document.getElementById('cpmbtn').style.display = "none";
       document.getElementById('legend').style.display = "none";
-      window.print()
-    }
+      var css = '@page { size: legal landscape; margin-top: 5px; }',
+      head = document.head || document.getElementsByTagName('head')[0],
+      style = document.createElement('style');
+
+      style.type = 'text/css';
+      style.media = 'print';
+
+      if (style.styleSheet){
+        style.styleSheet.cssText = css;
+      } else {
+        style.appendChild(document.createTextNode(css));
+      }
+
+      head.appendChild(style);
+
+      window.print();
+      }
   </script>
 </body>
 </html>
