@@ -129,7 +129,7 @@
                 <b><label>PROJECT: </label></b>
                 <label id="projectname"></label>
                 <br>
-                <b><label>STARTING DATE: </label></b>
+                <b><label>COVERED PERIOD: </label></b>
                 <label id="startingdate"></label>
                 <br>
                 <input id="progressbtn" type="button" value="Print" onclick="printDiv()">
@@ -147,6 +147,9 @@
                         <div class="col-md-6 mb-3">
                             <b><label for="givendate">Date: </label></b>
                             <input type="text" id="givendate" name="givendate"/>
+                            <br>
+                            <b><label for="amount">Contract Amount: </label></b>
+                            <input type="number" id="amount" name="amount" style="width: 50%;"/>
                             <br>
                             <b><label for="thisperiod">Previous (%): </label></b>
                             <input type="number" id="previous" name="previous" style="width: 50%;"/>
@@ -170,20 +173,38 @@
           <tr>
             <th>Item</th>
             <th>Activity Name</th>
-            <th colspan="4">Progress Accomplishment</th>
-            <th colspan="3">Options</th>
+            <th>Contract Amount</th>
+            <th>Percent Weight</th>
+            <th colspan="6">Progress Accomplishment</th>
+            <th colspan="2">Options</th>
           </tr>
         </thead>
         <thead>
             <tr>
               <th></th>
               <th></th>
-              <th>DATE</th>
-              <th>PREVIOUS %</th>
-              <th>THIS PERIOD %</th>
-              <th>CUMMULATIVE %</th>
+              <th></th>
+              <th></th>
+              <th colspan="2">PREVIOUS</th>
+              <th colspan="2">THIS PERIOD</th>
+              <th colspan="2">CUMMULATIVE</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <thead>
+            <tr>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th>%</th>
+              <th>AMOUNT</th>
+              <th>%</th>
+              <th>AMOUNT</th>
+              <th>%</th>
+              <th>AMOUNT</th>
               <th>Add</th>
-              <th>Edit</th>
               <th>Remove</th>
             </tr>
           </thead>

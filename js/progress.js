@@ -18,12 +18,12 @@ return params;
 
 var params = getQueryParams();
 let clientName = params.client;
-let projectName = params.file;
-let startDate = params.startdate;
+let projectName = params.project;
+let coveredPeriod = params.date;
 if (projectName) {
     document.getElementById('clientname').textContent = clientName;
     document.getElementById('projectname').textContent = projectName;
-    document.getElementById('startingdate').textContent = startDate;
+    document.getElementById('startingdate').textContent = coveredPeriod;
 }
 
 // Function to get form values
@@ -39,27 +39,31 @@ function submitProject(e) {
   
     var anamevalue = document.getElementById('activityname').textContent;
     var itemLetter = document.getElementById('itemLetter').textContent;
-    var givenDate = document.getElementById('givendate').value;
+    var amount = document.getElementById('amount').value;
     var previous = document.getElementById('previous').value;
     var thisPeriod = document.getElementById('thisperiod').value;
 
-    saveProject(itemLetter, anamevalue, givenDate, previous, thisPeriod);
+    saveProject(itemLetter, anamevalue, amount, previous, thisPeriod);
     document.getElementById("add_input").reset();
     toDatabase();
     document.getElementById('add_row').style.display = "none";
 }
   
 // Save message to firebase
-function saveProject(itemL, aname, givendate, previous, thisperiod) {
+function saveProject(itemL, aname, amount, previous, thisperiod) {
     let newMessageRef = messagesRef.push();
     newMessageRef.set({
         itemL: itemL,
         aname: aname,
         pname: projectName,
-        givendate: givendate,
+        cov_period: coveredPeriod,
+        contract_amount: amount,
         thisperiod: thisperiod,
+        period_amount: amount * thisperiod / 100,
         previous: previous,
-        cummulative: (parseInt(previous) + parseInt(thisperiod))
+        previous_amount: amount * previous / 100,
+        cummulative: (parseInt(previous) + parseInt(thisperiod)),
+        cummulative_amount: (parseInt(previous_amount) + parseInt(period_amount))
     });
 }
 
@@ -67,10 +71,6 @@ function deleteToDatabase(table, key) {
     var database = firebase.database();
     const dbRef = database.ref(`collected_data/${table}/` + key);
     dbRef.remove();
-}
-
-function editProjectRow(projectKey) {
-    window.location.href = window.location.href + "&edit=" + projectKey;
 }
 
 function deleteProjectRow(projectKey) {
@@ -82,8 +82,7 @@ function toDatabase() {
     $("#act-table tbody > tr").remove();
     var database = firebase.database();
     var params = getQueryParams();
-    var projectName = params.file ? params.file : "";
-    var projectEdit = params.edit;
+    var projectName = params.project ? params.project : "";
     database
       .ref("collected_data")
       .child("activity")
@@ -96,11 +95,14 @@ function toDatabase() {
           snapshot.forEach(function (data) {
             var val = data.val();
             if (projectName.toUpperCase().trim() === val.pname.toUpperCase().trim()) {
-                var bgColor = 'style="background: #90EE90;"';
-                if (!val.givendate) {
+                if (!val.cov_period) {
                     content += `<tr id='${data.key}'>`;
                     content += "<td>" + val.itemL + "</td>";
                     content += "<td>" + val.aname + "</td>";
+                    content += "<td></td>";
+                    content += "<td></td>";
+                    content += "<td></td>";
+                    content += "<td></td>";
                     content += "<td></td>";
                     content += "<td></td>";
                     content += "<td></td>";
@@ -109,61 +111,28 @@ function toDatabase() {
                     <button type="button" class="btn btn-primary" id="add_${data.key}">Add</button>
                     </td>`;
                     content += `<td>
-                    <button type="button" class="btn btn-secondary" id="edit_${data.key}" disabled>Edit</button>
-                    </td>`;
-                    content += `<td>
                     <button type="button" class="btn btn-danger" id="del_${data.key}" disabled>Remove</button>
                     </td>`;
 
                     activityKey.push(data.key);
                 } else {
-                    content += `<tr id='${data.key}' ${bgColor}>`;
+                    content += `<tr id='${data.key}'>`;
                     content += "<td>" + val.itemL + "</td>";
                     content += "<td>" + val.aname + "</td>";
-                    content += "<td>" + val.givendate + "</td>";
-                    content += "<td>" + val.previous + "%</td>";
-                    content += "<td>" + val.thisperiod + "%</td>";
-                    content += "<td>" + val.cummulative + "%</td>";
-
-                    if (data.key === projectEdit) {
-                        content += `<td>
-                        <button type="button" class="btn btn-primary" id="add_${data.key}" disabled>Add</button>
-                        </td>`;
-                        content += `<td>
-                        <button type="button" class="btn btn-secondary" id="edit_${data.key}" disabled>Edit</button>
-                        </td>`;
-                        content += `<td>
-                        <button type="button" class="btn btn-danger" id="del_${data.key}" disabled>Remove</button>
-                        </td>`;
-
-                        // whole process for edit
-                        document.getElementById('add_row').style.display = "block";
-                        document.getElementById('itemLetter').textContent = val.itemL;
-                        document.getElementById('activityname').textContent = val.aname;
-                        document.getElementById('givendate').value = val.givendate;
-                        document.getElementById('previous').value = val.previous;
-                        document.getElementById('thisperiod').value = val.thisperiod;
-                        // set previous input textbox as read only when edit
-                        document.getElementById('previous').readOnly = true;
-                        document.getElementById('thisperiod').readOnly = true;
-                        document.getElementById("add_input").addEventListener("submit", () => {
-                            submitProject;
-                            deleteProjectRow(projectEdit);
-                            document.getElementById('add_row').style.display = "none";
-                            window.location.href = "progress.html?client=" + clientName + "&file=" + projectName + "&startdate=" + startDate;
-                        });
-
-                    } else {
-                        content += `<td>
-                        <button type="button" class="btn btn-primary" id="add_${data.key}" disabled>Add</button>
-                        </td>`;
-                        content += `<td>
-                        <button type="button" class="btn btn-secondary" id="edit_${data.key}">Edit</button>
-                        </td>`;
-                        content += `<td>
-                        <button type="button" class="btn btn-danger" id="del_${data.key}">Remove</button>
-                        </td>`;
-                    }
+                    content += "<td>" + val.contract_amount + "</td>";
+                    content += "<td></td>";
+                    content += "<td>" + val.previous + "</td>";
+                    content += "<td>" + val.previous_amount + "</td>";
+                    content += "<td>" + val.thisperiod + "</td>";
+                    content += "<td>" + val.period_amount + "</td>";
+                    content += "<td>" + val.cummulative + "</td>";
+                    content += "<td>" + val.cummulative_amount + "%</td>";
+                    content += `<td>
+                    <button type="button" class="btn btn-primary" id="add_${data.key}" disabled>Add</button>
+                    </td>`;
+                    content += `<td>
+                    <button type="button" class="btn btn-danger" id="del_${data.key}">Remove</button>
+                    </td>`;
 
                     progressKey.push(data.key);
                 }
@@ -172,7 +141,6 @@ function toDatabase() {
         });
   
         $("#act-table").append(content);
-        
 
         // FOR ADD
         activityKey.forEach((key) => {
@@ -182,13 +150,6 @@ function toDatabase() {
                 var aname = document.querySelector('#' + key + '> td:nth-child(2)').textContent;
                 document.getElementById('itemLetter').textContent = itemL;
                 document.getElementById('activityname').textContent = aname;
-            });
-        });
-
-        // FOR EDIT
-        progressKey.forEach((key) => {
-            document.querySelector("#edit_" + key).addEventListener("click", () => {
-                editProjectRow(key);
             });
         });
   

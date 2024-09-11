@@ -50,7 +50,7 @@ function saveProject(covered_period) {
     newMessageRef.set({
         date: covered_period,
         pname: projectName,
-        cname: clientName,
+        client: clientName,
         sdate: startDate
     });
 }
@@ -70,7 +70,7 @@ function toDatabase() {
             var val = data.val();
             if (projectName.toUpperCase().trim() === val.pname.toUpperCase().trim()) {
                 if (val.date) {
-                    content += `◙<a href="progress.html?client='` + val.cname + `'&project='` + val.pname + `'&date='` + val.date + `'">` + val.date + `</a><br>`;
+                    content += `◙<a href="progress.html?client=` + val.client + `&project=` + val.pname + `&date=` + val.date + `">` + val.date + `</a><br>`;
                 }
             }
         });
