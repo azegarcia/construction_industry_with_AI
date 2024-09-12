@@ -34,11 +34,21 @@ function getInputVal(id) {
 
 document.getElementById("add_input").addEventListener("submit", submitProject);
 
+document.getElementById("addprogress").addEventListener("click", () => {
+    document.getElementById('add_row').style.display = "block";
+    document.getElementById('addprogress').style.display = "none";
+});
+
+document.getElementById("calculateprogress").addEventListener("click", () => {
+    document.getElementById('add_row').style.display = "block";
+    document.getElementById('addprogress').style.display = "none";
+});
+
 function submitProject(e) {
     e.preventDefault();
   
-    var anamevalue = document.getElementById('activityname').textContent;
-    var itemLetter = document.getElementById('itemLetter').textContent;
+    var anamevalue = document.querySelector('#activityname option:checked').textContent;
+    var itemLetter = document.querySelector('#activityname option:checked').value;
     var amount = document.getElementById('amount').value;
     var previous = document.getElementById('previous').value;
     var thisPeriod = document.getElementById('thisperiod').value;
@@ -47,10 +57,13 @@ function submitProject(e) {
     document.getElementById("add_input").reset();
     toDatabase();
     document.getElementById('add_row').style.display = "none";
+    document.getElementById('addprogress').style.display = "block";
 }
   
 // Save message to firebase
 function saveProject(itemL, aname, amount, previous, thisperiod) {
+    var previous_amount = Math.round((amount * previous / 100) * 1000) / 1000;
+    var period_amount = Math.round((amount * thisperiod / 100) * 100) / 100;
     let newMessageRef = messagesRef.push();
     newMessageRef.set({
         itemL: itemL,
@@ -59,11 +72,12 @@ function saveProject(itemL, aname, amount, previous, thisperiod) {
         cov_period: coveredPeriod,
         contract_amount: amount,
         thisperiod: thisperiod,
-        period_amount: amount * thisperiod / 100,
+        period_amount: period_amount,
         previous: previous,
-        previous_amount: amount * previous / 100,
+        previous_amount: previous_amount,
         cummulative: (parseInt(previous) + parseInt(thisperiod)),
-        cummulative_amount: (parseInt(previous_amount) + parseInt(period_amount))
+        cummulative_amount: parseFloat(previous_amount) + parseFloat(period_amount),
+        status: "added"
     });
 }
 
@@ -90,68 +104,54 @@ function toDatabase() {
       .once("value", function (snapshot) {
         if (snapshot.exists()) {
           var content = "";
-          var activityKey = [];
           var progressKey = [];
+          var str = "";
           snapshot.forEach(function (data) {
             var val = data.val();
-            if (projectName.toUpperCase().trim() === val.pname.toUpperCase().trim()) {
-                if (!val.cov_period) {
-                    content += `<tr id='${data.key}'>`;
-                    content += "<td>" + val.itemL + "</td>";
-                    content += "<td>" + val.aname + "</td>";
-                    content += "<td></td>";
-                    content += "<td></td>";
-                    content += "<td></td>";
-                    content += "<td></td>";
-                    content += "<td></td>";
-                    content += "<td></td>";
-                    content += "<td></td>";
-                    content += "<td></td>";
-                    content += `<td>
-                    <button type="button" class="btn btn-primary" id="add_${data.key}">Add</button>
-                    </td>`;
-                    content += `<td>
-                    <button type="button" class="btn btn-danger" id="del_${data.key}" disabled>Remove</button>
-                    </td>`;
-
-                    activityKey.push(data.key);
-                } else {
+            if (projectName.toUpperCase().trim() === val.pname.toUpperCase().trim() && (val.itemL)) {
+                
+                if ((val.aname) && (val.status == "added")) {
                     content += `<tr id='${data.key}'>`;
                     content += "<td>" + val.itemL + "</td>";
                     content += "<td>" + val.aname + "</td>";
                     content += "<td>" + val.contract_amount + "</td>";
                     content += "<td></td>";
-                    content += "<td>" + val.previous + "</td>";
+                    content += "<td>" + val.previous + "%</td>";
                     content += "<td>" + val.previous_amount + "</td>";
-                    content += "<td>" + val.thisperiod + "</td>";
+                    content += "<td>" + val.thisperiod + "%</td>";
                     content += "<td>" + val.period_amount + "</td>";
-                    content += "<td>" + val.cummulative + "</td>";
-                    content += "<td>" + val.cummulative_amount + "%</td>";
+                    content += "<td>" + val.cummulative + "%</td>";
+                    content += "<td>" + val.cummulative_amount + "</td>";
                     content += `<td>
-                    <button type="button" class="btn btn-primary" id="add_${data.key}" disabled>Add</button>
+                    <button type="button" name="remove" class="btn btn-danger" id="del_${data.key}">Remove</button>
                     </td>`;
-                    content += `<td>
-                    <button type="button" class="btn btn-danger" id="del_${data.key}">Remove</button>
-                    </td>`;
-
+                    content += "</tr>";
                     progressKey.push(data.key);
                 }
-                content += "</tr>";
+                if (val.aname) {
+                    if ((val.aname) && (val.status !== "added")) {
+                        str += `<option value='${val.itemL}'>` + val.aname + "</option>"
+                    }
+                }
             }
         });
   
         $("#act-table").append(content);
+        document.getElementById("activityname").innerHTML = str;
 
-        // FOR ADD
-        activityKey.forEach((key) => {
-            document.querySelector("#add_" + key).addEventListener("click", () => {
-                document.getElementById('add_row').style.display = "block";
-                var itemL = document.querySelector('#' + key + '> td:nth-child(1)').textContent;
-                var aname = document.querySelector('#' + key + '> td:nth-child(2)').textContent;
-                document.getElementById('itemLetter').textContent = itemL;
-                document.getElementById('activityname').textContent = aname;
-            });
-        });
+        // remove dropdown contents in every add progress
+        var get_act = document.querySelectorAll('tbody > tr > td:nth-child(1)');
+        for (var i = 0; i < get_act.length; i++) {
+            $("#activityname option[value='" + get_act[i].textContent + "']").remove();
+        }
+        
+        // display none add progress if activity names are all filled up
+        var act_length = document.getElementById("activityname").length;
+        if (act_length === 0) {
+            document.getElementById('addprogress').style.display = "none";
+        }
+        
+        totalofAll();
   
         // FOR DELETE
         progressKey.forEach((key) => {
@@ -162,5 +162,81 @@ function toDatabase() {
     };
     });
 };
+
+function totalofAll() {
+    var total_contract = [];
+    var total_prev = [];
+    var total_period = [];
+    var total_cumm = [];
+    for (var j = 0; j < $("tr > td").length; j++) {
+        var contract_amount = document.querySelector(`tr:nth-child(${j + 1}) > td:nth-child(3)`).textContent;
+        var prev_amount = document.querySelector(`tr:nth-child(${j + 1}) > td:nth-child(6)`).textContent;
+        var period_amount = document.querySelector(`tr:nth-child(${j + 1}) > td:nth-child(8)`).textContent;
+        var cumm_amount = document.querySelector(`tr:nth-child(${j + 1}) > td:nth-child(10)`).textContent;
+
+        total_contract.push(parseFloat(contract_amount));
+        total_prev.push(parseFloat(prev_amount));
+        total_period.push(parseFloat(period_amount));
+        total_cumm.push(parseFloat(cumm_amount));
+
+        if (j + 1 === "tr > td".length) {
+            break
+        }
+    }
+    // get the sum of the values in array
+    const sum = array => eval(array.join('+'));
+    var total_perc_prev = [];
+    var total_perc_period = [];
+    var total_perc_cumm = [];
+    var sum_contract = sum(total_contract);
+    var sum_prev = sum(total_prev);
+    var sum_period = sum(total_period);
+    var sum_cumm = sum(total_cumm);
+
+    for (var k = 0; k < total_contract.length; k++) {
+        var perc_weight = Math.round((total_contract[k] / sum_contract)* 100 * 100) / 100;
+
+        var perc_prev = document.querySelector(`tr:nth-child(${k + 1}) > td:nth-child(5)`).textContent;
+        var perc_period = document.querySelector(`tr:nth-child(${k + 1}) > td:nth-child(7)`).textContent;
+        var perc_cumm = document.querySelector(`tr:nth-child(${k + 1}) > td:nth-child(9)`).textContent;
+
+        var prev_dec = perc_prev.replace("%", "") / 100;
+        var period_dec = perc_period.replace("%", "") / 100;
+        var cumm_dec = perc_cumm.replace("%", "") / 100;
+
+        var perc_x_prev = parseFloat(perc_weight) * prev_dec
+        var perc_x_period = parseFloat(perc_weight) * period_dec
+        var perc_x_cumm = parseFloat(perc_weight) * cumm_dec
+        
+        document.querySelector(`tr:nth-child(${k + 1}) > td:nth-child(4)`).textContent = perc_weight + "%";
+        total_perc_prev.push(parseFloat(perc_x_prev));
+        total_perc_period.push(parseFloat(perc_x_period));
+        total_perc_cumm.push(parseFloat(perc_x_cumm));
+    }
+    
+    var sum_perc_prev = Math.round(sum(total_perc_prev)* 100) / 100;
+    var sum_perc_period = Math.round(sum(total_perc_period)* 100) / 100;
+    var sum_perc_cumm = Math.round(sum(total_perc_cumm)* 100) / 100;
+
+    var x = sum_perc_prev.toString() + "%";
+    var y = sum_perc_period.toString() + "%";
+    var z = sum_perc_cumm.toString() + "%";
+    
+    var showTotal = "";
+  
+    showTotal += "<tr>";
+    showTotal += "<td colspan=2 style='background-color:green;'><b>Total Contract Amount (PHP)</b></td>";
+    showTotal += "<td style='background-color:green;'><div></div><div><b>" + sum_contract.toLocaleString(); + "</b></div></td>";
+    showTotal += "<td style='background-color:green;'><div></div><div><b>100%</b></div></td>";
+    showTotal += "<td style='background-color:green;'><div></div><div><b>" + x; + "</b></div></td>";
+    showTotal += "<td style='background-color:green;'><div></div><div><b>" + sum_prev.toLocaleString(); + "</b></div></td>";
+    showTotal += "<td style='background-color:green;'><div></div><div><b>" + y; + "</b></div></td>";
+    showTotal += "<td style='background-color:green;'><div></div><div><b>" + sum_period.toLocaleString(); + "</b></div></td>";
+    showTotal += "<td style='background-color:green;'><div></div><div><b>" + z; + "</b></div></td>";
+    showTotal += "<td style='background-color:green;'><div></div><div><b>" + sum_cumm.toLocaleString(); + "</b></div></td>";
+    showTotal += "<td></td>";
+    showTotal += "<tr>";
+    $("#act-table").append(showTotal);
+}
 
 toDatabase();
