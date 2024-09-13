@@ -110,7 +110,7 @@ function toDatabase() {
             var val = data.val();
             if (projectName.toUpperCase().trim() === val.pname.toUpperCase().trim()) {
                 if ((val.aname) && (val.status == "added") && val.cov_period === coverage) {
-                    content += `<tr id='${data.key}'>`;
+                    content += `<tr id='${data.key}' name='actinputs'>`;
                     content += "<td>" + val.itemL + "</td>";
                     content += "<td>" + val.aname + "</td>";
                     content += "<td>" + val.contract_amount + "</td>";
@@ -148,7 +148,7 @@ function toDatabase() {
         var act_length = document.getElementById("activityname").length;
         if (act_length === 0) {
             document.getElementById('addprogress').style.display = "none";
-            document.getElementById('calculateprogress').style.display = "block";
+            totalofAll();
         }
   
         // FOR DELETE
@@ -162,25 +162,30 @@ function toDatabase() {
 };
 
 function totalofAll() {
+    var actinputs = document.getElementsByName('actinputs').length;
     var total_contract = [];
     var total_prev = [];
     var total_period = [];
     var total_cumm = [];
-    for (var j = 0; j < $("tr > td").length; j++) {
-        var contract_amount = document.querySelector(`tr:nth-child(${j + 1}) > td:nth-child(3)`).textContent;
-        var prev_amount = document.querySelector(`tr:nth-child(${j + 1}) > td:nth-child(6)`).textContent;
-        var period_amount = document.querySelector(`tr:nth-child(${j + 1}) > td:nth-child(8)`).textContent;
-        var cumm_amount = document.querySelector(`tr:nth-child(${j + 1}) > td:nth-child(10)`).textContent;
 
+    console.log(actinputs)
+
+    for (var j = 0; j < actinputs; j++) {
+        var contract_amount = document.querySelector(`tr[name='actinputs']:nth-child(${j + 1}) > td:nth-child(3)`).textContent;
+        var prev_amount = document.querySelector(`tr[name='actinputs']:nth-child(${j + 1}) > td:nth-child(6)`).textContent;
+        var period_amount = document.querySelector(`tr[name='actinputs']:nth-child(${j + 1}) > td:nth-child(8)`).textContent;
+        var cumm_amount = document.querySelector(`tr[name='actinputs']:nth-child(${j + 1}) > td:nth-child(10)`).textContent;
+        
         total_contract.push(parseFloat(contract_amount));
         total_prev.push(parseFloat(prev_amount));
         total_period.push(parseFloat(period_amount));
         total_cumm.push(parseFloat(cumm_amount));
 
-        if (j + 1 === "tr > td".length) {
+        if (j + 1 === actinputs) {
             break
         }
     }
+
     // get the sum of the values in array
     const sum = array => eval(array.join('+'));
     var total_perc_prev = [];
