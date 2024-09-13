@@ -286,6 +286,7 @@ function toDatabase() {
   var database = firebase.database();
   var params = getQueryParams();
   var projectName = params.projectname ? params.projectname : "";
+  var startDate = params.startdate ? params.startdate : "";
   var projectEdit = params.edit;
   database
     .ref("collected_data")
@@ -297,7 +298,7 @@ function toDatabase() {
         var activityKey = [];
         snapshot.forEach(function (data) {
           var val = data.val();
-          if ((projectName.toUpperCase().trim() === val.pname.toUpperCase().trim()) && (!val.givendate)){
+          if ((projectName.toUpperCase().trim() === val.pname.toUpperCase().trim()) && (val.impre)){
             var bgColor = '';
             if (data.key === projectEdit) {
               bgColor = 'style="background: yellow;"';

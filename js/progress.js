@@ -40,8 +40,7 @@ document.getElementById("addprogress").addEventListener("click", () => {
 });
 
 document.getElementById("calculateprogress").addEventListener("click", () => {
-    document.getElementById('add_row').style.display = "block";
-    document.getElementById('addprogress').style.display = "none";
+    totalofAll();
 });
 
 function submitProject(e) {
@@ -97,6 +96,7 @@ function toDatabase() {
     var database = firebase.database();
     var params = getQueryParams();
     var projectName = params.project ? params.project : "";
+    var coverage = params.date ? params.date : "";
     database
       .ref("collected_data")
       .child("activity")
@@ -108,9 +108,8 @@ function toDatabase() {
           var str = "";
           snapshot.forEach(function (data) {
             var val = data.val();
-            if (projectName.toUpperCase().trim() === val.pname.toUpperCase().trim() && (val.itemL)) {
-                
-                if ((val.aname) && (val.status == "added")) {
+            if (projectName.toUpperCase().trim() === val.pname.toUpperCase().trim()) {
+                if ((val.aname) && (val.status == "added") && val.cov_period === coverage) {
                     content += `<tr id='${data.key}'>`;
                     content += "<td>" + val.itemL + "</td>";
                     content += "<td>" + val.aname + "</td>";
@@ -131,7 +130,7 @@ function toDatabase() {
                 if (val.aname) {
                     if ((val.aname) && (val.status !== "added")) {
                         str += `<option value='${val.itemL}'>` + val.aname + "</option>"
-                    }
+                    }    
                 }
             }
         });
@@ -149,9 +148,8 @@ function toDatabase() {
         var act_length = document.getElementById("activityname").length;
         if (act_length === 0) {
             document.getElementById('addprogress').style.display = "none";
+            document.getElementById('calculateprogress').style.display = "block";
         }
-        
-        totalofAll();
   
         // FOR DELETE
         progressKey.forEach((key) => {
@@ -237,6 +235,7 @@ function totalofAll() {
     showTotal += "<td></td>";
     showTotal += "<tr>";
     $("#act-table").append(showTotal);
+    document.getElementById('calculateprogress').style.display = "none";
 }
 
 toDatabase();
