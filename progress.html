@@ -116,6 +116,8 @@
         </div>
       </div>
     </section>
+    <center><img id="logo" src="images/logo1.png" width="100" height="100" style="display: none;"></center>
+    <br>
     <br>
     <div>
         <center><div id="progressDetails">
@@ -207,6 +209,23 @@
         <tbody></tbody>
       </table>
     </div>
+    <div>
+      <div id="signatories" style="margin-left: 50px; display: none;">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        Prepared by:
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        Approved by:    
+        <br>
+      </div>
+    </div>
     <section class="slider_section" style="background-color: white">
       <div class="container" style="height: 30px"></div>
     </section>
@@ -221,6 +240,8 @@
         document.getElementById('tab').style.display = "none";
         document.getElementById('headersection').style.display = "none";
         document.getElementById('progressbtn').style.display = "none";
+        document.getElementById('logo').style.display = "block";
+        document.getElementById('signatories').style.display = "block";
         document.querySelector('#act-table > thead:nth-child(1) > tr > th:nth-child(6)').style.display = "none";
         document.querySelector('#act-table > thead:nth-child(2) > tr > th:nth-child(8)').style.display = "none";
         document.querySelector('#act-table > thead:nth-child(3) > tr > th:nth-child(11)').style.display = "none";
@@ -228,6 +249,7 @@
         for (var i = 0; i < del.length; i++) {
           del[i].style.display = "none";
         }
+        
         window.print();
         history.back();
       }
