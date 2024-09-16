@@ -99,6 +99,11 @@
       </div>
     </section>
   </div>
+  <center><img id="logo" src="images/logo1.png" width="100" height="100" style="display: none;"></center>
+  <br>
+  <br>
+  <br>
+  <br>
   <div class="row" style="background-color: white; padding-left: 10.7%;">
     <div class="column">
       <form id="workerForm">
@@ -251,7 +256,24 @@
     <div class="container" style="height: 30px;">
     </div>
     </section>
+  </div>
+  <div>
+    <div id="signatories" style="margin-left: 50px; display: none;">
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      Prepared by:
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      Approved by:    
+      <br>
     </div>
+  </div>
   <script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js"></script>
   <script src="js/jquery-3.4.1.min.js"></script>
   <script src="js/manpower.js"></script>
@@ -261,6 +283,8 @@
     function printDiv () {
       document.getElementById('main-part').style.display = "none";
       document.getElementById('printbtn').style.display = "none";
+      document.getElementById('logo').style.display = "block";
+      document.getElementById('signatories').style.display = "block";
       var opt = document.querySelectorAll('#option');
       for (var a = 0; a < opt.length; a++) {
         opt[a].style.display = 'none';
@@ -273,6 +297,21 @@
       for (var c = 0; c < remove.length; c++) {
         remove[c].style.display = 'none';
       }
+      var css = '@page { size: letter; } ',
+      head = document.head || document.getElementsByTagName('head')[0],
+      style = document.createElement('style');
+
+      style.type = 'text/css';
+      style.media = 'print';
+
+      if (style.styleSheet){
+        style.styleSheet.cssText = css;
+      } else {
+        style.appendChild(document.createTextNode(css));
+      }
+
+      head.appendChild(style);
+
       window.print();
       history.back();
     }
