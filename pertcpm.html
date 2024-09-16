@@ -109,10 +109,27 @@
   <div class="row">
     <div class="column">
       <img id="cpmImg" src="python-server/images/pertcpm.png" width="700" height="900" style="margin-left: 100px;position:relative;">
+      <div id="signatories" style="margin-left: 50px; display: none;">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        Prepared by:
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        Approved by:    
+        <br>
+      </div>
     </div>
     <div class="column">
       <center><input id="cpmbtn" type="button" value="Print CPM" onclick="printDiv()"></center>
       <br><br>
+      <img id="logo" src="images/logo1.png" width="70" height="70" style="margin-left: 300px; display: none;">
+      <br>
       <center><img id="legend" src="images/legends2.png" style="height: 250px;"></center>
       <br><br>
       <center>
@@ -153,6 +170,9 @@
         if (key == "file") {
           continue
         }
+        if (key == "undefined") {
+          continue
+        }
         activities += "<tr>";
         activities += "<td>" + key; + "</td>";
         activities += "<td>" + value; + "</td>";
@@ -165,7 +185,9 @@
       document.getElementById('main-part').style.display = "none";
       document.getElementById('cpmbtn').style.display = "none";
       document.getElementById('legend').style.display = "none";
-      var css = '@page { size: legal landscape; margin-top: 2px; }',
+      document.getElementById('logo').style.display = "block";
+      document.getElementById('signatories').style.display = "block";
+      var css = '@page { size: legal landscape; margin-top: 2px; margin-bottom: 0px; } ',
       head = document.head || document.getElementsByTagName('head')[0],
       style = document.createElement('style');
 
