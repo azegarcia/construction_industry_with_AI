@@ -163,6 +163,7 @@ function reloadWorkerEquipment() {
   toDatabase1();
   toDatabase2();
   toDatabase3();
+  location.reload();
 }
 
 function deleteToDatabase(table, key) {
@@ -265,7 +266,7 @@ function toDatabase2() {
         });
         $("#equipment-table").append(content);
         $("#result-table").append(totalContent);
-
+        totalofAll();
         activityKey.forEach((key) => {
           document
             .querySelector("#equipments_" + key)
@@ -282,6 +283,7 @@ function toDatabase3() {
   var database = firebase.database();
   var params = getQueryParams();
   var projectName = params.file ? params.file : "";
+  const element = document.getElementById('total-table');
   database
     .ref("collected_data")
     .child("overtime")
@@ -317,7 +319,10 @@ function toDatabase3() {
         });
         $("#ot-table").append(content);
         $("#result-table").append(totalContent);
-        totalofAll();
+        if (element) {
+          document.getElementById('total-table').style.display = "none";
+          totalofAllWithOT();
+        }
         activityKey.forEach((key) => {
           document
             .querySelector("#overtime_" + key)
@@ -354,6 +359,33 @@ function totalofAll() {
   showTotal += "<tr>";
 
   $("#total-table").append(showTotal);
+}
+
+function totalofAllWithOT() {
+  var total_list = [];
+  for (var j = 0; j < $("#result-table > tbody > tr").length; j++) {
+    if ((j + 1) % 2 == 1) {
+      var indiv = document.querySelector(`#result-table > tbody > tr:nth-child(${j + 1}) > td > div:nth-child(2)`).textContent;
+      cleaned_indiv = indiv.replace("₱ ", "").replace(",", "")
+      total_list.push(parseInt(cleaned_indiv));
+    } else {
+      continue
+    }
+  }
+  let sum = 0;
+  for (let i = 0; i < total_list.length; i++) {
+    sum += total_list[i];
+  }
+  var showTotal = "";
+
+  showTotal += "<tr>";
+  showTotal +=
+  "<td style='display:flex; justify-content: space-between;background-color:green;'><div><b>TOTAL</b></div><div>₱ " +
+  sum.toLocaleString(); +
+  "</div></td>";
+  showTotal += "<tr>";
+
+  $("#ot-total-table").append(showTotal);
 }
 
 toDatabase1();
