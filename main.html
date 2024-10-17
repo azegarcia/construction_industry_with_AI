@@ -8,7 +8,7 @@
   <meta name="description" content="" />
   <meta name="author" content="" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HOOD-EPC Main</title>
+  <title>HOOD-EPC Home</title>
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
   <link rel="stylesheet" type="text/css" href="css1/bootstrap.css" />
   <link rel="stylesheet" type="text/css" href="css1/font-awesome.min.css" />
@@ -20,10 +20,20 @@
     height: 100%; 
     overflow: hidden;
   }
+  div.scroll-container {
+  background-color: white;
+  overflow: auto;
+  white-space: nowrap;
+  padding-top: 75px;
+  }
+
+  div.scroll-container img {
+    padding: 5px;
+  }
 </style>
 <body style="background-color: whitesmoke;">
   <div class="hero_area">
-    <header class="header_section" style="position: fixed;width: 100%;z-index: 1;background-color: white;">
+    <header class="header_section" style="position: fixed;width: 100%;z-index: 1;background-color: white;border: 3px solid black;">
       <div class="header_bottom">
         <div class="container-fluid">
           <nav class="navbar navbar-expand-lg custom_nav-container">
@@ -50,28 +60,17 @@
       </div>
     </header>
   </div>
-  <br><br><br>
-  <section class="slider_section" style="border:5px solid gray;background-color: white;">
-    <div class="container" style="height: 300px;">
-      <div class="row" style="height: 300px;">
-        <div class="col-md-6" style="height: 300px;">
-          <div class="detail-box">
-            <br><br><br><br><br>
-            <h1 style="color: #0106b7;">
-              Delivering Projects with Certainty
-            </h1>
-          </div>
-        </div>
-        <div class="col-md-6" style="height: 300px;">
-          <img src="images/greeny.jpg" alt="" style="height: 300px;"/>
-        </div>
-      </div>
-    </div>
-  </section>
-  <section class="service_section layout_padding">
+  <div class="scroll-container">
+    <img src="images/5.png" width="600" height="400">
+    <img src="images/1.png" width="600" height="400">
+    <img src="images/2.png" width="600" height="400">
+    <img src="images/3.png" width="600" height="400">
+    <img src="images/4.png" width="600" height="400">
+  </div>
+  <section class="service_section layout_padding" style="padding: 5px;">
     <div class="container">
       <div class="row">
-        <div class="col-sm-4 mx-auto">
+        <div class="col-sm-6">
           <div class="box" onclick="window.location='create.html';">
             <div class="img-box">
               <img src="images/newproject.png" alt="" />
@@ -83,7 +82,7 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-4 mx-auto">
+        <div class="col-sm-6">
           <div class="box" onclick="window.location='projectlist.html';">
             <div class="img-box">
               <img src="images/checklist.png" alt="" />
@@ -91,18 +90,6 @@
             <div class="detail-box">
               <h5>
                 Ongoing/ Completed Projects
-              </h5>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-4 mx-auto">
-          <div class="box" onclick="window.location='ai_weather.html';">
-            <div class="img-box">
-              <img src="images/aiweather.jpg" alt="" />
-            </div>
-            <div class="detail-box">
-              <h5>
-                AI Weather Forecast
               </h5>
             </div>
           </div>
