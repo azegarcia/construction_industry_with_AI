@@ -16,11 +16,10 @@
 </head>
 <style>
     .bg-text {
-        background-color: rgb(7, 7, 7); /* Fallback color */
         background-color: rgba(10, 10, 10, 0.4); /* Black w/opacity/see-through */
-        color: white;
+        color: black;
         font-weight: bold;
-        border: 3px solid #f1f1f1;
+        border: 5px solid black;
         position: absolute;
         top: 50%;
         left: 50%;
@@ -31,14 +30,14 @@
         text-align: center;
     }
 </style>
-<body>
-    <div class="page-wrapper p-t-100 p-b-100 font-robo" style="background-image: url(images/bg.png);background-size: cover;filter: blur(8px);-webkit-filter: blur(8px);background-repeat: no-repeat;"></div>
+<body style="background-color: #202050;">
+    <div class="page-wrapper p-t-100 p-b-100 font-robo" style="background-color: white;background-size: cover;filter: blur(8px);-webkit-filter: blur(8px);background-repeat: no-repeat;"></div>
     <div class="wrapper wrapper--w680">
         <div class="card card-1">
             <div class="bg-text">
                 <h3>Enter Client Information</h3>
                 <br><br>
-                <h8 style="font-style: italic;color: rgb(3, 221, 255);">If Client not on list, choose "Others".</h8>
+                <h8 style="font-style: italic;color: #202050;">If Client not on list, choose "Others".</h8>
                 <br><br>
                 <div>
                     <select id="projectDrop">
