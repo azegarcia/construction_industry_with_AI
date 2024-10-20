@@ -33,28 +33,16 @@ let project = params.get('projectname').toUpperCase();
 let sdate = params.get('startdate');
 
 var items;
-if (project.includes("ROAD")) {
-  items = ["", "Site Preparation", "Earthworks and Grading", "Drainage and Utilities", "Subbase and Base Course Construction", "Paving", "Curbs, Gutters, and Sidewalks", "Guardrails and Barriers", "Traffic Control Devices", "Quality Control and Testing", "Final Touches", "Others"]
-} else if (project.includes("REPLACE")) {
-  items = ["", "Preparation", "Removing Damaged Tiles", "Preparing the Surface", "Applying Adhesive", "Placing the New Tile", "Grouting", "Cleaning and Finishing", "Sealing", "Final Inspection", "Others"]
-} else if (project.includes("BUILDING")) {
-  items = ["", "Site Preparation", "Foundation Work", "Structural Framework", "Roof Construction", "Wall Construction", "Windows and Doors", "Mechanical, Electrical, and Plumbing (MEP) Work", "Interior Finishes", "Exterior Finishes", "Final Inspections and Handover", "Others"]
+if (project.includes("BRIDGE")) {
+  items = ["Site clearing and grubbing", "Earthwork", "Foundation preparation", "Pier construction", "Abutment construction", "Girder or beam placement", "Deck construction", "Barrier installation", "Waterproofing", "Joint sealing", "Painting or coating", "Lighting installation", "Signage installation", "Others"]
 } else if (project.includes("FENCE")) {
-  items = ["", "Site Preparation", "Foundation Work", "Post Installation", "Installing Fence Panels/Materials", "Gates Installation", "Finishing Touches", "Inspection and Testing", "Cleanup", "Others"]
-} else if (project.includes("PIPING")) {
-  items = ["", "Site Preparation", "Demolition and Removal", "Excavation and Trenching", "Piping Installation", "Valve and Fitting Installation", "Pressure Testing", "Insulation and Coating", "Instrumentation and Control Installation", "System Integration", "Commissioning", "Site Cleanup", "Others"]
-} else if (project.includes("BRIDGE")) {
-  items = ["", "Site Preparation", "Excavation and Earthworks", "Foundation Work", "Substructure Construction", "Superstructure Construction", "Deck Construction", "Bridge Parapets and Barriers", "Utilities and Drainage", "Roadway and Approach Work", "Quality Control and Testing", "Final Touches", "Others"]
-} else if (project.includes("ELECTRICAL")) {
-  items = ["", "Site Preparation", "Foundation Work", "Installation of Substations", "Cable Laying and Trenching", "Overhead Line Installation", "Installation of Switchgear and Transformers", "Installation of Protective Relays and Control Systems", "Installation of Backup Power Systems", "Lighting and Earthing Systems", "Auxiliary Systems Installation", "System Integration and Testing", "Final Inspections and Approvals", "Others"]
-} else if (project.includes("GUTTER")) {
-  items = ["", "Preparation and Safety Measures", "Removal of Old Gutters", "Cleaning and Inspection", "Measuring and Cutting New Gutters", "Installing the Gutters", "Sealing and Securing", "Installing Downspouts", "Final Inspection and Testing", "Cleanup", "Others"]
-} else if (project.includes("CLASSROOM")) {
-  items = ["", "Site Preparation and Demolition", "Structural Work", "Plumbing and Electrical Work", "HVAC Installation", "Framing and Drywall", "Flooring Installation", "Painting and Finishing", "Install Fixtures and Fittings", "Final Inspection and Touch-Ups", "Clean-Up and Final Preparation", "Others"]
-} else if (project.includes("FACILITY")) {
-  items = ["", "Assessment and Planning", "Site Preparation", "Structural Work", "Plumbing and Electrical Work", "HVAC Installation", "Isolation and Safety Features", "Interior Finishes", "Install Fixtures and Equipment", "Final Inspection and Testing", "Clean-Up and Preparation for Use", "Others"]
+  items = ["Site clearing and grubbing", "Earthwork", "Post hole digging", "Post setting", "Rail or panel assembly", "Attachment to posts", "Gate frame construction", "Gate hanging", "Gate hardware installation", "Painting or staining", "Landscaping around fence", "Others"]
+} else if (project.includes("PIP")) {
+  items = ["Site clearing and grubbing", "Earthwork", "Pipe laying", "Joint sealing", "Backfilling trenches", "Valve placement", "Valve connection to pipes", "Hydrant placement", "Hydrant connection to pipes", "Water pressure testing", "Leak detection and repair", "System commissioning", "Others"]
+} else if (project.includes("ELECTRIC")) {
+  items = ["Site clearing and grubbing", "Earthwork", "Post hole digging", "Post setting", "Transformer installation", "Conductors", "Insulator installation", "Switchgear installation", "Ground electrode installation", "Ground wire connection", "Electrical testing", "System commissioning", "Others"]
 } else {
-  items = ["", "Site Preparation", "Excavation and Foundation", "Substructure Work", "Framing", "Roofing", "Exterior Work", "Interior Work", "Mechanical, Electrical, and Plumbing (MEP) Work", "Interior Finishes", "Kitchen and Bathroom Installation", "Exterior Landscaping", "Quality Control and Inspections", "Final Touches", "Others"]
+  items = ["Site clearing and grubbing", "Earthwork", "Foundation preparation", "Foundation construction", "Superstructure construction", "Roof construction", "Exterior walls", "Windows and doors installation", "Roofing installation", "Exterior cladding", "Interior walls", "Flooring installation", "Ceiling installation", "Plumbing and sanitary systems installation", "Electrical systems installation", "HVAC systems installation", "Site cleanup and waste removal", "Landscaping", "Others"]
 }
 var str = ""
 for (var item of items) {
@@ -71,7 +59,7 @@ $("#aname").change(function () {
   }
 });
 
-document.getElementById('header').textContent = "Setting Immediate Predecessors & Time Estimates for " + client + " " + project;
+document.getElementById('activity-header').textContent = "Setting Immediate Predecessors & Time Estimates for the " + project + " of " + client;
 
 document.getElementById("inputForm").addEventListener("submit", submitProject);
 
@@ -94,11 +82,14 @@ function getQueryParams() {
   return params;
 }
 
+function nextCharacter(c) {
+  return String.fromCharCode(c.charCodeAt(0) + 1);
+}
+
 function submitProject(e) {
   e.preventDefault();
 
   var formValues = [
-    "itemL",
     "impre",
     "timeA",
     "timeM",
@@ -130,6 +121,7 @@ function submitProject(e) {
 
   var anamevalue = document.getElementById('aname').value;
   var aname;
+
   if (anamevalue.includes("Others")) {
     aname = document.getElementById('anameInput').value;
   } else if (anamevalue !== ""){
@@ -139,7 +131,17 @@ function submitProject(e) {
     aname = anamevalue;
   }
 
-  saveProject(projectDetail, aname);
+  const getRow = document.querySelector('#act-table > tbody > tr:last-child > td:nth-child(1)') || false;
+  var itemL;
+  
+  if (getRow) {
+    const lastRow = document.querySelector('#act-table > tbody > tr:last-child > td:nth-child(1)').textContent;
+    itemL = nextCharacter(lastRow);
+  } else {
+    itemL = "A"; 
+  }
+
+  saveProject(projectDetail, aname, itemL);
   document.getElementById("inputForm").reset();
   toDatabase();
   document.getElementById('anameInput').style.display = "none";
@@ -187,7 +189,7 @@ function isFieldValid(inputId, inputValue) {
 }
 
 // Save message to firebase
-function saveProject(projectDetail, aname) {
+function saveProject(projectDetail, aname, itemL) {
   var impre = projectDetail.impre.toUpperCase()
     ? projectDetail.impre.toUpperCase()
     : "START";
@@ -198,7 +200,7 @@ function saveProject(projectDetail, aname) {
     pname: project,
     sdate: sdate,
     aname: aname,
-    itemL: projectDetail.itemL.toUpperCase(),
+    itemL: itemL,
     impre: impre,
     timeT:
       (parseInt(projectDetail.timeA) +
