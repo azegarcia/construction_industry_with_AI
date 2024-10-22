@@ -296,7 +296,7 @@ function deleteProjectRow(projectKey) {
     $("#" + projectKey).remove();
     disablePertCPMBtn();
   } else {
-    alert("Password incorrect.")
+    alert("Password incorrect. Delete ignored.")
   }
 }
 
