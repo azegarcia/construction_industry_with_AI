@@ -719,7 +719,7 @@ const loadGemini = () => {
     project_name = params.projectname;
   }
   axios
-    .get("http://localhost:5000/gpt/" + "Construction%20of%20Bridge")
+    .get("http://localhost:5000/gpt/" + project_name)
     .then(function (response) {
       const res = response.data;
       const data = res.data;
