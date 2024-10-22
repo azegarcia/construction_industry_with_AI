@@ -17,7 +17,13 @@ const signIn = () => {
     // firebase code
     firebase.auth().signInWithEmailAndPassword(email, password)
         .then((result) => {
-            window.location.href="main.html?verify=true";
+            if (password.includes("planning")) {
+                window.location.href="main.html?verify=true";
+            } else if (password.includes("manager")) {
+                window.location.href="home.html?verify=true";
+            } else {
+                window.location.href="main.html?verify=true";
+            }
         })
         .catch((error) => {
             console.log(error.code);
