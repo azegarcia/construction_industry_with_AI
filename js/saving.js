@@ -32,17 +32,18 @@ let client = params.get('clientname');
 let project = params.get('projectname').toUpperCase();
 let sdate = params.get('startdate');
 
+// ACTIVITIES
 var items;
 if (project.includes("BRIDGE")) {
-  items = ["Site clearing and grubbing", "Earthwork", "Foundation preparation", "Pier construction", "Abutment construction", "Girder or beam placement", "Deck construction", "Barrier installation", "Waterproofing", "Joint sealing", "Painting or coating", "Lighting installation", "Signage installation", "Others"]
+  items = ["Site preparation and clearing", "Site clearing and grubbing", "Earthwork", "Foundation preparation", "Pier construction", "Abutment construction", "Girder or beam placement", "Deck construction", "Barrier installation", "Waterproofing", "Joint sealing", "Painting or coating", "Lighting installation", "Signage installation", "Final inspections and building approval", "Others"]
 } else if (project.includes("FENCE")) {
-  items = ["Site clearing and grubbing", "Earthwork", "Post hole digging", "Post setting", "Rail or panel assembly", "Attachment to posts", "Gate frame construction", "Gate hanging", "Gate hardware installation", "Painting or staining", "Landscaping around fence", "Others"]
+  items = ["Site preparation and clearing", "Site clearing and grubbing", "Earthwork", "Post hole digging", "Post setting", "Rail or panel assembly", "Attachment to posts", "Gate frame construction", "Gate hanging", "Gate hardware installation", "Painting or staining", "Landscaping around fence", "Final inspections and building approval", "Others"]
 } else if (project.includes("PIP")) {
-  items = ["Site clearing and grubbing", "Earthwork", "Pipe laying", "Joint sealing", "Backfilling trenches", "Valve placement", "Valve connection to pipes", "Hydrant placement", "Hydrant connection to pipes", "Water pressure testing", "Leak detection and repair", "System commissioning", "Others"]
+  items = ["Site preparation and clearing", "Site clearing and grubbing", "Earthwork", "Pipe laying", "Joint sealing", "Backfilling trenches", "Valve placement", "Valve connection to pipes", "Hydrant placement", "Hydrant connection to pipes", "Water pressure testing", "Leak detection and repair", "System commissioning", "Final inspections and building approval", "Others"]
 } else if (project.includes("ELECTRIC")) {
-  items = ["Site clearing and grubbing", "Earthwork", "Post hole digging", "Post setting", "Transformer installation", "Conductors", "Insulator installation", "Switchgear installation", "Ground electrode installation", "Ground wire connection", "Electrical testing", "System commissioning", "Others"]
+  items = ["Site preparation and clearing", "Site clearing and grubbing", "Earthwork", "Post hole digging", "Post setting", "Transformer installation", "Conductors", "Insulator installation", "Switchgear installation", "Ground electrode installation", "Ground wire connection", "Electrical testing", "System commissioning", "Final inspections and building approval", "Others"]
 } else {
-  items = ["Site clearing and grubbing", "Earthwork", "Foundation preparation", "Foundation construction", "Superstructure construction", "Roof construction", "Exterior walls", "Windows and doors installation", "Roofing installation", "Exterior cladding", "Interior walls", "Flooring installation", "Ceiling installation", "Plumbing and sanitary systems installation", "Electrical systems installation", "HVAC systems installation", "Site cleanup and waste removal", "Landscaping", "Others"]
+  items = ["Site preparation and clearing", "Site clearing and grubbing", "Earthwork", "Foundation preparation", "Foundation construction", "Superstructure construction", "Roof construction", "Exterior walls", "Windows and doors installation", "Roofing installation", "Exterior cladding", "Interior walls", "Flooring installation", "Ceiling installation", "Plumbing and sanitary systems installation", "Electrical systems installation", "HVAC systems installation", "Site cleanup and waste removal", "Landscaping", "Final inspections and building approval", "Others"]
 }
 var str = ""
 for (var item of items) {
@@ -50,12 +51,98 @@ for (var item of items) {
 }
 document.getElementById("aname").innerHTML = str;
 
+// WORKERS
+var workers;
+workers = ["Project Manager",
+    "Site Superintendent",
+    "Estimator",
+    "Safety Officer",
+    "Office Administrator",
+    "Carpenter",
+    "Electrician",
+    "Plumber",
+    "Mason",
+    "Ironworker",
+    "Roofer",
+    "Painter",
+    "Tile Setter",
+    "Construction Laborer",
+    "Equipment Operator",
+    "Architect",
+    "Engineer",
+    "Surveyor",
+    "Inspector",
+    "Others"]
+var workers_str = ""
+for (var work of workers) {
+  workers_str += `<option value='${work}'>` + work + "</option>"
+}
+document.getElementById("worker").innerHTML = workers_str;
+
+// EQUIPMENTS
+var equipments;
+equipments = [
+  "Excavator",
+  "Bulldozer",
+  "Backhoe Loader",
+  "Crane",
+  "Concrete Mixer",
+  "Dump Truck",
+  "Roller",
+  "Concrete Pump",
+  "Jackhammer",
+  "Ladder",
+  "Scaffolding",
+  "Level",
+  "Tape Measure",
+  "Hammer",
+  "Saw",
+  "Drill",
+  "Screwdriver",
+  "Wrench",
+  "Pliers",
+  "Safety Helmet",
+  "Safety Vest",
+  "Safety Boots",
+  "Hard Hat",
+  "Ear Protection",
+  "Eye Protection",
+  "Respiratory Protection",
+  "Others"
+]
+var equip_str = ""
+for (var equip of equipments) {
+  equip_str += `<option value='${equip}'>` + equip + "</option>"
+}
+document.getElementById("equip").innerHTML = equip_str;
+
+// dropdown activity change
 $("#aname").change(function () {
   if (this.value.includes('Others')) {
     document.getElementById('anameInput').style.display = "block";
   }
   else {
     document.getElementById('anameInput').style.display = "none";
+  }
+});
+
+// dropdown worker change
+$("#worker").change(function () {
+  if (this.value.includes('Others')) {
+    document.getElementById('labor').style.display = "block";
+  }
+  else {
+    document.getElementById('labor').style.display = "none";
+  }
+});
+
+// dropdown equipment change
+$("#equip").change(function () {
+  if (this.value.includes('Others')) {
+    document.getElementById('equipment').style.display = "block";
+  }
+  else {
+    document.getElementById('equipment').style.display = "none";
   }
 });
 
@@ -121,12 +208,8 @@ function submitProject(e) {
 
   var anamevalue = document.getElementById('aname').value;
   var aname;
-
   if (anamevalue.includes("Others")) {
     aname = document.getElementById('anameInput').value;
-  } else if (anamevalue !== ""){
-    document.getElementById('anameInput').style.display = "none";
-    aname = document.getElementById('aname').value;
   } else {
     aname = anamevalue;
   }
@@ -155,10 +238,17 @@ function submitForm1(e) {
   e.preventDefault();
 
   // Get values
-  let labor = getInputVal("labor");
   let laborQuantity = getInputVal("laborQuantity");
   let laborHours = getInputVal("laborHours");
   let laborSalary = getInputVal("laborSalary");
+
+  var workervalue = document.getElementById('worker').value;
+  var labor;
+  if (workervalue.includes("Others")) {
+    labor = document.getElementById('labor').value;
+  } else {
+    labor = workervalue;
+  }
 
   saveMessage1(labor, laborQuantity, laborHours, laborSalary, project);
 
@@ -170,10 +260,17 @@ function submitForm2(e) {
   e.preventDefault();
 
   // Get values
-  let equipment = getInputVal("equipment");
   let equipmentQuantity = getInputVal("equipmentQuantity");
   let equipmentDays = getInputVal("equipmentDays");
   let equipmentCost = getInputVal("equipmentCost");
+
+  var equipvalue = document.getElementById('equip').value;
+  var equipment;
+  if (equipvalue.includes("Others")) {
+    equipment = document.getElementById('equipment').value;
+  } else {
+    equipment = equipvalue;
+  }
 
   saveMessage2(equipment, equipmentQuantity, equipmentDays, equipmentCost, project);
   document.getElementById("equipmentForm").reset();
