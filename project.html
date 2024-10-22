@@ -116,8 +116,8 @@
               <input class="form-control" type="text" id="anameInput" name="anameInput" style="display: none;"/>
             </div>
             <div class="col-md-6 mb-3">
-              <label for="timeM">Time Estimates (M) - Most Likely</label>
-              <input class="form-control" type="text" id="timeM" name="timeM" />
+              <label for="timeM">Time Estimates (M) - Most Likely (days)</label>
+              <input class="form-control" type="number" id="timeM" name="timeM" />
             </div>
           </div>
         </div>
@@ -136,8 +136,8 @@
               />
             </div>
             <div class="col-md-6 mb-3">
-              <label for="timeB">Time Estimates (B) - Pessimistic</label>
-              <input class="form-control" type="text" id="timeB" name="timeB" />
+              <label for="timeB">Time Estimates (B) - Pessimistic (days)</label>
+              <input class="form-control" type="number" id="timeB" name="timeB" />
             </div>
           </div>
         </div>
@@ -146,8 +146,8 @@
         <div class="container">
           <div class="row">
             <div class="col-md-6 mb-3">
-              <label for="timeA">Time Estimates (A) - Optimistic</label>
-              <input class="form-control" type="text" id="timeA" name="timeA" />
+              <label for="timeA">Time Estimates (A) - Optimistic (days)</label>
+              <input class="form-control" type="number" id="timeA" name="timeA" />
             </div>
             <div class="col-md-6 mb-3">
               <button type="submit" class="btn btn-primary">Submit</button>
@@ -172,9 +172,9 @@
             <th>Item</th>
             <th>Activity Name</th>
             <th>Immediate Predecessor</th>
-            <th>A</th>
-            <th>M</th>
-            <th>B</th>
+            <th>A (days)</th>
+            <th>M (days)</th>
+            <th>B (days)</th>
             <th>Expected Time (T)</th>
             <th colspan="2">Options</th>
           </tr>
@@ -212,28 +212,28 @@
                   </td>
                   <td>
                     <input
-                      type="text"
+                      type="number"
                       id="laborQuantity"
                       name="laborQuantity"
-                      style="width: 30%"
+                      style="width: 40%"
                       required
                     />
                   </td>
                   <td>
                     <input
-                      type="text"
+                      type="number"
                       id="laborHours"
                       name="laborHours"
-                      style="width: 30%"
+                      style="width: 40%"
                       required
                     />
                   </td>
                   <td>
                     <input
-                      type="text"
+                      type="number"
                       id="laborSalary"
                       name="laborSalary"
-                      style="width: 30%"
+                      style="width: 40%"
                       required
                     />
                     /hour
@@ -272,28 +272,28 @@
                   </td>
                   <td>
                     <input
-                      type="text"
+                      type="number"
                       id="equipmentQuantity"
                       name="equipmentQuantity"
-                      style="width: 30%"
+                      style="width: 40%"
                       required
                     />
                   </td>
                   <td>
                     <input
-                      type="text"
+                      type="number"
                       id="equipmentDays"
                       name="equipmentDays"
-                      style="width: 30%"
+                      style="width: 40%"
                       required
                     />
                   </td>
                   <td>
                     <input
-                      type="text"
+                      type="number"
                       id="equipmentCost"
                       name="equipmentCost"
-                      style="width: 30%"
+                      style="width: 40%"
                       required
                     />
                     /day

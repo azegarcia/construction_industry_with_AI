@@ -34,26 +34,7 @@ let sdate = params.get('startdate');
 
 // WORKERS
 var workers;
-workers = ["Project Manager",
-    "Site Superintendent",
-    "Estimator",
-    "Safety Officer",
-    "Office Administrator",
-    "Carpenter",
-    "Electrician",
-    "Plumber",
-    "Mason",
-    "Ironworker",
-    "Roofer",
-    "Painter",
-    "Tile Setter",
-    "Construction Laborer",
-    "Equipment Operator",
-    "Architect",
-    "Engineer",
-    "Surveyor",
-    "Inspector",
-    "OTHERS"]
+workers = ["PROJECT MANAGER", "SITE SUPERINTENDENT", "ESTIMATOR", "SAFETY OFFICER", "OFFICE ADMINISTRATOR", "CARPENTER", "ELECTRICIAN", "PLUMBER", "MASON", "IRONWORKER", "ROOFER", "PAINTER", "TILE SETTER", "CONSTRUCTION LABORER", "EQUIPMENT OPERATOR", "ARCHITECT", "ENGINEER", "SURVEYOR", "INSPECTOR", "OTHERS"]
 var workers_str = ""
 for (var work of workers) {
   workers_str += `<option value='${work}'>` + work + "</option>"
@@ -63,33 +44,7 @@ document.getElementById("worker").innerHTML = workers_str;
 // EQUIPMENTS
 var equipments;
 equipments = [
-  "Excavator",
-  "Bulldozer",
-  "Backhoe Loader",
-  "Crane",
-  "Concrete Mixer",
-  "Dump Truck",
-  "Roller",
-  "Concrete Pump",
-  "Jackhammer",
-  "Ladder",
-  "Scaffolding",
-  "Level",
-  "Tape Measure",
-  "Hammer",
-  "Saw",
-  "Drill",
-  "Screwdriver",
-  "Wrench",
-  "Pliers",
-  "Safety Helmet",
-  "Safety Vest",
-  "Safety Boots",
-  "Hard Hat",
-  "Ear Protection",
-  "Eye Protection",
-  "Respiratory Protection",
-  "OTHERS"
+  "EXCAVATOR", "BULLDOZER", "BACKHOE LOADER", "CRANE", "CONCRETE MIXER", "DUMP TRUCK", "ROLLER", "CONCRETE PUMP", "JACKHAMMER", "LADDER", "SCAFFOLDING", "LEVEL", "TAPE MEASURE", "HAMMER", "SAW", "DRILL", "SCREWDRIVER", "WRENCH", "PLIERS", "SAFETY HELMET", "SAFETY VEST", "SAFETY BOOTS", "HARD HAT", "EAR PROTECTION", "EYE PROTECTION", "RESPIRATORY PROTECTION", "OTHERS"
 ]
 var equip_str = ""
 for (var equip of equipments) {
@@ -335,9 +290,11 @@ function editProjectRow(projectKey) {
 }
 
 function deleteProjectRow(projectKey) {
-  deleteToDatabase("activity", projectKey);
-  $("#" + projectKey).remove();
-  disablePertCPMBtn();
+  if (confirm("Are you sure you want to delete?") == true) {
+    deleteToDatabase("activity", projectKey);
+    $("#" + projectKey).remove();
+    disablePertCPMBtn();
+  }
 }
 
 function deleteWorkerRow(projectKey) {
