@@ -290,10 +290,13 @@ function editProjectRow(projectKey) {
 }
 
 function deleteProjectRow(projectKey) {
-  if (confirm("Are you sure you want to delete?") == true) {
+  let question = prompt("Please enter the password to delete", "");
+  if (question == "manager123123") {
     deleteToDatabase("activity", projectKey);
     $("#" + projectKey).remove();
     disablePertCPMBtn();
+  } else {
+    alert("Password incorrect.")
   }
 }
 
