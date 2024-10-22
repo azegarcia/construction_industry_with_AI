@@ -3,17 +3,29 @@ import os
 import json
 
 class ChatgptRunner:
-    def processGemini(self, pname):
+    def __init__(self, pname):
+        self.project_name = pname
+        
+    def processGemini(self):
         os.environ["API_KEY"] = 'AIzaSyABZX8cvpBPUcAwL6rS_frB6E0afbmhrtA'
         genai.configure(api_key=os.environ["API_KEY"])
 
         model = genai.GenerativeModel('gemini-1.5-flash-latest')
-        query = "Provide the activities of a " + pname + ". store it in a python list named as items."
+        query = "Provide the activities required for the " + self.project_name + ", comma separated."
         response = model.generate_content(query)
-        clean_text = response.text.replace("items =", "").replace("[", "").replace("]", "").replace("python", "").replace("\n", "").replace("`", "").replace("  ", "").replace("\\", "").strip()
-        split_text = clean_text.split(",")
+        split_text = response.text.split(",")
         new_list = []
         for split in split_text:
-            clean_splits = split.replace('"', "").strip()
-            new_list.append(clean_splits)
+            clean_text = split.replace("\n", "").strip().upper()
+            if " AND " in clean_text:
+                new_text = clean_text.replace("AND", "&")
+            else:
+                new_text = clean_text
+            if "AND" in new_text:
+                new_text = new_text.replace("AND", "").strip()
+            new_list.append(new_text)
+        
+        new_list.append("OTHERS")    
+        print(self.project_name)
+        print(new_list)
         return new_list

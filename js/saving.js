@@ -32,25 +32,6 @@ let client = params.get('clientname');
 let project = params.get('projectname').toUpperCase();
 let sdate = params.get('startdate');
 
-// ACTIVITIES
-var items;
-if (project.includes("BRIDGE")) {
-  items = ["Site preparation and clearing", "Site clearing and grubbing", "Earthwork", "Foundation preparation", "Pier construction", "Abutment construction", "Girder or beam placement", "Deck construction", "Barrier installation", "Waterproofing", "Joint sealing", "Painting or coating", "Lighting installation", "Signage installation", "Final inspections and building approval", "Others"]
-} else if (project.includes("FENCE")) {
-  items = ["Site preparation and clearing", "Site clearing and grubbing", "Earthwork", "Post hole digging", "Post setting", "Rail or panel assembly", "Attachment to posts", "Gate frame construction", "Gate hanging", "Gate hardware installation", "Painting or staining", "Landscaping around fence", "Final inspections and building approval", "Others"]
-} else if (project.includes("PIP")) {
-  items = ["Site preparation and clearing", "Site clearing and grubbing", "Earthwork", "Pipe laying", "Joint sealing", "Backfilling trenches", "Valve placement", "Valve connection to pipes", "Hydrant placement", "Hydrant connection to pipes", "Water pressure testing", "Leak detection and repair", "System commissioning", "Final inspections and building approval", "Others"]
-} else if (project.includes("ELECTRIC")) {
-  items = ["Site preparation and clearing", "Site clearing and grubbing", "Earthwork", "Post hole digging", "Post setting", "Transformer installation", "Conductors", "Insulator installation", "Switchgear installation", "Ground electrode installation", "Ground wire connection", "Electrical testing", "System commissioning", "Final inspections and building approval", "Others"]
-} else {
-  items = ["Site preparation and clearing", "Site clearing and grubbing", "Earthwork", "Foundation preparation", "Foundation construction", "Superstructure construction", "Roof construction", "Exterior walls", "Windows and doors installation", "Roofing installation", "Exterior cladding", "Interior walls", "Flooring installation", "Ceiling installation", "Plumbing and sanitary systems installation", "Electrical systems installation", "HVAC systems installation", "Site cleanup and waste removal", "Landscaping", "Final inspections and building approval", "Others"]
-}
-var str = ""
-for (var item of items) {
-  str += `<option value='${item}'>` + item + "</option>"
-}
-document.getElementById("aname").innerHTML = str;
-
 // WORKERS
 var workers;
 workers = ["Project Manager",
@@ -72,7 +53,7 @@ workers = ["Project Manager",
     "Engineer",
     "Surveyor",
     "Inspector",
-    "Others"]
+    "OTHERS"]
 var workers_str = ""
 for (var work of workers) {
   workers_str += `<option value='${work}'>` + work + "</option>"
@@ -108,7 +89,7 @@ equipments = [
   "Ear Protection",
   "Eye Protection",
   "Respiratory Protection",
-  "Others"
+  "OTHERS"
 ]
 var equip_str = ""
 for (var equip of equipments) {
@@ -118,7 +99,7 @@ document.getElementById("equip").innerHTML = equip_str;
 
 // dropdown activity change
 $("#aname").change(function () {
-  if (this.value.includes('Others')) {
+  if (this.value.includes('OTHERS')) {
     document.getElementById('anameInput').style.display = "block";
   }
   else {
@@ -128,7 +109,7 @@ $("#aname").change(function () {
 
 // dropdown worker change
 $("#worker").change(function () {
-  if (this.value.includes('Others')) {
+  if (this.value.includes('OTHERS')) {
     document.getElementById('labor').style.display = "block";
   }
   else {
@@ -138,7 +119,7 @@ $("#worker").change(function () {
 
 // dropdown equipment change
 $("#equip").change(function () {
-  if (this.value.includes('Others')) {
+  if (this.value.includes('OTHERS')) {
     document.getElementById('equipment').style.display = "block";
   }
   else {
@@ -730,3 +711,34 @@ async function myPert() {
 toDatabase();
 toDatabase1();
 toDatabase2();
+
+const loadGemini = () => {
+  const params = getQueryParams();
+  let project_name = "";
+  if (params.projectname) {
+    project_name = params.projectname;
+  }
+  axios
+    .get("http://localhost:5000/gpt/" + "Construction%20of%20Bridge")
+    .then(function (response) {
+      const res = response.data;
+      const data = res.data;
+      // handle success
+      console.log(data);
+      if (data.length > 0) {
+        var str = ""
+        data.forEach((item) => {
+          str += `<option value='${item}'>` + item + "</option>"
+        });
+        document.getElementById("aname").innerHTML = str;
+      }
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    });
+};
+
+$(document).ready(function () {
+  loadGemini();
+});
