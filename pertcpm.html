@@ -51,61 +51,51 @@
   tr:nth-child(even) {
     background-color: #dddddd;
   }
+
+  body {
+    height: 100%; 
+  }
+  div.scroll-container {
+  background-color: #202050;
+  overflow: auto;
+  white-space: nowrap;
+  padding-top: 75px;
+  }
+
+  div.scroll-container img {
+    padding: 5px;
+  }
 </style>
 <body>
   <div id="main-part" style="display: block;">
-    <div class="hero_area">
-      <header class="header_section" style="background-color: white;position: fixed;width: 100%;z-index: 1;">
-        <div class="header_bottom">
-          <div class="container-fluid">
-            <nav class="navbar navbar-expand-lg custom_nav-container">
-              <a class="navbar-brand" href="main.html?verify=true">
-                <span>
-                  <img src="images/header.png" style="height: 50px;">
-                </span>
-              </a>
-              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class=""> </span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ">
-                  <li class="nav-item active">
-                    <a class="nav-link" href="main.html?verify=true">Home <span class="sr-only">(current)</span></a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="index.html">Log Out</a>
-                  </li>
-                </ul>
-              </div>
-            </nav>
-          </div>
-        </div>
-      </header>
-    </div>
-    <br><br><br>
-    <section class="slider_section" style="border:5px solid gray;">
-      <div class="container" style="height: 300px;">
-        <div class="row" style="height: 300px;">
-          <div class="col-md-6" style="height: 300px;">
-            <div class="detail-box">
-              <br><br><br><br><br>
-              <h1 style="color: #0106b7;">
-                PERT CPM Diagram
-              </h1>
+    <header class="header_section" style="position: fixed;width: 100%;z-index: 1;background-color: white;border: 3px solid black;">
+      <div class="header_bottom">
+        <div class="container-fluid">
+          <nav class="navbar navbar-expand-lg custom_nav-container">
+            <a class="navbar-brand" href="main.html?verify=true">
+              <span>
+                <img src="images/header.png" style="height: 50px;">
+              </span>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class=""> </span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav ">
+                <li class="nav-item active">
+                  <a class="nav-link" href="main.html?verify=true">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="index.html">Log Out</a>
+                </li>
+              </ul>
             </div>
-          </div>
-          <div class="col-md-6" style="height: 300px;">
-            <img src="images/greeny.jpg" alt="" style="height: 300px;" />
-          </div>
+          </nav>
         </div>
       </div>
-    </section>
-    <section class="slider_section" style="background-color: white;">
-      <div class="container" style="height: 30px;">
-      </div>
-    </section>
+    </header>
   </div>
+  <br><br><br><br>
   <div class="row">
     <div class="column">
       <img id="cpmImg" src="python-server/images/pertcpm.png" width="700" height="900" style="margin-left: 100px;position:relative;">

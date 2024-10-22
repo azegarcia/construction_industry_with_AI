@@ -34,15 +34,15 @@ let sdate = params.get('startdate');
 
 var items;
 if (project.includes("BRIDGE")) {
-  items = ["Site clearing and grubbing", "Earthwork", "Foundation preparation", "Pier construction", "Abutment construction", "Girder or beam placement", "Deck construction", "Barrier installation", "Waterproofing", "Joint sealing", "Painting or coating", "Lighting installation", "Signage installation", "Others"]
+  items = ["", "Site clearing and grubbing", "Earthwork", "Foundation preparation", "Pier construction", "Abutment construction", "Girder or beam placement", "Deck construction", "Barrier installation", "Waterproofing", "Joint sealing", "Painting or coating", "Lighting installation", "Signage installation", "Others"]
 } else if (project.includes("FENCE")) {
-  items = ["Site clearing and grubbing", "Earthwork", "Post hole digging", "Post setting", "Rail or panel assembly", "Attachment to posts", "Gate frame construction", "Gate hanging", "Gate hardware installation", "Painting or staining", "Landscaping around fence", "Others"]
+  items = ["", "Site clearing and grubbing", "Earthwork", "Post hole digging", "Post setting", "Rail or panel assembly", "Attachment to posts", "Gate frame construction", "Gate hanging", "Gate hardware installation", "Painting or staining", "Landscaping around fence", "Others"]
 } else if (project.includes("PIP")) {
-  items = ["Site clearing and grubbing", "Earthwork", "Pipe laying", "Joint sealing", "Backfilling trenches", "Valve placement", "Valve connection to pipes", "Hydrant placement", "Hydrant connection to pipes", "Water pressure testing", "Leak detection and repair", "System commissioning", "Others"]
+  items = ["", "Site clearing and grubbing", "Earthwork", "Pipe laying", "Joint sealing", "Backfilling trenches", "Valve placement", "Valve connection to pipes", "Hydrant placement", "Hydrant connection to pipes", "Water pressure testing", "Leak detection and repair", "System commissioning", "Others"]
 } else if (project.includes("ELECTRIC")) {
-  items = ["Site clearing and grubbing", "Earthwork", "Post hole digging", "Post setting", "Transformer installation", "Conductors", "Insulator installation", "Switchgear installation", "Ground electrode installation", "Ground wire connection", "Electrical testing", "System commissioning", "Others"]
+  items = ["", "Site clearing and grubbing", "Earthwork", "Post hole digging", "Post setting", "Transformer installation", "Conductors", "Insulator installation", "Switchgear installation", "Ground electrode installation", "Ground wire connection", "Electrical testing", "System commissioning", "Others"]
 } else {
-  items = ["Site clearing and grubbing", "Earthwork", "Foundation preparation", "Foundation construction", "Superstructure construction", "Roof construction", "Exterior walls", "Windows and doors installation", "Roofing installation", "Exterior cladding", "Interior walls", "Flooring installation", "Ceiling installation", "Plumbing and sanitary systems installation", "Electrical systems installation", "HVAC systems installation", "Site cleanup and waste removal", "Landscaping", "Others"]
+  items = ["", "Site clearing and grubbing", "Earthwork", "Foundation preparation", "Foundation construction", "Superstructure construction", "Roof construction", "Exterior walls", "Windows and doors installation", "Roofing installation", "Exterior cladding", "Interior walls", "Flooring installation", "Ceiling installation", "Plumbing and sanitary systems installation", "Electrical systems installation", "HVAC systems installation", "Site cleanup and waste removal", "Landscaping", "Others"]
 }
 var str = ""
 for (var item of items) {
@@ -132,9 +132,13 @@ function submitProject(e) {
   }
 
   const getRow = document.querySelector('#act-table > tbody > tr:last-child > td:nth-child(1)') || false;
+  var actLabel = document.getElementById('act-label').textContent;
   var itemL;
   
-  if (getRow) {
+  if (actLabel.includes("-")) {
+    itemL = actLabel.replace("Activity Name - ", "");
+    document.getElementById('act-label').textContent = "Activity Name";
+  } else if (getRow) {
     const lastRow = document.querySelector('#act-table > tbody > tr:last-child > td:nth-child(1)').textContent;
     itemL = nextCharacter(lastRow);
   } else {
@@ -324,7 +328,7 @@ function toDatabase() {
             }
             else {
               document.getElementById('anameInput').style.display = "block";
-              document.querySelector("#itemL").value = val.itemL;
+              document.getElementById('act-label').textContent = "Activity Name - " + val.itemL;
               document.querySelector("#anameInput").value = val.aname;
               document.querySelector("#impre").value = val.impre;
               document.querySelector("#timeA").value = val.timeA;
