@@ -4,13 +4,15 @@ import json
 
 class ChatgptRunner:
     def __init__(self, pname):
-        self.project_name = pname
+        self.project_name = pname.upper()
         
     def processGemini(self):
         os.environ["API_KEY"] = 'AIzaSyABZX8cvpBPUcAwL6rS_frB6E0afbmhrtA'
         genai.configure(api_key=os.environ["API_KEY"])
 
         model = genai.GenerativeModel('gemini-1.5-flash-latest')
+        if "REHABILITATION" in self.project_name:
+            self.project_name = self.project_name.replace("REHABILITATION", "CONSTRUCTION")
         query = "Provide the activities required for the " + self.project_name + ", comma separated."
         response = model.generate_content(query)
         split_text = response.text.split(",")
