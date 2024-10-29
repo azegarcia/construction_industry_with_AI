@@ -221,21 +221,39 @@ function saveMessage3(OTlabor, OTlaborQuantity, OTlaborHours, OTlaborSalary, pna
 }
 
 function deleteWorkerRow(projectKey) {
-  deleteToDatabase("workers", projectKey);
-  $("#workers_" + projectKey).remove();
-  reloadWorkerEquipment();
+  console.log(projectKey)
+  let question1 = prompt("Please enter the password to delete", "");
+  if (question1 == "manager123123") {
+    deleteToDatabase("workers", projectKey);
+    $("#workers_" + projectKey).remove();
+    reloadWorkerEquipment();
+  } else {
+    alert("Password incorrect. Delete ignored.")
+  }
 }
 
 function deleteEquipmentRow(projectKey) {
-  deleteToDatabase("equipments", projectKey);
-  $("#equipments_" + projectKey).remove();
-  reloadWorkerEquipment();
+  console.log(projectKey)
+  let question2 = prompt("Please enter the password to delete", "");
+  if (question2 == "manager123123") {
+    deleteToDatabase("equipments", projectKey);
+    $("#equipments_" + projectKey).remove();
+    reloadWorkerEquipment();
+  } else {
+    alert("Password incorrect. Delete ignored.")
+  }
 }
 
 function deleteOvertimeRow(projectKey) {
-  deleteToDatabase("overtime", projectKey);
-  $("#overtime_" + projectKey).remove();
-  reloadWorkerEquipment();
+  console.log(projectKey)
+  let question3 = prompt("Please enter the password to delete", "");
+  if (question3 == "manager123123") {
+    deleteToDatabase("overtime", projectKey);
+    $("#overtime_" + projectKey).remove();
+    reloadWorkerEquipment();
+  } else {
+    alert("Password incorrect. Delete ignored.")
+  }
 }
 
 function reloadWorkerEquipment() {
