@@ -144,7 +144,7 @@ function submitProject(e) {
 
   var anamevalue = document.getElementById('aname').value;
   var aname;
-  if (anamevalue.includes("Others")) {
+  if (anamevalue.includes("OTHERS")) {
     aname = document.getElementById('anameInput').value;
   } else {
     aname = anamevalue;
@@ -180,7 +180,7 @@ function submitForm1(e) {
 
   var workervalue = document.getElementById('worker').value;
   var labor;
-  if (workervalue.includes("Others")) {
+  if (workervalue.includes("OTHERS")) {
     labor = document.getElementById('labor').value;
   } else {
     labor = workervalue;
@@ -202,7 +202,7 @@ function submitForm2(e) {
 
   var equipvalue = document.getElementById('equip').value;
   var equipment;
-  if (equipvalue.includes("Others")) {
+  if (equipvalue.includes("OTHERS")) {
     equipment = document.getElementById('equipment').value;
   } else {
     equipment = equipvalue;
@@ -286,7 +286,12 @@ function saveMessage2(
 }
 
 function editProjectRow(projectKey) {
-  window.location.href = window.location.href + "&edit=" + projectKey;
+  let question = prompt("Please enter the password to edit", "");
+  if (question == "manager123123") {
+    window.location.href = window.location.href + "&edit=" + projectKey;
+  } else {
+    alert("Password incorrect. Edit ignored.")
+  }
 }
 
 function deleteProjectRow(projectKey) {
@@ -301,15 +306,27 @@ function deleteProjectRow(projectKey) {
 }
 
 function deleteWorkerRow(projectKey) {
-  deleteToDatabase("workers", projectKey);
-  $("#workers_" + projectKey).remove();
-  reloadWorkerEquipment();
+  console.log(projectKey)
+  let question1 = prompt("Please enter the password to delete", "");
+  if (question1 == "manager123123") {
+    deleteToDatabase("workers", projectKey);
+    $("#workers_" + projectKey).remove();
+    reloadWorkerEquipment();
+  } else {
+    alert("Password incorrect. Delete ignored.")
+  }
 }
 
 function deleteEquipmentRow(projectKey) {
-  deleteToDatabase("equipments", projectKey);
-  $("#equipments_" + projectKey).remove();
-  reloadWorkerEquipment();
+  console.log(projectKey)
+  let question2 = prompt("Please enter the password to delete", "");
+  if (question2 == "manager123123") {
+    deleteToDatabase("equipments", projectKey);
+    $("#equipments_" + projectKey).remove();
+    reloadWorkerEquipment();
+  } else {
+    alert("Password incorrect. Delete ignored.")
+  }
 }
 
 function reloadWorkerEquipment() {
@@ -456,13 +473,14 @@ function toDatabase1() {
               val.laborTotal.toLocaleString(); +
               "</div></td>";
             totalContent += "<tr>";
-          }
 
-          activityKey.push(data.key);
+            activityKey.push(data.key);
+          }
         });
         $("#worker-table").append(content);
         $("#result-table").append(totalContent);
 
+        // FOR DELETE
         activityKey.forEach((key) => {
           document
             .querySelector("#workers_" + key)
@@ -507,15 +525,16 @@ function toDatabase2() {
               val.equipmentTotal.toLocaleString(); +
               "</div></td>";
             totalContent += "<tr>";
-          }
 
-          activityKey.push(data.key);
+            activityKey.push(data.key);
+          }
         });
         $("#equipment-table").append(content);
         $("#result-table").append(totalContent);
 
         totalofAll();
 
+        // FOR DELETE
         activityKey.forEach((key) => {
           document
             .querySelector("#equipments_" + key)
@@ -684,7 +703,6 @@ const loadGemini = () => {
       const res = response.data;
       const data = res.data;
       // handle success
-      console.log(data);
       if (data.length > 0) {
         var str = ""
         data.forEach((item) => {

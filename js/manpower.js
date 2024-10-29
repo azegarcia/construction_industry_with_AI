@@ -32,6 +32,65 @@ document
   .getElementById("OTForm")
   .addEventListener("submit", submitForm3);
 
+// WORKERS
+var workers;
+workers = ["PROJECT MANAGER", "SITE SUPERINTENDENT", "ESTIMATOR", "SAFETY OFFICER", "OFFICE ADMINISTRATOR", "CARPENTER", "ELECTRICIAN", "PLUMBER", "MASON", "IRONWORKER", "ROOFER", "PAINTER", "TILE SETTER", "CONSTRUCTION LABORER", "EQUIPMENT OPERATOR", "ARCHITECT", "ENGINEER", "SURVEYOR", "INSPECTOR", "OTHERS"]
+var workers_str = ""
+for (var work of workers) {
+  workers_str += `<option value='${work}'>` + work + "</option>"
+}
+document.getElementById("worker").innerHTML = workers_str;
+
+// OT WORKERS
+var workers;
+workers = ["PROJECT MANAGER", "SITE SUPERINTENDENT", "ESTIMATOR", "SAFETY OFFICER", "OFFICE ADMINISTRATOR", "CARPENTER", "ELECTRICIAN", "PLUMBER", "MASON", "IRONWORKER", "ROOFER", "PAINTER", "TILE SETTER", "CONSTRUCTION LABORER", "EQUIPMENT OPERATOR", "ARCHITECT", "ENGINEER", "SURVEYOR", "INSPECTOR", "OTHERS"]
+var workers_str = ""
+for (var work of workers) {
+  workers_str += `<option value='${work}'>` + work + "</option>"
+}
+document.getElementById("otworker").innerHTML = workers_str;
+
+// EQUIPMENTS
+var equipments;
+equipments = [
+  "EXCAVATOR", "BULLDOZER", "BACKHOE LOADER", "CRANE", "CONCRETE MIXER", "DUMP TRUCK", "ROLLER", "CONCRETE PUMP", "JACKHAMMER", "LADDER", "SCAFFOLDING", "LEVEL", "TAPE MEASURE", "HAMMER", "SAW", "DRILL", "SCREWDRIVER", "WRENCH", "PLIERS", "SAFETY HELMET", "SAFETY VEST", "SAFETY BOOTS", "HARD HAT", "EAR PROTECTION", "EYE PROTECTION", "RESPIRATORY PROTECTION", "OTHERS"
+]
+var equip_str = ""
+for (var equip of equipments) {
+  equip_str += `<option value='${equip}'>` + equip + "</option>"
+}
+document.getElementById("equip").innerHTML = equip_str;
+
+// dropdown worker change
+$("#worker").change(function () {
+  if (this.value.includes('OTHERS')) {
+    document.getElementById('labor').style.display = "block";
+  }
+  else {
+    document.getElementById('labor').style.display = "none";
+  }
+});
+
+// dropdown ot worker change
+$("#otworker").change(function () {
+  if (this.value.includes('OTHERS')) {
+    document.getElementById('OTlabor').style.display = "block";
+  }
+  else {
+    document.getElementById('OTlabor').style.display = "none";
+  }
+});
+
+// dropdown equipment change
+$("#equip").change(function () {
+  if (this.value.includes('OTHERS')) {
+    document.getElementById('equipment').style.display = "block";
+  }
+  else {
+    document.getElementById('equipment').style.display = "none";
+  }
+});
+
 function getQueryParams() {
   const params = Object.fromEntries(new URLSearchParams(location.search));
   return params;
@@ -43,13 +102,20 @@ function submitForm1(e) {
   var projectName = params.file;
   // Get values
   let pname = projectName;
-  let labor = getInputVal("labor");
   let laborQuantity = getInputVal("laborQuantity");
   let laborHours = getInputVal("laborHours");
   let laborSalary = getInputVal("laborSalary");
 
+  var workervalue = document.getElementById('worker').value;
+  var labor;
+  if (workervalue.includes("OTHERS")) {
+    labor = document.getElementById('labor').value;
+  } else {
+    labor = workervalue;
+  }
+
   saveMessage1(labor, laborQuantity, laborHours, laborSalary, pname);
-  console.log(pname)
+  
   document.getElementById("workerForm").reset();
   reloadWorkerEquipment();
 }
@@ -60,10 +126,17 @@ function submitForm2(e) {
   var projectName = params.file;
   // Get values
   let pname = projectName;
-  let equipment = getInputVal("equipment");
   let equipmentQuantity = getInputVal("equipmentQuantity");
   let equipmentDays = getInputVal("equipmentDays");
   let equipmentCost = getInputVal("equipmentCost");
+
+  var equipvalue = document.getElementById('equip').value;
+  var equipment;
+  if (equipvalue.includes("OTHERS")) {
+    equipment = document.getElementById('equipment').value;
+  } else {
+    equipment = equipvalue;
+  }
 
   saveMessage2(equipment, equipmentQuantity, equipmentDays, equipmentCost, pname);
   document.getElementById("equipmentForm").reset();
@@ -76,10 +149,17 @@ function submitForm3(e) {
   var projectName = params.file;
   // Get values
   let pname = projectName;
-  let OTlabor = getInputVal("OTlabor");
   let OTlaborQuantity = getInputVal("OTlaborQuantity");
   let OTlaborHours = getInputVal("OTlaborHours");
   let OTlaborSalary = getInputVal("OTlaborSalary");
+
+  var otvalue = document.getElementById('otworker').value;
+  var OTlabor;
+  if (otvalue.includes("OTHERS")) {
+    OTlabor = document.getElementById('equipment').value;
+  } else {
+    OTlabor = otvalue;
+  }
 
   saveMessage3(OTlabor, OTlaborQuantity, OTlaborHours, OTlaborSalary, pname);
   console.log(pname)

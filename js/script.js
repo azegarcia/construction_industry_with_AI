@@ -26,6 +26,7 @@ const signIn = () => {
             }
         })
         .catch((error) => {
+            alert("Password incorrect. Please try again.")
             console.log(error.code);
             console.log(error.message)
         });

@@ -102,34 +102,59 @@
     <div class="column">
       <form id="workerForm">
         <table style="width: 100%;" id="worker-table">
-            <thead>
-                <tr>
-                <th>Workers</th>
-                <th>Quantity</th>
-                <th>Hours</th>
-                <th>Salary per hour</th>
-                <th id="option"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                <td>
-                  <input type="text" id="labor" name="labor" style="width: 90%;" required>
-                </td>
-                <td>
-                  <input type="text" id="laborQuantity" name="laborQuantity" style="width: 30%;" required>
-                </td>
-                <td>
-                  <input type="text" id="laborHours" name="laborHours" style="width: 30%;" required>
-                </td>
-                <td>
-                  <input type="text" id="laborSalary" name="laborSalary" style="width: 30%;" required> /hour
-                </td>
-                <td>
-                  <button id="addbtn" type="submit" class="btn btn-success">Add</button>
-                </td>
-                </tr>
-            </tbody>
+          <thead>
+            <tr>
+              <th>Workers</th>
+              <th>Quantity</th>
+              <th>Hours</th>
+              <th>Salary per hour</th>
+              <th colspan="2"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <select id="worker" style="width: 100%;"></select>
+                <input
+                  type="text"
+                  id="labor"
+                  name="labor"
+                  style="width: 90%; display: none;"
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  id="laborQuantity"
+                  name="laborQuantity"
+                  style="width: 40%"
+                  required
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  id="laborHours"
+                  name="laborHours"
+                  style="width: 40%"
+                  required
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  id="laborSalary"
+                  name="laborSalary"
+                  style="width: 40%"
+                  required
+                />
+                /hour
+              </td>
+              <td>
+                <button type="submit" class="btn btn-success">Add</button>
+              </td>
+            </tr>
+          </tbody>
         </table>
       </form>
       <section class="slider_section" style="background-color: white;">
@@ -154,21 +179,46 @@
           </thead>
           <tbody>
             <tr>
-            <td>
-              <input type="text" id="OTlabor" name="OTlabor" style="width: 90%;" required>
-            </td>
-            <td>
-              <input type="text" id="OTlaborQuantity" name="OTlaborQuantity" style="width: 30%;" required>
-            </td>
-            <td>
-              <input type="text" id="OTlaborHours" name="OTlaborHours" style="width: 30%;" required>
-            </td>
-            <td>
-              <input type="text" id="OTlaborSalary" name="OTlaborSalary" style="width: 30%;" required> /hour
-            </td>
-            <td>
-              <button id="addbtn" type="submit" class="btn btn-success">Add</button>
-            </td>
+              <td>
+                <select id="otworker" style="width: 100%;"></select>
+                <input
+                  type="text"
+                  id="OTlabor"
+                  name="OTlabor"
+                  style="width: 90%; display: none;"
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  id="OTlaborQuantity"
+                  name="OTlaborQuantity"
+                  style="width: 40%"
+                  required
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  id="OTlaborHours"
+                  name="OTlaborHours"
+                  style="width: 40%"
+                  required
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  id="OTlaborSalary"
+                  name="OTlaborSalary"
+                  style="width: 40%"
+                  required
+                />
+                /hour
+              </td>
+              <td>
+                <button id="addbtn" type="submit" class="btn btn-success">Add</button>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -181,29 +231,54 @@
         <table style="width: 100%;" id="equipment-table">
           <thead>
             <tr>
-                <th>Equipments</th>
-                <th>Quantity</th>
-                <th>Days</th>
-                <th>Cost per day</th>
-                <th id="option"></th>
+              <th>Equipments</th>
+              <th>Quantity</th>
+              <th>Days</th>
+              <th>Cost per day</th>
+              <th colspan="2"></th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>
-                <input type="text" id="equipment" name="equipment" style="width: 90%;" required>
+                <select id="equip" style="width: 100%;"></select>
+                <input
+                  type="text"
+                  id="equipment"
+                  name="equipment"
+                  style="width: 90%; display: none;"
+                />
               </td>
               <td>
-                <input type="text" id="equipmentQuantity" name="equipmentQuantity" style="width: 30%;" required>
+                <input
+                  type="number"
+                  id="equipmentQuantity"
+                  name="equipmentQuantity"
+                  style="width: 40%"
+                  required
+                />
               </td>
               <td>
-                <input type="text" id="equipmentDays" name="equipmentDays" style="width: 30%;" required>
+                <input
+                  type="number"
+                  id="equipmentDays"
+                  name="equipmentDays"
+                  style="width: 40%"
+                  required
+                />
               </td>
               <td>
-                <input type="text" id="equipmentCost" name="equipmentCost" style="width: 30%;" required> /day
+                <input
+                  type="number"
+                  id="equipmentCost"
+                  name="equipmentCost"
+                  style="width: 40%"
+                  required
+                />
+                /day
               </td>
               <td>
-                <button id="addbtn" type="submit" class="btn btn-success">Add</button>
+                <button type="submit" class="btn btn-success">Add</button>
               </td>
             </tr>
           </tbody>
