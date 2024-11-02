@@ -64,9 +64,10 @@ function saveProject(itemL, aname, amount, previous, thisperiod) {
     var previous_amount = Math.round((amount * previous / 100) * 1000) / 1000;
     var period_amount = Math.round((amount * thisperiod / 100) * 100) / 100;
     let newMessageRef = messagesRef.push();
+    const anamevalue = aname.split(" - ");
     newMessageRef.set({
         itemL: itemL,
-        aname: aname,
+        aname: anamevalue[1],
         pname: projectName,
         cov_period: coveredPeriod,
         contract_amount: amount,
@@ -129,7 +130,7 @@ function toDatabase() {
                 }
                 if (val.aname) {
                     if ((val.aname) && (val.status !== "added")) {
-                        str += `<option value='${val.itemL}'>` + val.aname + "</option>"
+                        str += `<option value='${val.itemL}'>` + val.itemL + " - " + val.aname + "</option>"
                     }    
                 }
             }
