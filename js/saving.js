@@ -164,6 +164,10 @@ function submitProject(e) {
     itemL = "A"; 
   }
 
+  if (itemL == "Q") {
+    itemL = "A";
+  }
+  
   saveProject(projectDetail, aname, itemL);
   document.getElementById("inputForm").reset();
   toDatabase();
@@ -286,8 +290,8 @@ function saveMessage2(
 }
 
 function editProjectRow(projectKey) {
-  let question = prompt("Please enter the password to edit", "");
-  if (question == "manager123123") {
+  let quest1 = prompt("Please enter the password to edit", "");
+  if (quest1 == "manager123123") {
     window.location.href = window.location.href + "&edit=" + projectKey;
   } else {
     alert("Password incorrect. Edit ignored.")
@@ -295,8 +299,8 @@ function editProjectRow(projectKey) {
 }
 
 function deleteProjectRow(projectKey) {
-  let question = prompt("Please enter the password to delete", "");
-  if (question == "manager123123") {
+  let quest2 = prompt("Please enter the password to delete", "");
+  if (quest2 == "manager123123") {
     deleteToDatabase("activity", projectKey);
     $("#" + projectKey).remove();
     disablePertCPMBtn();
@@ -305,8 +309,13 @@ function deleteProjectRow(projectKey) {
   }
 }
 
+function deleteOldRow(projectKey) {
+  deleteToDatabase("activity", projectKey);
+  $("#" + projectKey).remove();
+  disablePertCPMBtn();
+}
+
 function deleteWorkerRow(projectKey) {
-  console.log(projectKey)
   let question1 = prompt("Please enter the password to delete", "");
   if (question1 == "manager123123") {
     deleteToDatabase("workers", projectKey);
@@ -318,7 +327,6 @@ function deleteWorkerRow(projectKey) {
 }
 
 function deleteEquipmentRow(projectKey) {
-  console.log(projectKey)
   let question2 = prompt("Please enter the password to delete", "");
   if (question2 == "manager123123") {
     deleteToDatabase("equipments", projectKey);
@@ -391,7 +399,7 @@ function toDatabase() {
               document.querySelector("#timeM").value = val.timeM;
               document.querySelector("#timeB").value = val.timeB;
               console.log(data.key)
-              deleteProjectRow(data.key);
+              deleteOldRow(data.key);
 
               content += `<td>
           </td>`;
