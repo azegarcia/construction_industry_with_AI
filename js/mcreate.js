@@ -42,7 +42,7 @@ function createClient() {
         params2.set("projectname", pname);
         params3.set("startdate", sdate);
     }
-    window.location.href = "client.html?" + params1.toString() + "&" + params2.toString() + "&" + params3.toString();
+    window.location.href = "mclient.html?" + params1.toString() + "&" + params2.toString() + "&" + params3.toString();
 }
 
 function getInputVal(id) {

@@ -10,8 +10,8 @@ if (!verify) {
 }
 
 document.getElementById("newproject").addEventListener("click", () => {
-    window.location = "create.html";
+    window.location = "mcreate.html";
 });
 document.getElementById("checklist").addEventListener("click", () => {
-    window.location = "projectlist.html";
+    window.location = "mprojectlist.html";
 });
