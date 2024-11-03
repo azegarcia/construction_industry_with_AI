@@ -235,12 +235,13 @@ function saveProject(projectDetail, aname, itemL) {
     ? projectDetail.impre.toUpperCase()
     : "START";
   let newMessageRef = messagesRef.push();
+  var anamevalue = aname.replace("&", "AND")
   newMessageRef.set({
     ...projectDetail,
     client: client,
     pname: project,
     sdate: sdate,
-    aname: aname,
+    aname: anamevalue,
     itemL: itemL,
     impre: impre,
     timeT:
@@ -391,7 +392,6 @@ function toDatabase() {
             }
             else {
               document.getElementById('anameInput').style.display = "block";
-              document.getElementById('anameInput').readOnly = true;
               document.getElementById('act-label').textContent = "Activity Name - " + val.itemL;
               document.querySelector("#anameInput").value = val.aname;
               document.querySelector("#impre").value = val.impre;
