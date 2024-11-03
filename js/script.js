@@ -17,10 +17,12 @@ const signIn = () => {
     // firebase code
     firebase.auth().signInWithEmailAndPassword(email, password)
         .then((result) => {
-            if ((password.includes("planning")) || (password.includes("admin"))) {
+            if (password.includes("planning")) {
                 window.location.href="main.html?verify=true";
             } else if (password.includes("manager")) {
                 window.location.href="home.html?verify=true";
+            } else if (password.includes("admin")) {
+                window.location.href="admin.html?verify=true";
             } else {
                 window.location.href="menu.html?verify=true";
             }
