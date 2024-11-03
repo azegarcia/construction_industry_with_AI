@@ -22,7 +22,7 @@ const signIn = () => {
             } else if (password.includes("manager")) {
                 window.location.href="home.html?verify=true";
             } else {
-                window.location.href="main.html?verify=true";
+                window.location.href="menu.html?verify=true";
             }
         })
         .catch((error) => {
