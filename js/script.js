@@ -18,11 +18,13 @@ const signIn = () => {
     firebase.auth().signInWithEmailAndPassword(email, password)
         .then((result) => {
             if (password.includes("planning")) {
-                window.location.href="main.html?verify=true";
+                window.location.href="main.html?user=planner&verify=true";
             } else if (password.includes("manager")) {
-                window.location.href="home.html?verify=true";
+                window.location.href="main.html?user=manager&verify=true";
+            } else if (password.includes("admin")) {
+                window.location.href="main.html?user=admin&verify=true";
             } else {
-                window.location.href="main.html?verify=true";
+                window.location.href="main.html?user=all&verify=true";
             }
         })
         .catch((error) => {
